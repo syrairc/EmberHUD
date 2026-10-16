@@ -1,1 +1,43 @@
-{}
+{
+  "General": {
+    "Zoom": 0.072265625
+  },
+  "Map": {
+    "Region": {
+      "Outline": "#5FB0B86F",
+      "OutlineWidth": 0.5,
+      "ExploredFill": "#FFFFFF08",
+      "ExploredOutline": "#C1BBB579",
+      "ExploredOutlineWidth": 0.5
+    },
+    "Walls": {
+      "Thickness": 1.977
+    }
+  },
+  "Icons": {
+    "NormalMonsters": {
+      "Icon": "game:UI_MiniMap_S13jingyingguai",
+      "Scale": 2
+    },
+    "MagicMonsters": {
+      "Icon": "game:UI_MiniMap_S5monicon02",
+      "Colour": "#FFFFFFFF",
+      "Scale": 4
+    },
+    "RareMonsters": {
+      "Icon": "game:UI_Fight_IconBoss",
+      "Colour": "#FFFFFFFF",
+      "Scale": 4
+    },
+    "Bosses": {
+      "Icon": "game:UI_MiniMap_BOSS",
+      "Colour": "#FFFFFFFF",
+      "Scale": 4
+    },
+    "Npcs": {
+      "Icon": "game:UI_Common_IconTeam00",
+      "Colour": "#FFFFFFFF",
+      "Scale": 2
+    }
+  }
+}
