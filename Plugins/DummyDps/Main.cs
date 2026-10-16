@@ -90,8 +90,8 @@ public sealed class Main : Plugin<Settings>
 
     public override void Initialize()
     {
-        RegisterHotkey("Toggle panel", "Shows or hides the dummy DPS panel", () => Settings.General.Show = !Settings.General.Show);
-        RegisterHotkey("Toggle combat panel", "Shows or hides the combat DPS panel", () => Settings.Combat.Show = !Settings.Combat.Show);
+        RegisterHotkey("Toggle panel", "Shows or hides the dummy DPS panel", () => Settings.General.Show = !Settings.General.Show, new Hotkey(Key.F2));
+        RegisterHotkey("Toggle combat panel", "Shows or hides the combat DPS panel", () => Settings.Combat.Show = !Settings.Combat.Show, new Hotkey(Key.F3));
     }
 
     public override void Render()

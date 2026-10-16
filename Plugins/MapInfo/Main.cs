@@ -97,7 +97,7 @@ public sealed class Main : Plugin<Settings>
     }
 
     public override void Initialize() =>
-        RegisterHotkey("Toggle panel", "Shows or hides the map info panel", () => Settings.General.Show = !Settings.General.Show);
+        RegisterHotkey("Toggle panel", "Shows or hides the map info panel", () => Settings.General.Show = !Settings.General.Show, new Hotkey(Key.F4));
 
     internal List<Laid> LaidFor(MapInfo map, long now)
     {

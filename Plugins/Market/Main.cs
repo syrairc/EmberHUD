@@ -70,7 +70,7 @@ public sealed class Main : Plugin<Settings>
     }
 
     public override void Initialize() =>
-        RegisterHotkey("Toggle window", "Shows or hides the market listing window", () => Settings.Show = !Settings.Show);
+        RegisterHotkey("Toggle window", "Shows or hides the market listing window", () => Settings.Show = !Settings.Show, new Hotkey(Key.F5));
 
     public override void Tick()
     {
