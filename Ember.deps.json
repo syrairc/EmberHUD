@@ -1,0 +1,491 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0/win-x64",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {},
+    ".NETCoreApp,Version=v10.0/win-x64": {
+      "Ember/1.0.0": {
+        "dependencies": {
+          "EmberHUD.Api": "1.0.0",
+          "Hexa.NET.ImGui.Backends": "1.0.18",
+          "Microsoft.CodeAnalysis.CSharp": "5.0.0",
+          "Svg.Skia": "5.2.3",
+          "Vortice.Direct3D11": "3.8.2",
+          "Vortice.DirectComposition": "3.8.2"
+        },
+        "runtime": {
+          "Ember.dll": {}
+        }
+      },
+      "ExCSS/4.3.1": {
+        "runtime": {
+          "lib/net8.0/ExCSS.dll": {
+            "assemblyVersion": "4.3.1.0",
+            "fileVersion": "4.3.1.0"
+          }
+        }
+      },
+      "HarfBuzzSharp/14.2.0": {
+        "dependencies": {
+          "HarfBuzzSharp.NativeAssets.Win32": "14.2.0"
+        },
+        "runtime": {
+          "lib/net10.0/HarfBuzzSharp.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "14.2.0.0"
+          }
+        }
+      },
+      "HarfBuzzSharp.NativeAssets.Win32/14.2.0": {
+        "native": {
+          "runtimes/win-x64/native/libHarfBuzzSharp.dll": {
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/libHarfBuzzSharp.pdb": {
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "Hexa.NET.ImGui/2.2.9": {
+        "dependencies": {
+          "HexaGen.Runtime": "1.1.21"
+        },
+        "runtime": {
+          "lib/net9.0/Hexa.NET.ImGui.dll": {
+            "assemblyVersion": "1.92.2.0",
+            "fileVersion": "1.92.2.0"
+          }
+        },
+        "native": {
+          "runtimes/win-x64/native/cimgui.dll": {
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "Hexa.NET.ImGui.Backends/1.0.18": {
+        "dependencies": {
+          "Hexa.NET.ImGui": "2.2.9",
+          "HexaGen.Runtime": "1.1.21"
+        },
+        "runtime": {
+          "lib/net9.0/Hexa.NET.ImGui.Backends.dll": {
+            "assemblyVersion": "1.0.13.0",
+            "fileVersion": "1.0.13.0"
+          }
+        },
+        "native": {
+          "runtimes/win-x64/native/ImGuiImpl.dll": {
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "HexaGen.Runtime/1.1.21": {
+        "runtime": {
+          "lib/net9.0/HexaGen.Runtime.dll": {
+            "assemblyVersion": "1.1.0.0",
+            "fileVersion": "1.1.0.0"
+          }
+        }
+      },
+      "Microsoft.CodeAnalysis.Common/5.0.0": {
+        "runtime": {
+          "lib/net9.0/Microsoft.CodeAnalysis.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.25.56712"
+          }
+        }
+      },
+      "Microsoft.CodeAnalysis.CSharp/5.0.0": {
+        "dependencies": {
+          "Microsoft.CodeAnalysis.Common": "5.0.0"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.CodeAnalysis.CSharp.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.25.56712"
+          }
+        }
+      },
+      "SharpGen.Runtime/2.4.2-beta": {
+        "runtime": {
+          "lib/net9.0/SharpGen.Runtime.dll": {
+            "assemblyVersion": "2.4.2.0",
+            "fileVersion": "2.4.2.0"
+          }
+        }
+      },
+      "SharpGen.Runtime.COM/2.4.2-beta": {
+        "dependencies": {
+          "SharpGen.Runtime": "2.4.2-beta"
+        },
+        "runtime": {
+          "lib/net9.0/SharpGen.Runtime.COM.dll": {
+            "assemblyVersion": "2.4.2.0",
+            "fileVersion": "2.4.2.0"
+          }
+        }
+      },
+      "ShimSkiaSharp/5.2.3": {
+        "runtime": {
+          "lib/net10.0/ShimSkiaSharp.dll": {
+            "assemblyVersion": "5.2.3.0",
+            "fileVersion": "5.2.3.0"
+          }
+        }
+      },
+      "SkiaSharp/4.148.0": {
+        "dependencies": {
+          "SkiaSharp.NativeAssets.Win32": "4.148.0"
+        },
+        "runtime": {
+          "lib/net10.0/SkiaSharp.dll": {
+            "assemblyVersion": "4.148.0.0",
+            "fileVersion": "4.148.0.0"
+          }
+        }
+      },
+      "SkiaSharp.NativeAssets.Win32/4.148.0": {
+        "native": {
+          "runtimes/win-x64/native/libSkiaSharp.dll": {
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/libSkiaSharp.pdb": {
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "Svg.Animation/5.2.3": {
+        "dependencies": {
+          "ShimSkiaSharp": "5.2.3",
+          "SkiaSharp": "4.148.0",
+          "Svg.Custom": "5.2.3",
+          "Svg.Model": "5.2.3"
+        },
+        "runtime": {
+          "lib/net10.0/Svg.Animation.dll": {
+            "assemblyVersion": "5.2.3.0",
+            "fileVersion": "5.2.3.0"
+          }
+        }
+      },
+      "Svg.Custom/5.2.3": {
+        "dependencies": {
+          "ExCSS": "4.3.1"
+        },
+        "runtime": {
+          "lib/net10.0/Svg.Custom.dll": {
+            "assemblyVersion": "5.2.3.0",
+            "fileVersion": "5.2.3.0"
+          }
+        }
+      },
+      "Svg.Model/5.2.3": {
+        "dependencies": {
+          "ShimSkiaSharp": "5.2.3",
+          "Svg.Custom": "5.2.3"
+        },
+        "runtime": {
+          "lib/net10.0/Svg.Model.dll": {
+            "assemblyVersion": "5.2.3.0",
+            "fileVersion": "5.2.3.0"
+          }
+        }
+      },
+      "Svg.SceneGraph/5.2.3": {
+        "dependencies": {
+          "ShimSkiaSharp": "5.2.3",
+          "Svg.Custom": "5.2.3",
+          "Svg.Model": "5.2.3"
+        },
+        "runtime": {
+          "lib/net10.0/Svg.SceneGraph.dll": {
+            "assemblyVersion": "5.2.3.0",
+            "fileVersion": "5.2.3.0"
+          }
+        }
+      },
+      "Svg.Skia/5.2.3": {
+        "dependencies": {
+          "HarfBuzzSharp": "14.2.0",
+          "HarfBuzzSharp.NativeAssets.Win32": "14.2.0",
+          "SkiaSharp": "4.148.0",
+          "Svg.Animation": "5.2.3",
+          "Svg.Custom": "5.2.3",
+          "Svg.Model": "5.2.3",
+          "Svg.SceneGraph": "5.2.3"
+        },
+        "runtime": {
+          "lib/net10.0/Svg.Skia.dll": {
+            "assemblyVersion": "5.2.3.0",
+            "fileVersion": "5.2.3.0"
+          }
+        }
+      },
+      "Vortice.Direct2D1/3.8.2": {
+        "dependencies": {
+          "SharpGen.Runtime": "2.4.2-beta",
+          "Vortice.DXGI": "3.8.2"
+        },
+        "runtime": {
+          "lib/net10.0/Vortice.Direct2D1.dll": {
+            "assemblyVersion": "3.8.2.0",
+            "fileVersion": "3.8.2.0"
+          }
+        }
+      },
+      "Vortice.Direct3D11/3.8.2": {
+        "dependencies": {
+          "SharpGen.Runtime": "2.4.2-beta",
+          "Vortice.DXGI": "3.8.2"
+        },
+        "runtime": {
+          "lib/net10.0/Vortice.Direct3D11.dll": {
+            "assemblyVersion": "3.8.2.0",
+            "fileVersion": "3.8.2.0"
+          }
+        }
+      },
+      "Vortice.DirectComposition/3.8.2": {
+        "dependencies": {
+          "SharpGen.Runtime": "2.4.2-beta",
+          "Vortice.DXGI": "3.8.2",
+          "Vortice.Direct2D1": "3.8.2",
+          "Vortice.DirectX": "3.8.2"
+        },
+        "runtime": {
+          "lib/net10.0/Vortice.DirectComposition.dll": {
+            "assemblyVersion": "3.8.2.0",
+            "fileVersion": "3.8.2.0"
+          }
+        }
+      },
+      "Vortice.DirectX/3.8.2": {
+        "dependencies": {
+          "SharpGen.Runtime": "2.4.2-beta",
+          "SharpGen.Runtime.COM": "2.4.2-beta",
+          "Vortice.Mathematics": "2.1.0"
+        },
+        "runtime": {
+          "lib/net10.0/Vortice.DirectX.dll": {
+            "assemblyVersion": "3.8.2.0",
+            "fileVersion": "3.8.2.0"
+          }
+        }
+      },
+      "Vortice.DXGI/3.8.2": {
+        "dependencies": {
+          "SharpGen.Runtime": "2.4.2-beta",
+          "Vortice.DirectX": "3.8.2"
+        },
+        "runtime": {
+          "lib/net10.0/Vortice.DXGI.dll": {
+            "assemblyVersion": "3.8.2.0",
+            "fileVersion": "3.8.2.0"
+          }
+        }
+      },
+      "Vortice.Mathematics/2.1.0": {
+        "runtime": {
+          "lib/net10.0/Vortice.Mathematics.dll": {
+            "assemblyVersion": "2.1.0.0",
+            "fileVersion": "2.1.0.0"
+          }
+        }
+      },
+      "EmberHUD.Api/1.0.0": {
+        "dependencies": {
+          "Hexa.NET.ImGui": "2.2.9"
+        },
+        "runtime": {
+          "EmberHUD.Api.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Ember/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ExCSS/4.3.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-A8UtcghHQlWxPJhJF5bsfEYO7068JHGTuJ7tzyyMjd5fE/N/xY1cVOUhzuLLFwMOCJVnM4mqSQc93W9fGfZ1kA==",
+      "path": "excss/4.3.1",
+      "hashPath": "excss.4.3.1.nupkg.sha512"
+    },
+    "HarfBuzzSharp/14.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-B9zczdZELTKyJoNZXJLTgq+Ho2Z6H8oFcFbelvmHixkA8/2sH9acE589KvOa951g1aN262pOU5ThhZxw33bGSg==",
+      "path": "harfbuzzsharp/14.2.0",
+      "hashPath": "harfbuzzsharp.14.2.0.nupkg.sha512"
+    },
+    "HarfBuzzSharp.NativeAssets.Win32/14.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-NCqaG3bJDl66JdmHeyOpRUf4eiGVwu8OSxGv6ukofBiukVyUpWj01btr/telMQLQ+XuQ83iDpi6NRDFoRIcojA==",
+      "path": "harfbuzzsharp.nativeassets.win32/14.2.0",
+      "hashPath": "harfbuzzsharp.nativeassets.win32.14.2.0.nupkg.sha512"
+    },
+    "Hexa.NET.ImGui/2.2.9": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-WFnhZiBZ6UStKqVt43d2hhGCBaJ/TfLRVExnqAO+R3TEbfTQfVjWhcDRUb7n4SvFW7AP9JR8TpCutQZmV62D2A==",
+      "path": "hexa.net.imgui/2.2.9",
+      "hashPath": "hexa.net.imgui.2.2.9.nupkg.sha512"
+    },
+    "Hexa.NET.ImGui.Backends/1.0.18": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-4yDk002cKRzPXR0IJXnM1uArQZjvnHDEkjQJSGmV5BeKrcQtF9bg1AJqfzzfZehotRZPqFubIyC4roLjxKzARw==",
+      "path": "hexa.net.imgui.backends/1.0.18",
+      "hashPath": "hexa.net.imgui.backends.1.0.18.nupkg.sha512"
+    },
+    "HexaGen.Runtime/1.1.21": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-fxSBIroVyuU1CQUSKsE3IZNOW8FlI58zuU1kIG5ZvDH0jtQq5yTPEvPMoNyMB5PrhzYH/taTMqd85VtxcZPD8g==",
+      "path": "hexagen.runtime/1.1.21",
+      "hashPath": "hexagen.runtime.1.1.21.nupkg.sha512"
+    },
+    "Microsoft.CodeAnalysis.Common/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ZXRAdvH6GiDeHRyd3q/km8Z44RoM6FBWHd+gen/la81mVnAdHTEsEkO5J0TCNXBymAcx5UYKt5TvgKBhaLJEow==",
+      "path": "microsoft.codeanalysis.common/5.0.0",
+      "hashPath": "microsoft.codeanalysis.common.5.0.0.nupkg.sha512"
+    },
+    "Microsoft.CodeAnalysis.CSharp/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-5DSyJ9bk+ATuDy7fp2Zt0mJStDVKbBoiz1DyfAwSa+k4H4IwykAUcV3URelw5b8/iVbfSaOwkwmPUZH6opZKCw==",
+      "path": "microsoft.codeanalysis.csharp/5.0.0",
+      "hashPath": "microsoft.codeanalysis.csharp.5.0.0.nupkg.sha512"
+    },
+    "SharpGen.Runtime/2.4.2-beta": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-niTtWAUov1F7wZGAlVeEvW+Tnqvg5yTmhI7rxmYu2Utoyu2TbC9tWWpUpMs0PQg5lu5svoYpCAztNjxCqMFP/w==",
+      "path": "sharpgen.runtime/2.4.2-beta",
+      "hashPath": "sharpgen.runtime.2.4.2-beta.nupkg.sha512"
+    },
+    "SharpGen.Runtime.COM/2.4.2-beta": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9lxDFMiepqo3lJQzMSjECCIONeCc2f3Drokgj6HtrTLZcJSftNgcLbD6/iXYj2iphkwgrZb1oLsDOZxoFZkawQ==",
+      "path": "sharpgen.runtime.com/2.4.2-beta",
+      "hashPath": "sharpgen.runtime.com.2.4.2-beta.nupkg.sha512"
+    },
+    "ShimSkiaSharp/5.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-BBmIvh70WduWEF8C9HeU12LmHkg6+h2SRwJzey/tmztRk4ttAxhyu9eAD/jlsNGlqquYpoCQyyTx+QynavyfVA==",
+      "path": "shimskiasharp/5.2.3",
+      "hashPath": "shimskiasharp.5.2.3.nupkg.sha512"
+    },
+    "SkiaSharp/4.148.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-t+oZDnzvi0en060BFDTmJ16C0zjsiXRrtOe70luIuIi/exVZtl1obrYh8D+IoHlGtp7bqzEBVncafbAl0ttmPQ==",
+      "path": "skiasharp/4.148.0",
+      "hashPath": "skiasharp.4.148.0.nupkg.sha512"
+    },
+    "SkiaSharp.NativeAssets.Win32/4.148.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-LegvQ9zAi9Tmot2YOLv8mcK+g3wbEYfCWUoC5JtyHaN8QrxsaMvfJ8pFPvnEOVuY8qXxs8vVqrO/x42/YaFDRA==",
+      "path": "skiasharp.nativeassets.win32/4.148.0",
+      "hashPath": "skiasharp.nativeassets.win32.4.148.0.nupkg.sha512"
+    },
+    "Svg.Animation/5.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-mlbLFKzSVL2wMvDxnlMKLbdbbCbZBjDwSgmCZ7dHE4l0DtVUX5kHixngZlUP8AuBoikzqsXZt4+IXJhbeJjAdA==",
+      "path": "svg.animation/5.2.3",
+      "hashPath": "svg.animation.5.2.3.nupkg.sha512"
+    },
+    "Svg.Custom/5.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-epicuKTb55l7Y6c3f9pdP0RkoifVieS9sWvA9HsppTfYyV7RFZg89+fUA9TTPcuccqi0GUGwiPEi+9b881zlDw==",
+      "path": "svg.custom/5.2.3",
+      "hashPath": "svg.custom.5.2.3.nupkg.sha512"
+    },
+    "Svg.Model/5.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-iZInP4/48rIkpFxVJNMmxDDjIBaUcGOHrzancQ3cmneHXrtH4MYkm6bzggL9hCiS2dxfLhk3JCiERoGf8j0MlA==",
+      "path": "svg.model/5.2.3",
+      "hashPath": "svg.model.5.2.3.nupkg.sha512"
+    },
+    "Svg.SceneGraph/5.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-t9HrB1n499YCvziq+sdapDjMvgY7iSzyldEDalWnoZCP3cncu92gEktBqzhUgo8A+r9mfow2TNf0u5jgV5FvlQ==",
+      "path": "svg.scenegraph/5.2.3",
+      "hashPath": "svg.scenegraph.5.2.3.nupkg.sha512"
+    },
+    "Svg.Skia/5.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-slGSy5Aje/30Ou2a5aezbGGWLZspBIBYlEzqgtaIVex4FUYAR3mxaYrvMZj1tHy+ESDFCGY7+2FjF6UzqGUZew==",
+      "path": "svg.skia/5.2.3",
+      "hashPath": "svg.skia.5.2.3.nupkg.sha512"
+    },
+    "Vortice.Direct2D1/3.8.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-UxG1WlWWOg8ys12w5zcGdh+U0U/q6vy6h89tRmYfZH2jhhcAZx0ZG5zPCbKxS+ZsHAjjqmX5Tph23jsp47uCrw==",
+      "path": "vortice.direct2d1/3.8.2",
+      "hashPath": "vortice.direct2d1.3.8.2.nupkg.sha512"
+    },
+    "Vortice.Direct3D11/3.8.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-GvwickYBqqYs0AVg2eZtlQHlm5E4l4a86U88iBQ6QI91+D7TUtp5hdG3GIMlq+8NFB3V/sjLhcAKw9hKI7O8cA==",
+      "path": "vortice.direct3d11/3.8.2",
+      "hashPath": "vortice.direct3d11.3.8.2.nupkg.sha512"
+    },
+    "Vortice.DirectComposition/3.8.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Eu9ZYiyihA9rlRC7FVIi9f6PN2EtOAisJUcpeFOEmhY+7mIiMSax+ip6j2vhpkZiokNCrdG0RC2IDdGrsDtqKw==",
+      "path": "vortice.directcomposition/3.8.2",
+      "hashPath": "vortice.directcomposition.3.8.2.nupkg.sha512"
+    },
+    "Vortice.DirectX/3.8.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-A3P4XpiUqf+asGFMw4BRtec3q+ZM6cCkTc2FSeVXkZoEvvu+Yl9REen/qQrs623ZfMdHc74BZWDhaiumKItLpQ==",
+      "path": "vortice.directx/3.8.2",
+      "hashPath": "vortice.directx.3.8.2.nupkg.sha512"
+    },
+    "Vortice.DXGI/3.8.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-372JYFek9IwG5cBXyJYEnUgujV42hFjWCDPBFig52shet05C4nuNsYDxr+h+/1AGdBiHLkqCh3AVznJiOXmwyQ==",
+      "path": "vortice.dxgi/3.8.2",
+      "hashPath": "vortice.dxgi.3.8.2.nupkg.sha512"
+    },
+    "Vortice.Mathematics/2.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-KK+SjNSuKdP+zbavekubi+vaeb1Jo4k87ZF6CMkVWjr6RjJwc8peVtmgzXXDIMy4ZC3ZISyk3llY3q65ISOkBQ==",
+      "path": "vortice.mathematics/2.1.0",
+      "hashPath": "vortice.mathematics.2.1.0.nupkg.sha512"
+    },
+    "EmberHUD.Api/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
