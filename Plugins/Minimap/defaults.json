@@ -16,28 +16,23 @@
   },
   "Icons": {
     "NormalMonsters": {
-      "Icon": "game:UI_MiniMap_S13jingyingguai",
-      "Scale": 2
+      "Icon": "game:UI_MiniMap_S13jingyingguai"
     },
     "MagicMonsters": {
       "Icon": "game:UI_MiniMap_S5monicon02",
-      "Colour": "#FFFFFFFF",
-      "Scale": 4
+      "Colour": "#FFFFFFFF"
     },
     "RareMonsters": {
       "Icon": "game:UI_Fight_IconBoss",
-      "Colour": "#FFFFFFFF",
-      "Scale": 4
+      "Colour": "#FFFFFFFF"
     },
     "Bosses": {
       "Icon": "game:UI_MiniMap_BOSS",
-      "Colour": "#FFFFFFFF",
-      "Scale": 4
+      "Colour": "#FFFFFFFF"
     },
     "Npcs": {
       "Icon": "game:UI_Common_IconTeam00",
-      "Colour": "#FFFFFFFF",
-      "Scale": 2
+      "Colour": "#FFFFFFFF"
     }
   }
 }

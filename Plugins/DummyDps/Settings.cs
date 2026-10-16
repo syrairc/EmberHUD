@@ -50,7 +50,8 @@ public sealed class Settings : PluginSettings
     public override void Draw() => Layout.TabBar("dummydps",
         ("General", DrawGeneral),
         ("Combat", DrawCombat),
-        ("Look", DrawLook));
+        ("Look", DrawLook),
+        ("Hotkeys", Controls.PluginHotkeys));
 
     void DrawGeneral()
     {

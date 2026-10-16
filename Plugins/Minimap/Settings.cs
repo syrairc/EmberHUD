@@ -75,15 +75,15 @@ public sealed class IconsTab
     public float ZoomScaleFactor = 0.5f;
     public float ZoomScaleMin = 0.5f;
     public float ZoomScaleMax = 2;
-    public IconStyle NormalMonsters = Row("Normal monsters", "marker:Dot", 0xEBEBEB, 0.75f);
-    public IconStyle MagicMonsters = Row("Magic monsters", "marker:Dot", 0x598CFF, 0.75f);
-    public IconStyle RareMonsters = Row("Rare monsters", "svg:elite", 0xFFD933, 1.25f);
-    public IconStyle Bosses = Row("Bosses", "svg:elite", 0xD94DFF, 1.75f);
-    public IconStyle Minions = Row("Minions", "marker:Dot", 0x4DE64D, 0.75f, false);
-    public IconStyle Npcs = Row("NPCs", "marker:Square", 0x4DFF4D, 1.25f);
+    public IconStyle NormalMonsters = Row("Normal monsters", "marker:Dot", 0xEBEBEB, 1);
+    public IconStyle MagicMonsters = Row("Magic monsters", "marker:Dot", 0x598CFF, 1);
+    public IconStyle RareMonsters = Row("Rare monsters", "svg:elite", 0xFFD933, 1);
+    public IconStyle Bosses = Row("Bosses", "svg:elite", 0xD94DFF, 1);
+    public IconStyle Minions = Row("Minions", "marker:Dot", 0x4DE64D, 1, false);
+    public IconStyle Npcs = Row("NPCs", "marker:Square", 0x4DFF4D, 1);
     public IconStyle OtherPlayers = Row("Other players", "marker:Dot", 0x4DE6FF, 1);
-    public IconStyle MapObjects = Row("Map objects", "marker:Diamond", 0xC0C0C0, 0.75f);
-    public IconStyle Destructibles = Row("Destructibles", "marker:Triangle", 0xA0703C, 0.75f);
+    public IconStyle MapObjects = Row("Map objects", "marker:Diamond", 0xC0C0C0, 1);
+    public IconStyle Destructibles = Row("Destructibles", "marker:Triangle", 0xA0703C, 1);
     public List<IconStyle> Found = [];
 
     Dictionary<string, IconStyle> _found = new(StringComparer.Ordinal);
@@ -100,8 +100,21 @@ public sealed class IconsTab
 
     public IconStyle[] Fixed => [NormalMonsters, MagicMonsters, RareMonsters, Bosses, Minions, Npcs, OtherPlayers, MapObjects, Destructibles];
 
+    public static int Layer(Entity entity) => entity.Kind switch
+    {
+        EntityKind.Destructible => 0,
+        EntityKind.MapObject => 1,
+        EntityKind.Monster when entity.Friendly => 7,
+        EntityKind.Monster => 2 + (int)entity.Rarity,
+        EntityKind.Ally => 6,
+        EntityKind.Npc => 7,
+        EntityKind.Player => 8,
+        _ => 9,
+    };
+
     public IconStyle? FixedFor(Entity entity) => entity.Kind switch
     {
+        EntityKind.Monster when entity.Friendly => Npcs,
         EntityKind.Monster => entity.Rarity switch
         {
             Rarity.Normal => NormalMonsters,
@@ -136,16 +149,27 @@ public sealed class IconsTab
         foreach (var icon in icons)
         {
             if (string.IsNullOrEmpty(icon.Texture)) continue;
-            if (FoundFor(icon.Texture) is { } existing)
-            {
-                if (existing.Name == existing.Key && !string.IsNullOrEmpty(icon.Name)) existing.Name = icon.Name;
-                continue;
-            }
-            var row = new IconStyle { Key = icon.Texture, Name = string.IsNullOrEmpty(icon.Name) ? icon.Texture : icon.Name, Icon = EmberHUD.Draw.GameIconPrefix + icon.Texture };
-            Found.Add(row);
-            _found[row.Key] = row;
-            _foundCount = Found.Count;
+            Apply(icon.Texture, IconPresets.NameFor(icon.Texture) ?? icon.Texture, icon.Name);
         }
+    }
+
+    public void SeedPresets()
+    {
+        foreach (var (texture, name) in IconPresets.All) Apply(texture, name, "");
+    }
+
+    void Apply(string texture, string name, string gameName)
+    {
+        if (FoundFor(texture) is not { } existing) AddFound(texture, name);
+        else if (existing.Name == existing.Key || existing.Name == gameName || IconPresets.IsInternalName(existing.Name)) existing.Name = name;
+    }
+
+    void AddFound(string texture, string name)
+    {
+        var row = new IconStyle { Key = texture, Name = name, Icon = EmberHUD.Draw.GameIconPrefix + texture };
+        Found.Add(row);
+        _found[row.Key] = row;
+        _foundCount = Found.Count;
     }
 }
 
@@ -172,7 +196,8 @@ public sealed class Settings : PluginSettings
     public override void Draw() => Layout.TabBar("minimap",
         ("General", DrawGeneral),
         ("Map", DrawMap),
-        ("Icons", DrawIcons));
+        ("Icons", DrawIcons),
+        ("Hotkeys", () => { Controls.PluginHotkeys(); return false; }));
 
     bool DrawGeneral()
     {
@@ -209,6 +234,7 @@ public sealed class Settings : PluginSettings
 
     internal bool DrawIcons()
     {
+        Icons.SeedPresets();
         var changed = Setting.Checkbox("Game icons", ref Icons.UseGameIcons, "Draw the game's own minimap icons when GameIcons are set up, shapes otherwise");
         changed |= Setting.Slider("Game icon scale", ref Icons.GameIconScale, 0.25f, 4, "Scales every game icon on top of its own row scale");
         changed |= Setting.Checkbox("Scale with zoom", ref Icons.ScaleWithZoom, "Icons grow and shrink with the map zoom, the default zoom keeps them at their own size");
@@ -219,7 +245,7 @@ public sealed class Settings : PluginSettings
         Controls.Filter(ref _filter, width: 240);
         ImGui.SameLine();
         ImGui.TextDisabled($"{Icons.Fixed.Length} fixed + {Icons.Found.Count} found");
-        if (!ImGui.BeginTable("##icons", 5, ImGuiTableFlags.RowBg | ImGuiTableFlags.BordersInnerH | ImGuiTableFlags.ScrollY | ImGuiTableFlags.SizingFixedFit, new Vector2(0, 360))) return changed;
+        if (!ImGui.BeginTable("##icons", 5, ImGuiTableFlags.RowBg | ImGuiTableFlags.BordersInnerH | ImGuiTableFlags.ScrollY | ImGuiTableFlags.SizingFixedFit, new Vector2(0, Math.Max(360, ImGui.GetContentRegionAvail().Y)))) return changed;
         ImGui.TableSetupScrollFreeze(0, 1);
         ImGui.TableSetupColumn("Show", ImGuiTableColumnFlags.WidthFixed);
         ImGui.TableSetupColumn("Icon", ImGuiTableColumnFlags.WidthFixed);
@@ -255,7 +281,7 @@ public sealed class Settings : PluginSettings
         ImGui.TableNextColumn();
         changed |= ImGui.Checkbox("##show", ref row.Show);
         ImGui.TableNextColumn();
-        changed |= Controls.IconPicker("icon", ref row.Icon, ref row.Colour, ref row.Scale, resetIcon: fixedDefault?.Icon ?? EmberHUD.Draw.GameIconPrefix + row.Key, resetColour: fixedDefault?.Colour, resetScale: fixedDefault?.Scale ?? 1, baseSize: fixedRow ? Main.MarkerRadius * 2 : 24);
+        changed |= Controls.IconPicker("icon", ref row.Icon, ref row.Colour, ref row.Scale, 0.1f, 10f, resetIcon: fixedDefault?.Icon ?? EmberHUD.Draw.GameIconPrefix + row.Key, resetColour: fixedDefault?.Colour, resetScale: fixedDefault?.Scale ?? 1, baseSize: fixedRow ? Main.MarkerRadius * 2 : 48);
         using (Layout.Dim(!row.Show))
         {
             ImGui.TableNextColumn();

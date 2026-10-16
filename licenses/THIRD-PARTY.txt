@@ -100,6 +100,10 @@ BCnEncoder.Net 2.1.0 - BCnEncoder.dll
   MIT (dual MIT OR Unlicense, used here under MIT) - Copyright 2020 Nomi Lakkala
   https://github.com/Nominom/BCnEncoder.NET
 
+ZstdSharp.Port 0.7.3 - ZstdSharp.dll
+  MIT - Copyright (c) 2021 Oleg Stepanischev, zstd by Meta (BSD)
+  https://github.com/oleg-st/ZstdSharp
+
 Microsoft.Toolkit.HighPerformance 7.0.2 - Microsoft.Toolkit.HighPerformance.dll
   MIT - Copyright (c) .NET Foundation and Contributors. All rights reserved.
   https://github.com/CommunityToolkit/WindowsCommunityToolkit

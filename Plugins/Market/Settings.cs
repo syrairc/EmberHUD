@@ -22,5 +22,7 @@ public sealed class Settings : PluginSettings
         Setting.Checkbox("Dim non-matches", ref DimNonMatches, "Darken every cell on the current page that fails the filters or is sold");
         Setting.Color("Glow colour", ref GlowColor);
         Setting.Slider("Glow thickness", ref GlowThickness, 1, 10);
+        Controls.Section("Hotkeys");
+        Controls.PluginHotkeys();
     }
 }

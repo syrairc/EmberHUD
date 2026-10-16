@@ -56,7 +56,8 @@ public sealed class Settings : PluginSettings
     public override void Draw() => Layout.TabBar("mapinfo",
         ("General", DrawGeneral),
         ("Sections", DrawSections),
-        ("Look", DrawLook));
+        ("Look", DrawLook),
+        ("Hotkeys", Controls.PluginHotkeys));
 
     void DrawGeneral()
     {
