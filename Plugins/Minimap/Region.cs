@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Numerics;
 using EmberHUD;
@@ -8,6 +9,8 @@ namespace Minimap;
 
 public sealed record Region(int AreaId, Terrain? Source, ExploredTrail? Trail, BitArray Explored, (int Col, int Row)? PlayerCell, Color RegionFill, Color ExploredFill, byte[] Pixels, int Width, int Height, Vector2[] Corners, Polyline[] ExploredOutline)
 {
+    public const float BrushReach = 0.65f;
+
     public static readonly Region Empty = new(-1, null, null, new BitArray(0), null, default, default, [], 0, 0, [], []);
 
     public bool Matches(int areaId, Terrain? terrain) => AreaId == areaId && ReferenceEquals(Source, terrain);
@@ -16,6 +19,74 @@ public sealed record Region(int AreaId, Terrain? Source, ExploredTrail? Trail, B
         regionFill.ToArgb() != RegionFill.ToArgb() || exploredFill.ToArgb() != ExploredFill.ToArgb()
         || (trail is null) != (Trail is null)
         || trail is not null && (trail.Count != Trail!.Count || !trail.Radius.Equals(Trail.Radius) || playerCell != PlayerCell);
+
+    public Polyline[] Unexplored(Polyline[] lines)
+    {
+        if (Trail is null || Source is not { } terrain || Explored.Length != terrain.Cols * terrain.Rows || !(terrain.CellSize > 0)) return lines;
+
+        var kept = new List<Polyline>();
+        var points = new List<Vector2>();
+        var corner = new List<bool>();
+        var run = new List<Vector2>();
+        foreach (var line in lines)
+        {
+            points.Clear();
+            corner.Clear();
+            var count = line.Points.Length;
+            var segments = line.Closed ? count : count - 1;
+            if (segments <= 0) continue;
+
+            for (var i = 0; i < segments; i++)
+            {
+                var start = line.Points[i];
+                var end = line.Points[(i + 1) % count];
+                var pieces = Math.Max(1, (int)MathF.Ceiling(Vector2.Distance(start, end) / (terrain.CellSize / 2)));
+                for (var j = 0; j < pieces; j++)
+                {
+                    points.Add(Vector2.Lerp(start, end, (float)j / pieces));
+                    corner.Add(j == 0);
+                }
+            }
+            if (!line.Closed)
+            {
+                points.Add(line.Points[^1]);
+                corner.Add(true);
+            }
+
+            var steps = line.Closed ? points.Count : points.Count - 1;
+            var dropped = -1;
+            for (var i = 0; i < steps; i++)
+                if (ExploredAt(terrain, (points[i] + points[(i + 1) % points.Count]) / 2)) dropped = i;
+            if (dropped < 0)
+            {
+                kept.Add(line);
+                continue;
+            }
+
+            var offset = line.Closed ? dropped : -1;
+            var runStart = -1;
+            for (var k = 1; k <= steps + 1; k++)
+            {
+                var i = (offset + k) % steps;
+                var open = k <= steps && !ExploredAt(terrain, (points[i] + points[(i + 1) % points.Count]) / 2);
+                if (open && runStart < 0) runStart = k;
+                if (open || runStart < 0) continue;
+                run.Clear();
+                for (var m = runStart; m < k; m++)
+                {
+                    var at = (offset + m) % steps;
+                    if (m == runStart || corner[at]) run.Add(points[at]);
+                }
+                run.Add(points[((offset + k - 1) % steps + 1) % points.Count]);
+                kept.Add(new Polyline([.. run], false));
+                runStart = -1;
+            }
+        }
+        return [.. kept];
+    }
+
+    bool ExploredAt(Terrain terrain, Vector2 at) =>
+        CellOf(terrain, at) is { } cell && Explored[Math.Clamp(cell.Row, 0, terrain.Rows - 1) * terrain.Cols + Math.Clamp(cell.Col, 0, terrain.Cols - 1)];
 
     public static (int Col, int Row)? CellOf(Terrain terrain, Vector2? at)
     {
@@ -49,8 +120,9 @@ public sealed record Region(int AreaId, Terrain? Source, ExploredTrail? Trail, B
 
         var keep = previous is { Trail: { } old } && ReferenceEquals(previous.Source, terrain) && previous.Explored.Length == cells && old.Radius.Equals(trail.Radius) && old.Count <= trail.Count;
         var explored = keep ? new BitArray(previous!.Explored) : new BitArray(cells);
-        for (var i = keep ? previous!.Trail!.Count : 0; i < trail.Count; i++) Disc(explored, terrain, trail.Buffer[i], trail.Radius);
-        if (player is { } at) Disc(explored, terrain, at, trail.Radius);
+        var reach = trail.Radius * BrushReach;
+        for (var i = keep ? previous!.Trail!.Count : 0; i < trail.Count; i++) Disc(explored, terrain, trail.Buffer[i], reach);
+        if (player is { } at) Disc(explored, terrain, at, reach);
         return explored;
     }
 

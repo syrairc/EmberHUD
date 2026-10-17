@@ -12,10 +12,9 @@ public sealed class GeneralTab
     public bool Show = true;
     public bool Lock = true;
     public Hotkey MoveKey = new(Key.Alt);
-    public bool HideInTown = true;
     public bool HideBehindPanels = true;
-    public int X = 40;
-    public int Y = 220;
+    public int X = 1520;
+    public int Y = 300;
     public int Width = 360;
 }
 
@@ -64,7 +63,6 @@ public sealed class Settings : PluginSettings
         Setting.Checkbox("Show", ref General.Show);
         Setting.Checkbox("Lock", ref General.Lock, "A locked panel ignores the mouse - hold the move key to drag or resize it anyway");
         Setting.Hotkey("Move key", ref General.MoveKey, "Hold to move or resize a locked panel");
-        Setting.Checkbox("Hide in town", ref General.HideInTown, "Nothing draws in town or the hideout");
         Setting.Checkbox("Hide behind full-screen panels", ref General.HideBehindPanels, "Nothing draws while the game has a full-screen panel open, e.g. the big map");
         Setting.Slider("X", ref General.X, 0, 7680);
         Setting.Slider("Y", ref General.Y, 0, 4320);

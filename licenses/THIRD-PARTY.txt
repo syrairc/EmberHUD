@@ -108,6 +108,10 @@ Microsoft.Toolkit.HighPerformance 7.0.2 - Microsoft.Toolkit.HighPerformance.dll
   MIT - Copyright (c) .NET Foundation and Contributors. All rights reserved.
   https://github.com/CommunityToolkit/WindowsCommunityToolkit
 
+TITrack (commit f02b9b8fd4e482d1b261276b45d727d7d3c0b7f7) - exchange log parsing logic ported to Plugins\Prices\Exchange.cs
+  MIT - Copyright (c) TITrack Contributors
+  https://github.com/astockman99/TITrack
+
 ooz (powzix, commit 05038060aa68f9187ae9923b2388ca8db40e58d1) - ooz.dll, built from source with MSVC
   GPLv3 - Copyright (C) 2016, Powzix
   https://github.com/powzix/ooz

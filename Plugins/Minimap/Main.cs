@@ -15,6 +15,9 @@ public sealed class Main : Plugin<Settings>
     internal Func<long> Clock = () => Environment.TickCount64;
     Walls _walls = Walls.Empty;
     Region _region = Region.Empty;
+    Polyline[] _unexploredOutline = [];
+    Walls? _unexploredWalls;
+    Region? _unexploredRegion;
     string _regionKey = "";
     long _regionAt;
     byte[]? _spare;
@@ -24,6 +27,7 @@ public sealed class Main : Plugin<Settings>
     static readonly Comparison<Entity> DrawOrder = (a, b) => (IconsTab.Layer(a), a.Id).CompareTo((IconsTab.Layer(b), b.Id));
     readonly HashSet<int> _overridden = [];
     readonly HashSet<int> _iconEntities = [];
+    readonly HashSet<(int, int)> _iconCells = [];
     MapIcon[]? _indexedIcons;
     internal const float MarkerRadius = 8;
     internal const int TaskRingType = 1002;
@@ -57,7 +61,7 @@ public sealed class Main : Plugin<Settings>
         }
         if (view.Show && !WallsStyle) UpdateRegion(state);
 
-        Map.View = Hidden(Settings, state.Ui) ? null : ViewFor(Settings, state.Player?.Position, _walls, ImGui.GetIO().DisplaySize, state.MinimapRotation);
+        Map.View = Hidden(Settings, state.Ui) ? null : ViewFor(Settings, state.Player?.Position, _walls, ImGui.GetIO().DisplaySize, state.MinimapRotation, state.GameMinimap);
     }
 
     void UpdateRegion(GameState state)
@@ -73,19 +77,21 @@ public sealed class Main : Plugin<Settings>
         var player = state.Player is { } at ? new Vector2(at.Position.X, at.Position.Y) : (Vector2?)null;
         var now = Clock();
         var current = _region.Matches(state.AreaId, terrain);
-        var builtRecently = now - _regionAt < 1000;
-        if (current && (builtRecently || !_region.Stale(state.Explored, Region.CellOf(terrain, player), region.Fill, region.ExploredFill))) return;
+        var builtRecently = now - _regionAt < 100;
+        if (current && (builtRecently || !_region.Stale(state.Explored, Region.CellOf(terrain, player), region.Fill, ExploredFillFor(region)))) return;
 
         _regionAt = now;
         var area = state.AreaId;
         var trail = state.Explored;
         var regionFill = region.Fill;
-        var exploredFill = region.ExploredFill;
+        var exploredFill = ExploredFillFor(region);
         var previous = current ? _region : null;
         var reuse = _spare;
         _spare = null;
         RegionJob.Start(() => Guarded(area, "region", () => Region.Build(area, terrain, trail, player, regionFill, exploredFill, previous, reuse), () => Region.Blank(area, terrain, trail, player, regionFill, exploredFill)));
     }
+
+    Color ExploredFillFor(RegionLook region) => Settings.General.UseGameMinimap ? Color.FromArgb(0, region.ExploredFill) : region.ExploredFill;
 
     T Guarded<T>(int area, string what, Func<T> build, Func<T> fallback)
     {
@@ -113,14 +119,23 @@ public sealed class Main : Plugin<Settings>
         _region = built;
     }
 
-    public static MapView? ViewFor(Settings settings, Vector3? player, Walls walls, Vector2 viewport, float? gameRotation = null)
+    public static MapView? ViewFor(Settings settings, Vector3? player, Walls walls, Vector2 viewport, float? gameRotation = null, GameMinimap? gameMinimap = null)
     {
         var view = settings.General;
+        if (view.UseGameMinimap) return GameView(view, player, viewport, gameRotation ?? 0, gameMinimap);
         var rotation = (gameRotation ?? 0) + view.Rotation;
         var map = view.FollowPlayer && player is { } at && float.IsFinite(at.X) && float.IsFinite(at.Y)
             ? MapView.Follow(Map.Project(at), viewport, view.Zoom, rotation, view.VerticalScale)
             : MapView.Fit(walls.Min, walls.Max, viewport, 40, rotation, view.VerticalScale);
         return map.Scale > 0 ? map with { Offset = map.Offset + new Vector2(view.OffsetX, view.OffsetY) } : null;
+    }
+
+    static MapView? GameView(GeneralTab view, Vector3? player, Vector2 viewport, float rotation, GameMinimap? game)
+    {
+        if (game is not { Open: true } || player is not { } at || !float.IsFinite(at.X) || !float.IsFinite(at.Y)) return null;
+        if (viewport.X <= 0 || !float.IsFinite(game.WorldWidth) || game.WorldWidth <= 0) return null;
+        var map = MapView.Follow(Map.Project(at), viewport, viewport.X / game.WorldWidth, rotation, 1);
+        return map.Scale > 0 ? map with { Offset = map.Offset + new Vector2(view.GameOffsetX, view.GameOffsetY) } : null;
     }
 
     internal static bool Hidden(Settings settings, GameUi ui) =>
@@ -138,29 +153,34 @@ public sealed class Main : Plugin<Settings>
             else DrawRegion(map, state, viewport);
         }
 
+        var gameMode = Settings.General.UseGameMinimap;
         _overridden.Clear();
         IndexIcons(state.MapIcons);
-        var zoomScale = Settings.Icons.ZoomScale(map.Scale);
+        var zoomScale = gameMode ? 1 : Settings.Icons.ZoomScale(map.Scale);
         _ordered.Clear();
         _ordered.AddRange(state.Entities);
         _ordered.Sort(DrawOrder);
         foreach (var entity in _ordered)
         {
+            if (gameMode && HasIconAt(entity.Position) && ExploredAt(state.Explored, entity.Position.X, entity.Position.Y))
+                continue;
             var row = Settings.Icons.FixedFor(entity);
             if (_iconEntities.Contains(entity.Id))
             {
-                if (row is not { OverrideGameIcon: true }) continue;
+                if (row is not { OverrideGameIcon: true } || gameMode && ExploredAt(state.Explored, entity.Position.X, entity.Position.Y)) continue;
                 _overridden.Add(entity.Id);
             }
             if (row is not { Show: true }) continue;
             var at = map.ToScreen(entity.Position);
             if (!Visible(at, at, viewport)) continue;
-            Draw.Icon(row.Icon, at, MarkerRadius * row.Scale * zoomScale, row.Colour);
+            var colour = entity.Hidden && Settings.Icons.FadeHidden || entity.Invulnerable && Settings.Icons.FadeInvulnerable ? Color.FromArgb(row.Colour.A / 2 + row.Colour.A % 2, row.Colour) : row.Colour;
+            Draw.Icon(row.Icon, at, MarkerRadius * row.Scale * zoomScale, colour);
         }
 
-        foreach (var icon in state.MapIcons) DrawIcon(icon, map, viewport, zoomScale);
+        foreach (var icon in state.MapIcons)
+            if (!gameMode || !ExploredAt(state.Explored, icon.Position.X, icon.Position.Y)) DrawIcon(icon, map, viewport, zoomScale);
 
-        if (state.Player is { } player) DrawPlayer(map.ToScreen(player.Position), map.ToScreenDirection(player.Forward), viewport, zoomScale);
+        if (!gameMode && state.Player is { } player) DrawPlayer(map.ToScreen(player.Position), map.ToScreenDirection(player.Forward), viewport, zoomScale);
     }
 
     void DrawRegion(MapView map, GameState state, Vector2 viewport)
@@ -169,13 +189,25 @@ public sealed class Main : Plugin<Settings>
         var current = _region.Matches(state.AreaId, state.Terrain);
         if (current && _region.Corners.Length == 4 && Textures.TryGet(_regionKey, out var fill))
             Draw.ImageQuad(fill, map.ToScreen(_region.Corners[0]), map.ToScreen(_region.Corners[1]), map.ToScreen(_region.Corners[2]), map.ToScreen(_region.Corners[3]));
-        if (current && _region.Trail is null)
+        var gameMode = Settings.General.UseGameMinimap;
+        if (current && _region.Trail is null && !gameMode)
         {
             DrawOutline(_walls.RegionOutline, map, viewport, view.ExploredOutline, view.ExploredOutlineWidth);
             return;
         }
-        DrawOutline(_walls.RegionOutline, map, viewport, view.Outline, view.OutlineWidth);
-        if (current) DrawOutline(_region.ExploredOutline, map, viewport, view.ExploredOutline, view.ExploredOutlineWidth);
+        DrawOutline(gameMode && current ? UnexploredOutline() : _walls.RegionOutline, map, viewport, view.Outline, view.OutlineWidth);
+        if (current && !gameMode) DrawOutline(_region.ExploredOutline, map, viewport, view.ExploredOutline, view.ExploredOutlineWidth);
+    }
+
+    Polyline[] UnexploredOutline()
+    {
+        if (!ReferenceEquals(_unexploredWalls, _walls) || !ReferenceEquals(_unexploredRegion, _region))
+        {
+            _unexploredOutline = _region.Unexplored(_walls.RegionOutline);
+            _unexploredWalls = _walls;
+            _unexploredRegion = _region;
+        }
+        return _unexploredOutline;
     }
 
     internal void DrawOutline(Polyline[] lines, MapView map, Vector2 viewport, Color colour, float width)
@@ -221,8 +253,39 @@ public sealed class Main : Plugin<Settings>
         if (ReferenceEquals(icons, _indexedIcons)) return;
         _indexedIcons = icons;
         _iconEntities.Clear();
+        _iconCells.Clear();
         foreach (var icon in icons)
-            if (icon.EntityId != 0 && float.IsFinite(icon.Position.X) && float.IsFinite(icon.Position.Y)) _iconEntities.Add(icon.EntityId);
+        {
+            if (!float.IsFinite(icon.Position.X) || !float.IsFinite(icon.Position.Y)) continue;
+            if (icon.EntityId != 0) _iconEntities.Add(icon.EntityId);
+            _iconCells.Add(Cell(icon.Position.X, icon.Position.Y));
+        }
+    }
+
+    internal static bool ExploredAt(ExploredTrail? trail, float x, float y)
+    {
+        if (trail is null || !float.IsFinite(trail.Radius) || trail.Radius <= 0 || !float.IsFinite(x) || !float.IsFinite(y)) return true;
+        var reach = trail.Radius * Region.BrushReach;
+        var reachSquared = reach * reach;
+        for (var i = 0; i < trail.Count; i++)
+        {
+            var dx = trail.Buffer[i].X - x;
+            var dy = trail.Buffer[i].Y - y;
+            if (dx * dx + dy * dy <= reachSquared) return true;
+        }
+        return false;
+    }
+
+    static (int, int) Cell(float x, float y) => ((int)MathF.Round(x), (int)MathF.Round(y));
+
+    bool HasIconAt(Vector3 position)
+    {
+        if (!float.IsFinite(position.X) || !float.IsFinite(position.Y)) return false;
+        var (x, y) = Cell(position.X, position.Y);
+        for (var dx = -1; dx <= 1; dx++)
+            for (var dy = -1; dy <= 1; dy++)
+                if (_iconCells.Contains((x + dx, y + dy))) return true;
+        return false;
     }
 
     void DrawIcon(MapIcon icon, MapView map, Vector2 viewport, float zoomScale)

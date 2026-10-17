@@ -15,8 +15,8 @@ public sealed class GeneralTab
     public bool HideBehindPanels = true;
     public bool KeepAfterStop = true;
     public bool Exact;
-    public int X = 40;
-    public int Y = 520;
+    public int X = 1600;
+    public int Y = 600;
     public int Width = 280;
 }
 
@@ -27,8 +27,8 @@ public sealed class CombatTab
     public bool CountOverkill;
     public bool Exact;
     public int Window = 5;
-    public int X = 40;
-    public int Y = 700;
+    public int X = 1600;
+    public int Y = 780;
     public int Width = 280;
 }
 

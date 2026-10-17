@@ -41,7 +41,6 @@ public sealed class Main : Plugin<Settings>
 
     internal static bool Hidden(Settings settings, GameState state) =>
         !settings.General.Show || state.Area is not { } map ||
-        settings.General.HideInTown && map.IsTown ||
         settings.General.HideBehindPanels && state.Ui.AnyFullScreen;
 
     internal static TextStyle StyleOf(RowKind kind, LookTab look) => kind switch

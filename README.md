@@ -13,3 +13,5 @@ The game exe asks for admin, and an elevated game can't be read by a normal over
 Limited user, standalone only - pick a local Windows account under `Run as` and the launcher starts the game as that account with `runas /savecred`. Make the account yourself, then hit `Save password` once so Windows keeps it. The overlay and any extra programs always run as you.
 
 After a game update hit Extract again to get new icons if needed.
+
+Updates - there is an `Updater` tab in the overlay settings. It checks GitHub hourly by default (interval and on/off are in there), downloads the new version quietly and applies it when the overlay closes, or hit `Apply and Restart`. Your `Config` is never touched, plugins you edited are kept unless you tick `Overwrite modified plugins`.
