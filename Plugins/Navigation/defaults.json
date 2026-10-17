@@ -1,1 +1,61 @@
-{}
+{
+  "General": {
+    "Show": true,
+    "Ground": true,
+    "Minimap": true,
+    "AvoidMapObjects": true,
+    "ObjectRadius": 110
+  },
+  "GroundShape": "Chevron",
+  "GroundStyle": {
+    "Size": 25,
+    "Spacing": 250,
+    "Speed": 400,
+    "Opacity": 0.9,
+    "Trail": 200,
+    "BaseLine": 2,
+    "OverrideColour": false,
+    "Colour": "#FFFFFFFF"
+  },
+  "MinimapStyle": {
+    "Size": 3,
+    "Spacing": 400,
+    "Speed": 300,
+    "Opacity": 0.9,
+    "Trail": 150,
+    "BaseLine": 1,
+    "OverrideColour": false,
+    "Colour": "#FFFFFFFF"
+  },
+  "Legend": {
+    "Show": true,
+    "Lock": true,
+    "MoveKey": "Alt",
+    "HideBehindPanels": true,
+    "X": 51,
+    "Y": 987,
+    "Width": 240,
+    "Text": {
+      "Scale": 1,
+      "Face": "Regular",
+      "Color": "#CBCBCBFF",
+      "BgEnabled": false,
+      "BgColor": "#000000B4",
+      "BorderEnabled": false,
+      "BorderColor": "#FFFFFFFF",
+      "BorderThickness": 1,
+      "BorderRounding": 2,
+      "StrokeEnabled": false,
+      "StrokeColor": "#000000FF",
+      "ShadowEnabled": true,
+      "ShadowColor": "#000000A0"
+    }
+  },
+  "Compass": {
+    "Show": true,
+    "Radius": 250,
+    "Size": 80,
+    "Opacity": 0.9,
+    "Lookahead": 600
+  }
+}

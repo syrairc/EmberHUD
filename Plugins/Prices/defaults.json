@@ -1,1 +1,30 @@
-{}
+{
+  "Enabled": true,
+  "Corner": "TopLeft",
+  "OffsetX": 6,
+  "OffsetY": 8,
+  "Text": {
+    "Scale": 1,
+    "Face": "Regular",
+    "Color": "#F9DD75FF",
+    "BgEnabled": false,
+    "BgColor": "#000000B4",
+    "BorderEnabled": false,
+    "BorderColor": "#FFFFFFFF",
+    "BorderThickness": 1,
+    "BorderRounding": 2,
+    "StrokeEnabled": false,
+    "StrokeColor": "#000000FF",
+    "ShadowEnabled": true,
+    "ShadowColor": "#000000A0"
+  },
+  "ShowIcon": true,
+  "ShowGrey": false,
+  "ShowCyan": false,
+  "ShowPurple": false,
+  "ShowPink": false,
+  "ShowOrange": true,
+  "RefreshMinutes": 60,
+  "Season": 0,
+  "Contribute": false
+}

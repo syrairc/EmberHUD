@@ -1,38 +1,3304 @@
 {
   "General": {
-    "Zoom": 0.072265625
+    "Zoom": 0.04845,
+    "UseGameMinimap": true,
+    "Show": true,
+    "FollowPlayer": true,
+    "HideBehindPanels": true,
+    "Rotation": 0,
+    "VerticalScale": 1,
+    "OffsetX": 0,
+    "OffsetY": -35,
+    "GameOffsetX": 0,
+    "GameOffsetY": -37
   },
   "Map": {
     "Region": {
-      "Outline": "#5FB0B86F",
+      "Outline": "#EFEFEF75",
       "OutlineWidth": 0.5,
       "ExploredFill": "#FFFFFF08",
-      "ExploredOutline": "#C1BBB579",
-      "ExploredOutlineWidth": 0.5
+      "ExploredOutline": "#C1BBB5FF",
+      "ExploredOutlineWidth": 3.492,
+      "Fill": "#A0F6FF2C"
     },
     "Walls": {
-      "Thickness": 1.977
+      "Thickness": 0.5,
+      "Colour": "#D8D090E6"
+    },
+    "DrawStyle": "Region",
+    "Player": {
+      "Colour": "#FF4040FF",
+      "Size": 10
     }
   },
   "Icons": {
     "NormalMonsters": {
-      "Icon": "game:UI_MiniMap_S13jingyingguai"
+      "Icon": "game:UI_MiniMap_S13jingyingguai",
+      "Key": "",
+      "Name": "Normal monsters",
+      "Show": true,
+      "Colour": "#EBEBEBFF",
+      "Scale": 1,
+      "OverrideGameIcon": false
     },
     "MagicMonsters": {
       "Icon": "game:UI_MiniMap_S5monicon02",
-      "Colour": "#FFFFFFFF"
+      "Colour": "#FFFFFFFF",
+      "Key": "",
+      "Name": "Magic monsters",
+      "Show": true,
+      "Scale": 2,
+      "OverrideGameIcon": false
     },
     "RareMonsters": {
       "Icon": "game:UI_Fight_IconBoss",
-      "Colour": "#FFFFFFFF"
+      "Colour": "#FFFFFFFF",
+      "Key": "",
+      "Name": "Rare monsters",
+      "Show": true,
+      "Scale": 2,
+      "OverrideGameIcon": false
     },
     "Bosses": {
       "Icon": "game:UI_MiniMap_BOSS",
-      "Colour": "#FFFFFFFF"
+      "Colour": "#FFFFFFFF",
+      "Key": "",
+      "Name": "Bosses",
+      "Show": true,
+      "Scale": 2,
+      "OverrideGameIcon": false
     },
     "Npcs": {
-      "Icon": "game:UI_Common_IconTeam00",
-      "Colour": "#FFFFFFFF"
-    }
+      "Icon": "game:UI_MiniMap_S4monicon02",
+      "Colour": "#FFFFFFFF",
+      "Key": "",
+      "Name": "NPCs",
+      "Show": true,
+      "Scale": 1,
+      "OverrideGameIcon": false
+    },
+    "UseGameIcons": true,
+    "GameIconScale": 0.897,
+    "ScaleWithZoom": true,
+    "FadeHidden": true,
+    "FadeInvulnerable": true,
+    "ZoomScaleFactor": 0.5,
+    "ZoomScaleMin": 0.5,
+    "ZoomScaleMax": 2,
+    "Minions": {
+      "Key": "",
+      "Name": "Minions",
+      "Show": false,
+      "Icon": "marker:Dot",
+      "Colour": "#4DE64DFF",
+      "Scale": 0.75,
+      "OverrideGameIcon": false
+    },
+    "OtherPlayers": {
+      "Key": "",
+      "Name": "Other players",
+      "Show": false,
+      "Icon": "marker:Dot",
+      "Colour": "#4DE6FFFF",
+      "Scale": 1,
+      "OverrideGameIcon": false
+    },
+    "MapObjects": {
+      "Key": "",
+      "Name": "Map objects",
+      "Show": true,
+      "Icon": "marker:Diamond",
+      "Colour": "#C0C0C0FF",
+      "Scale": 0.75,
+      "OverrideGameIcon": false
+    },
+    "Destructibles": {
+      "Key": "",
+      "Name": "Destructibles",
+      "Show": false,
+      "Icon": "marker:Triangle",
+      "Colour": "#A0703CFF",
+      "Scale": 0.75,
+      "OverrideGameIcon": false
+    },
+    "Found": [
+      {
+        "Key": "UI_MiniMap_Entrepot",
+        "Name": "Mystery Chest / Precious Chest",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Entrepot",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Portal",
+        "Name": "Waypoint",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Portal",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S16xiaoguai",
+        "Name": "S16 Normal Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S16xiaoguai",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Entrence",
+        "Name": "Other-World Entrance / Area Entrance / +1",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Entrence",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S16jingying",
+        "Name": "S16 Elite",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S16jingying",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_IconBoss",
+        "Name": "Elite Monster / White Monster Incoming",
+        "Show": true,
+        "Icon": "game:UI_Fight_IconBoss",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Portal2",
+        "Name": "Portal",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Portal2",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_BOSS",
+        "Name": "Boss",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_BOSS",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_Dungeon",
+        "Name": "Dungeon Portal",
+        "Show": true,
+        "Icon": "game:UI_Minimap_Dungeon",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Equipment_Yellow",
+        "Name": "Drop - Gear 2",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Equipment_Yellow",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_ELEVATOR",
+        "Name": "Elevator",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_ELEVATOR",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Exchange",
+        "Name": "Trade House",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Exchange",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_Candle",
+        "Name": "S4 Candle Lady NPC",
+        "Show": true,
+        "Icon": "game:UI_Minimap_Candle",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_AltarOff",
+        "Name": "Altar (Used) / Training Dummy",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_AltarOff",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S12Gameplay_NPC",
+        "Name": "S12 NPC",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S12Gameplay_NPC",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15npc",
+        "Name": "S15 NPC",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15npc",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Store2",
+        "Name": "Shop (Generic)",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Store2",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S3mof",
+        "Name": "S3 Hub Cube",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S3mof",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_UNNME",
+        "Name": "Memory Decryption",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_UNNME",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_enci",
+        "Name": "Boon",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_enci",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Skill",
+        "Name": "Skill Shop",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Skill",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_Forge",
+        "Name": "Craft",
+        "Show": true,
+        "Icon": "game:UI_Minimap_Forge",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_cangku",
+        "Name": "Player Stash / Stash",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_cangku",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S5trapicon01",
+        "Name": "S5 Sweet Dream Seed",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S5trapicon01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S10Campsite1",
+        "Name": "S10 Core",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S10Campsite1",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S9Gameplay_NPC",
+        "Name": "S9 NPC",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S9Gameplay_NPC",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8Gameplay_NPC",
+        "Name": "S8 NPC",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8Gameplay_NPC",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S13npc",
+        "Name": "S13 NPC",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S13npc",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S14NPC",
+        "Name": "S14 NPC",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S14NPC",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S1Gameplay_NPC",
+        "Name": "S1 NPC",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S1Gameplay_NPC",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_S16npc",
+        "Name": "S16 NPC",
+        "Show": true,
+        "Icon": "game:UI_Minimap_S16npc",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S6Gameplay_NPC",
+        "Name": "S6 NPC",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S6Gameplay_NPC",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S11Gameplay_NPC",
+        "Name": "S11 NPC",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S11Gameplay_NPC",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Button_S12_Hand",
+        "Name": "S12 Hand Reward Device (Interact)",
+        "Show": true,
+        "Icon": "game:UI_Button_S12_Hand",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Common_IconTeam00",
+        "Name": "Great Evil Spirit Incoming",
+        "Show": true,
+        "Icon": "game:UI_Common_IconTeam00",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Common_IconTeam01",
+        "Name": "Lord of Evil Spirits Incoming",
+        "Show": true,
+        "Icon": "game:UI_Common_IconTeam01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_CTestMP00",
+        "Name": "Mechanical God Monster Type 1",
+        "Show": true,
+        "Icon": "game:UI_Fight_CTestMP00",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_CTestMP01",
+        "Name": "Mechanical God Monster Type 2",
+        "Show": true,
+        "Icon": "game:UI_Fight_CTestMP01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_CTestMP02",
+        "Name": "Rare Affix 10 / Mechanical God Monster Type 3",
+        "Show": true,
+        "Icon": "game:UI_Fight_CTestMP02",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_HeadBro_01",
+        "Name": "Goblin Leader Generic",
+        "Show": true,
+        "Icon": "game:UI_Fight_HeadBro_01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_IconElite04",
+        "Name": "Blessed / Minion Monster",
+        "Show": true,
+        "Icon": "game:UI_Fight_IconElite04",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_IconEliteV2_01",
+        "Name": "Retainer Monster",
+        "Show": true,
+        "Icon": "game:UI_Fight_IconEliteV2_01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_IconEliteV2_02",
+        "Name": "Blessed Monster",
+        "Show": true,
+        "Icon": "game:UI_Fight_IconEliteV2_02",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_IconEliteV2_03",
+        "Name": "Chasing Monster / 4 Bosses Incoming",
+        "Show": true,
+        "Icon": "game:UI_Fight_IconEliteV2_03",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_IconEliteV2_04",
+        "Name": "Original Rare Monster Marker",
+        "Show": true,
+        "Icon": "game:UI_Fight_IconEliteV2_04",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_IconEliteV2_05",
+        "Name": "Slightly More Drops Marker",
+        "Show": true,
+        "Icon": "game:UI_Fight_IconEliteV2_05",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_IconEliteV2_06",
+        "Name": "Many More Drops Marker",
+        "Show": true,
+        "Icon": "game:UI_Fight_IconEliteV2_06",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_MICONdiankuang",
+        "Name": "Rare Affix 6 - Frenzy On Death",
+        "Show": true,
+        "Icon": "game:UI_Fight_MICONdiankuang",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_MICONfanwei",
+        "Name": "Rare Affix 3 - Casts Skill When Hit",
+        "Show": true,
+        "Icon": "game:UI_Fight_MICONfanwei",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_MICONfashu",
+        "Name": "Rare Affix 8 - Grows When Hit, Casts a Strong Spell",
+        "Show": true,
+        "Icon": "game:UI_Fight_MICONfashu",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_MICONjiahaoda",
+        "Name": "Rare Affix 12 - Many More Drops",
+        "Show": true,
+        "Icon": "game:UI_Fight_MICONjiahaoda",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_MICONjiahaoxiao",
+        "Name": "Rare Affix 11 - Slightly More Drops",
+        "Show": true,
+        "Icon": "game:UI_Fight_MICONjiahaoxiao",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_MICONjiaodoushi",
+        "Name": "Rare Affix 9 - Gladiator Buff",
+        "Show": true,
+        "Icon": "game:UI_Fight_MICONjiaodoushi",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_MICONjiasu",
+        "Name": "Rare Affix 2 - Haste",
+        "Show": true,
+        "Icon": "game:UI_Fight_MICONjiasu",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_MICONjingjichang",
+        "Name": "Rare Affix 1 - Arena",
+        "Show": true,
+        "Icon": "game:UI_Fight_MICONjingjichang",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_MICONsuoxiao",
+        "Name": "Rare Affix 4 - Shrinks Player",
+        "Show": true,
+        "Icon": "game:UI_Fight_MICONsuoxiao",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_MICONtongzi",
+        "Name": "Rare Affix 7 - Barrels",
+        "Show": true,
+        "Icon": "game:UI_Fight_MICONtongzi",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_MICONwudi",
+        "Name": "Rare Affix 5 - Linked Invincible Monster",
+        "Show": true,
+        "Icon": "game:UI_Fight_MICONwudi",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_SIcon1",
+        "Name": "Black Tide Reward 2 - Gear",
+        "Show": true,
+        "Icon": "game:UI_Fight_SIcon1",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_SIcon10",
+        "Name": "Black Tide Yellow Monster",
+        "Show": true,
+        "Icon": "game:UI_Fight_SIcon10",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_SIcon12",
+        "Name": "Elite Incoming / Black Tide Reward 7 - Boss",
+        "Show": true,
+        "Icon": "game:UI_Fight_SIcon12",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_SIcon3",
+        "Name": "Black Tide Reward 3 - Crafting Currency",
+        "Show": true,
+        "Icon": "game:UI_Fight_SIcon3",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_SIcon4",
+        "Name": "Black Tide Reward 1 - Legendary Gear",
+        "Show": true,
+        "Icon": "game:UI_Fight_SIcon4",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_SIcon5",
+        "Name": "Black Tide Reward 5 - Compass",
+        "Show": true,
+        "Icon": "game:UI_Fight_SIcon5",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_SIcon6",
+        "Name": "Black Tide Reward 4 - Memory Fragment",
+        "Show": true,
+        "Icon": "game:UI_Fight_SIcon6",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_SIcon7",
+        "Name": "Black Tide Reward 6 - Hero Memory / Relic",
+        "Show": true,
+        "Icon": "game:UI_Fight_SIcon7",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_SIcon8",
+        "Name": "Black Tide White Monster",
+        "Show": true,
+        "Icon": "game:UI_Fight_SIcon8",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Fight_SIcon9",
+        "Name": "Black Tide Blue Monster",
+        "Show": true,
+        "Icon": "game:UI_Fight_SIcon9",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_HeroCharacter_Carino02_Bullet_Red",
+        "Name": "Pistol Bullet",
+        "Show": true,
+        "Icon": "game:UI_HeroCharacter_Carino02_Bullet_Red",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Achievement_TABiconDL",
+        "Name": "Evil Spirit Incoming",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Achievement_TABiconDL",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_AltarOn",
+        "Name": "Altar (Inactive)",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_AltarOn",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_AncientMachine1",
+        "Name": "Ancient Device - Basic",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_AncientMachine1",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_AncientMachine2",
+        "Name": "Ancient Device - Gold",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_AncientMachine2",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_AncientMachine3",
+        "Name": "Ancient Device - Giant",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_AncientMachine3",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_AncientMachine4",
+        "Name": "Ancient Device - Buff",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_AncientMachine4",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_AncientMachineMonster1",
+        "Name": "Ancient Device - Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_AncientMachineMonster1",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_AncientMachineMonster2",
+        "Name": "Ancient Device - Special Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_AncientMachineMonster2",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_AncientMachineMonster3",
+        "Name": "Ancient Device - Rare Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_AncientMachineMonster3",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Arrow",
+        "Name": "Quest Tracking Arrow",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Arrow",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_ArrowB",
+        "Name": "Quest Tracking Arrow - Blue",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_ArrowB",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_ArrowP",
+        "Name": "Quest Tracking Arrow - Purple",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_ArrowP",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_ArrowR",
+        "Name": "S5 Nightmare Stake Guide Arrow",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_ArrowR",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_ArrowW",
+        "Name": "Quest Tracking Arrow - White",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_ArrowW",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Dimond",
+        "Name": "Fossil / First Fire",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Dimond",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Equipment",
+        "Name": "Drop - Gear",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Equipment",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Jixie_Feitingzhuangzhi",
+        "Name": "Mechanical God - Airship Device",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Jixie_Feitingzhuangzhi",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Kite",
+        "Name": "Drop - Currency",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Kite",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Kite_Yellow",
+        "Name": "Drop - Currency 2",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Kite_Yellow",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Map",
+        "Name": "Drop - Map",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Map",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Map_Yellow",
+        "Name": "Drop - Map 2",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Map_Yellow",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Monster",
+        "Name": "Quest Monster Red Dot",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Monster",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_MysticTree_TalentPoint_Big_BigIcon04_S7",
+        "Name": "Mechanic Incoming",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_MysticTree_TalentPoint_Big_BigIcon04_S7",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Mystic_Bossjingdu",
+        "Name": "Priest Incoming",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Mystic_Bossjingdu",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Piece",
+        "Name": "Drop - Memory Glow",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Piece",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Piece_Yellow",
+        "Name": "Drop - Memory Glow 2",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Piece_Yellow",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Player1",
+        "Name": "Player / NPC Function / +1",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Player1",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S10Campsite2",
+        "Name": "S10 Furnace",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S10Campsite2",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S10Campsite3",
+        "Name": "S10 Food",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S10Campsite3",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S10Campsite4",
+        "Name": "S10 Laborer",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S10Campsite4",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S10Campsite5",
+        "Name": "S10 Landing Pad",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S10Campsite5",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S10Campsite6",
+        "Name": "S10 Spice Blending",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S10Campsite6",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S10Fighting1",
+        "Name": "S10 Combat - Low",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S10Fighting1",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S10Fighting2",
+        "Name": "S10 Combat - Medium",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S10Fighting2",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S10Fighting3",
+        "Name": "S10 Combat - High",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S10Fighting3",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S10UP",
+        "Name": "S10 Upgrade",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S10UP",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S10monicon01",
+        "Name": "S10 Monster Large",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S10monicon01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S10monicon03",
+        "Name": "S10 Monster Small",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S10monicon03",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S11Fighting1",
+        "Name": "S11 Cash Truck",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S11Fighting1",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S11Fighting2",
+        "Name": "S11 Signal Tower",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S11Fighting2",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S11boss",
+        "Name": "S11 Boss",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S11boss",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S11dabaoxianku",
+        "Name": "S11 Endgame Large Vault",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S11dabaoxianku",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S11daxingbaoxianxiang",
+        "Name": "S11 Endgame Chest 2",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S11daxingbaoxianxiang",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S11tejibaoxianxiang",
+        "Name": "S11 Endgame Chest 3",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S11tejibaoxianxiang",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S11xiaobaoxianku",
+        "Name": "S11 Endgame Small Vault",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S11xiaobaoxianku",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S11xiaoxingbaoxianxiang",
+        "Name": "S11 Endgame Chest 1",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S11xiaoxingbaoxianxiang",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S11xuanshangbaoxiang1",
+        "Name": "S11 Bounty Chest 1",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S11xuanshangbaoxiang1",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S11xuanshangbaoxiang2",
+        "Name": "S11 Bounty Chest 2",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S11xuanshangbaoxiang2",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S11xuanshangbaoxiang4",
+        "Name": "S11 Bounty Chest 3",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S11xuanshangbaoxiang4",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S11yayunbaobiao",
+        "Name": "S11 Runaway Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S11yayunbaobiao",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S11zengyuan",
+        "Name": "S11 White/Blue Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S11zengyuan",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S11zengyuanhuangguai",
+        "Name": "S11 Rare Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S11zengyuanhuangguai",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S11zhukongtai",
+        "Name": "S11 Endgame Start",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S11zhukongtai",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S12_Boss",
+        "Name": "S12 Boss",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S12_Boss",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S12_Bottle",
+        "Name": "S12 Rune Bottle (Minimap)",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S12_Bottle",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S12_Cage_1",
+        "Name": "S12 Arena 1",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S12_Cage_1",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S12_Cage_2",
+        "Name": "S12 Arena 2",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S12_Cage_2",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S12_Cage_3",
+        "Name": "S12 Arena 3",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S12_Cage_3",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S12_Clock",
+        "Name": "S12 Clock",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S12_Clock",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S12_Door1",
+        "Name": "S12 Stacked Realm Gate Enter",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S12_Door1",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S12_Door2",
+        "Name": "S12 Stacked Realm Gate Return",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S12_Door2",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S12_Door3",
+        "Name": "S12 Stacked Realm Gate Arrow / S12 Teleport Beacon",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S12_Door3",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S12_Gobin_1",
+        "Name": "S12 Runaway Monster 1",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S12_Gobin_1",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S12_Gobin_2",
+        "Name": "S12 Runaway Monster 2",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S12_Gobin_2",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S12_Gobin_3",
+        "Name": "S12 Runaway Monster 3",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S12_Gobin_3",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S12_Hand",
+        "Name": "S12 Hand Reward Device (Minimap)",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S12_Hand",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S12_Lmonster",
+        "Name": "S12 Monster Dot Large",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S12_Lmonster",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S12_Pistol",
+        "Name": "S12 Musket",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S12_Pistol",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S12_SBoss",
+        "Name": "S12 Hidden Boss",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S12_SBoss",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S12_Smonster",
+        "Name": "S12 Monster Dot Small",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S12_Smonster",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S12_Wing",
+        "Name": "S12 Speed Boost",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S12_Wing",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S13baoxiang1",
+        "Name": "S13 Chest Tier 1",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S13baoxiang1",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S13baoxiang2",
+        "Name": "S13 Chest Tier 2",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S13baoxiang2",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S13baoxiang3",
+        "Name": "S13 Chest Tier 3",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S13baoxiang3",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S13baoxiang4",
+        "Name": "S13 Chest Tier 4",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S13baoxiang4",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S13jingyingguai",
+        "Name": "S13 Rare Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S13jingyingguai",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S13tufu",
+        "Name": "S13 Scavenger Boss",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S13tufu",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S13xiaoguai",
+        "Name": "S13 Normal Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S13xiaoguai",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S13zhongjukaiqi",
+        "Name": "S13 Endgame Start",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S13zhongjukaiqi",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S14Chest1",
+        "Name": "S14 Chest - Inactive 1",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S14Chest1",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S14Chest2",
+        "Name": "S14 Chest - Inactive 2",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S14Chest2",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S14Chest3",
+        "Name": "S14 Chest - Active",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S14Chest3",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S14Energy",
+        "Name": "S14 Moon Energy",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S14Energy",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S14MonsterBoss",
+        "Name": "S14 Boss - Active",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S14MonsterBoss",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S14MonsterElite1",
+        "Name": "S14 Surprise Statue Monster 1 - Active",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S14MonsterElite1",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S14MonsterElite2",
+        "Name": "S14 Surprise Statue Monster 2 - Active",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S14MonsterElite2",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S14MonsterL",
+        "Name": "S14 Normal Statue Monster - Active",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S14MonsterL",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S14MonsterS",
+        "Name": "S14 Minion",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S14MonsterS",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S14MoonB",
+        "Name": "S14 Moonstone - Collect",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S14MoonB",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S14MoonP",
+        "Name": "S14 Moonstone - Chain",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S14MoonP",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S14MoonR",
+        "Name": "S14 Moonstone - Explode",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S14MoonR",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S14PetStatue1",
+        "Name": "S14 Normal Statue Monster - Inactive (Pet)",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S14PetStatue1",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S14PetStatue2",
+        "Name": "S14 Surprise Statue Monster 1 - Inactive (Pet)",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S14PetStatue2",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S14PetStatue3",
+        "Name": "S14 Surprise Statue Monster 2 - Inactive (Pet)",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S14PetStatue3",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S14PetStatue4",
+        "Name": "S14 Boss - Inactive (Pet)",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S14PetStatue4",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S14Statue1",
+        "Name": "S14 Normal Statue Monster - Inactive",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S14Statue1",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S14Statue2",
+        "Name": "S14 Surprise Statue Monster 1 - Inactive",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S14Statue2",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S14Statue3",
+        "Name": "S14 Surprise Statue Monster 2 - Inactive",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S14Statue3",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S14Statue4",
+        "Name": "S14 Boss - Inactive",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S14Statue4",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15baoxiang",
+        "Name": "S15 Chest",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15baoxiang",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15baoxiang_Silver",
+        "Name": "S15 Silver Chest",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15baoxiang_Silver",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15boss",
+        "Name": "S15 Surprise Boss",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15boss",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15boss2",
+        "Name": "S15 Surprise Special Boss",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15boss2",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15boss_Green",
+        "Name": "S15 Gold Compass Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15boss_Green",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15chongwu_S15baoxiang_Silver",
+        "Name": "S15 Silver Chest (Pet Doubled)",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15chongwu_S15baoxiang_Silver",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15chongwu_S15xiaojinguai",
+        "Name": "S15 Golden Monster Swarm (Pet Doubled)",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15chongwu_S15xiaojinguai",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15chongwu_s15baoxiang",
+        "Name": "S15 Chest (Pet Doubled)",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15chongwu_s15baoxiang",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15chongwu_s15boss",
+        "Name": "S15 Surprise Boss (Pet Doubled)",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15chongwu_s15boss",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15chongwu_s15boss2",
+        "Name": "S15 Surprise Special Boss (Pet Doubled)",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15chongwu_s15boss2",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15chongwu_s15huangjinguai",
+        "Name": "S15 Surprise Splitting Monster (Pet Doubled)",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15chongwu_s15huangjinguai",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15chongwu_s15jingyingguai",
+        "Name": "S15 Rare Monster (Pet Doubled)",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15chongwu_s15jingyingguai",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15chongwu_s15xiaoguai",
+        "Name": "S15 Normal Monster (Pet Doubled)",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15chongwu_s15xiaoguai",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15chongwu_s15xinniangjiaohu",
+        "Name": "S15 Bride Reward (Pet Doubled)",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15chongwu_s15xinniangjiaohu",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15chongwu_s15youhun",
+        "Name": "S15 Golden Ghost (Pet Doubled)",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15chongwu_s15youhun",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15gebulinguancai",
+        "Name": "S15 Goblin Coffin Car",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15gebulinguancai",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15guancai",
+        "Name": "S15 Coffin Car",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15guancai",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15huangdiguancai",
+        "Name": "S15 Emperor Car",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15huangdiguancai",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15huangjinguai",
+        "Name": "S15 Surprise Splitting Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15huangjinguai",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15jiangjunguancai",
+        "Name": "S15 General Car",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15jiangjunguancai",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15jingyingguai",
+        "Name": "S15 Rare Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15jingyingguai",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15xiaoguai",
+        "Name": "S15 Normal Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15xiaoguai",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15xiaojinguai",
+        "Name": "S15 Golden Monster Swarm",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15xiaojinguai",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15xinnianghuashu",
+        "Name": "S15 Bride Car - Flowers",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15xinnianghuashu",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15xinniangjiaohu",
+        "Name": "S15 Bride Reward",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15xinniangjiaohu",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15xinniangxingzou",
+        "Name": "S15 Bride Car",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15xinniangxingzou",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15youhun",
+        "Name": "S15 Golden Ghost",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15youhun",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S15youhun_Purple",
+        "Name": "S15 Purple Compass Ghost",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S15youhun_Purple",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S16boss",
+        "Name": "S16 Boss",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S16boss",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S16bossyuzu",
+        "Name": "S16 Hidden Boss Warden",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S16bossyuzu",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S3mon",
+        "Name": "S3 Cube Rival",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S3mon",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S3monicon01",
+        "Name": "S3 Cube Yellow Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S3monicon01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S3monicon02",
+        "Name": "S3 Cube Blue Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S3monicon02",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S3monicon03",
+        "Name": "S3 Cube White Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S3monicon03",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S3portal",
+        "Name": "Rift Portal / Portal - Rift Gameplay",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S3portal",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S4Gameplay_Tombstone",
+        "Name": "S4 Interactive Object",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S4Gameplay_Tombstone",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S4Gameplay_Type08_0",
+        "Name": "S4 Interactive Object - Done",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S4Gameplay_Type08_0",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S4Gameplay_Type08_1",
+        "Name": "S4 Big Map - Candle Soul - Blue",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S4Gameplay_Type08_1",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S4Gameplay_Type08_2",
+        "Name": "S4 Big Map - Candle Soul - Purple",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S4Gameplay_Type08_2",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S4Gameplay_Type08_3",
+        "Name": "S4 Big Map - Candle Soul - Orange",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S4Gameplay_Type08_3",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S4Gameplay_Type08_4",
+        "Name": "S4 Big Map - Candle Soul - Red",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S4Gameplay_Type08_4",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S4Gameplay_Typeboss",
+        "Name": "S4 Big Map - Boss Reward",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S4Gameplay_Typeboss",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S4monicon01",
+        "Name": "S4 Big Map Monster - Yellow / S5 Nightmare Reserved / +1",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S4monicon01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S4monicon02",
+        "Name": "S4 Big Map Monster - Blue",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S4monicon02",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S4monicon03",
+        "Name": "S4 Big Map Monster - White",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S4monicon03",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S5monicon01",
+        "Name": "S5 Sweet Dream Normal Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S5monicon01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S5monicon02",
+        "Name": "S5 Sweet Dream Elite Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S5monicon02",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S5monicon03",
+        "Name": "S5 Nightmare Normal Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S5monicon03",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S5monicon04",
+        "Name": "S5 Nightmare Elite Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S5monicon04",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S5monicon05",
+        "Name": "S5 Nightmare Stake Summoned Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S5monicon05",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S5monicon06",
+        "Name": "S5 Nightmare Stake / S5 Nightmare Runaway Stake",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S5monicon06",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S5trapicon02",
+        "Name": "S5 Sweet Dream Lotus",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S5trapicon02",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S5trapicon03",
+        "Name": "S5 Nightmare Lotus",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S5trapicon03",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S5trapicon04",
+        "Name": "S5 Sweet Dream Buff Device 1",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S5trapicon04",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S5trapicon0402",
+        "Name": "S5 Sweet Dream Buff Device 2",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S5trapicon0402",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S5trapicon0403",
+        "Name": "S5 Sweet Dream Buff Device 3",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S5trapicon0403",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S6changyi",
+        "Name": "S6 Bench Mechanism",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S6changyi",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S6feie01",
+        "Name": "S6 White Moth Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S6feie01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S6feie02",
+        "Name": "S6 Black Moth Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S6feie02",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S6liexi01",
+        "Name": "S6 Rift",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S6liexi01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S6yanjing01",
+        "Name": "S6 Eye",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S6yanjing01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S7Gameplay_NPC",
+        "Name": "S7 NPC",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S7Gameplay_NPC",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S7chilun",
+        "Name": "S7 Gear Start",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S7chilun",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S7monicon01",
+        "Name": "S7 Monster Large",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S7monicon01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S7monicon03",
+        "Name": "S7 Monster Small",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S7monicon03",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S7sand",
+        "Name": "S7 Hourglass",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S7sand",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S7shizhong",
+        "Name": "S7 Gear End",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S7shizhong",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8Gameplay_Battle_Map_Arrow01",
+        "Name": "S8 Arrow 1",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8Gameplay_Battle_Map_Arrow01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8Gameplay_Battle_Map_Arrow02",
+        "Name": "S8 Arrow 2",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8Gameplay_Battle_Map_Arrow02",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8Gameplay_Battle_Map_Arrow03",
+        "Name": "S8 Arrow 3",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8Gameplay_Battle_Map_Arrow03",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8Gameplay_Battle_Map_Arrow04",
+        "Name": "S8 Arrow 4",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8Gameplay_Battle_Map_Arrow04",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8Gameplay_Battle_Map_Arrow05",
+        "Name": "S8 Arrow 5",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8Gameplay_Battle_Map_Arrow05",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8Gameplay_Battle_Map_Arrow06",
+        "Name": "S8 Arrow 6",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8Gameplay_Battle_Map_Arrow06",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8Gameplay_Battle_Map_Arrow07",
+        "Name": "S8 Arrow 7",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8Gameplay_Battle_Map_Arrow07",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8bingdiao01",
+        "Name": "S8 Frozen Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8bingdiao01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8bingdiao02",
+        "Name": "S8 Frozen Boss",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8bingdiao02",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8bingxiang01",
+        "Name": "S8 Frozen Chest",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8bingxiang01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8bingxiang02",
+        "Name": "S8 Frozen Rare Chest",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8bingxiang02",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8niaodan01",
+        "Name": "S8 Egg Chest 1",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8niaodan01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8niaodan02",
+        "Name": "S8 Egg Chest 2",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8niaodan02",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8niaodan03",
+        "Name": "S8 Egg Chest 3",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8niaodan03",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8niaodan04",
+        "Name": "S8 Egg Chest 4",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8niaodan04",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8niaodan05",
+        "Name": "S8 Egg Chest 5",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8niaodan05",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8niaodan06",
+        "Name": "S8 Egg Chest 6",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8niaodan06",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8niaodan07",
+        "Name": "S8 Egg Chest 7",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8niaodan07",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8qiling1",
+        "Name": "S8 Pet",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8qiling1",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8qiling2",
+        "Name": "S8 Pet Arrow",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8qiling2",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8yanliaoqiu01",
+        "Name": "S8 Paint Orb 1",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8yanliaoqiu01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8yanliaoqiu02",
+        "Name": "S8 Paint Orb 2",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8yanliaoqiu02",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8yanliaoqiu03",
+        "Name": "S8 Paint Orb 3",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8yanliaoqiu03",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8yanliaoqiu04",
+        "Name": "S8 Paint Orb 4",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8yanliaoqiu04",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8yanliaoqiu05",
+        "Name": "S8 Paint Orb 5",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8yanliaoqiu05",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8yanliaoqiu06",
+        "Name": "S8 Paint Orb 6",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8yanliaoqiu06",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S8yanliaoqiu07",
+        "Name": "S8 Paint Orb 7",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S8yanliaoqiu07",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S9ICON_GP00",
+        "Name": "S9 Card",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S9ICON_GP00",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S9ICON_TRBOX00",
+        "Name": "S9 White Chest",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S9ICON_TRBOX00",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S9ICON_TRBOX01",
+        "Name": "S9 Green Chest",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S9ICON_TRBOX01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S9ICON_TRBOX02",
+        "Name": "S9 Blue Chest",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S9ICON_TRBOX02",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S9ICON_TRBOX03",
+        "Name": "S9 Purple Chest",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S9ICON_TRBOX03",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S9ICON_TRBOX04",
+        "Name": "S9 Gold Chest",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S9ICON_TRBOX04",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S9ICON_TRBOX05",
+        "Name": "S9 Red Chest",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S9ICON_TRBOX05",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S9ICON_TRBOX06",
+        "Name": "S9 Colored Chest",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S9ICON_TRBOX06",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S9ICON_UE01",
+        "Name": "S9 Interactive Device",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S9ICON_UE01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S9jingyingguai",
+        "Name": "S9 Rare Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S9jingyingguai",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_S9xiaoguai",
+        "Name": "S9 Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_S9xiaoguai",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_SeasonT",
+        "Name": "Corrosion Craft",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_SeasonT",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Star_Red",
+        "Name": "Drop - Valuable",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Star_Red",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_TDICONboss",
+        "Name": "Boss Incoming",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_TDICONboss",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_TSBuzhidao",
+        "Name": "Mechanical Trial",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_TSBuzhidao",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_TSJuli",
+        "Name": "Might Trial",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_TSJuli",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_TSShoulie",
+        "Name": "Hunt Trial",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_TSShoulie",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_TSZhanshen",
+        "Name": "Conquest Trial",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_TSZhanshen",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_TaskCircle",
+        "Name": "Quest Tracking Ring",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_TaskCircle",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_TaskCircleB",
+        "Name": "Quest Tracking Ring - Blue",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_TaskCircleB",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_TaskCircleP",
+        "Name": "Quest Tracking Ring - Purple",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_TaskCircleP",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_TaskCircleW",
+        "Name": "Quest Tracking Ring - White",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_TaskCircleW",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_TaskMain",
+        "Name": "Quest Exclamation",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_TaskMain",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_TaskOthers",
+        "Name": "Guidance Quest Exclamation",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_TaskOthers",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_TaskPur",
+        "Name": "Season Quest Exclamation",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_TaskPur",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_TaskWhite",
+        "Name": "Side Quest Exclamation",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_TaskWhite",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_TeamMate",
+        "Name": "Other Player (Teammate)",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_TeamMate",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_TeamMateNPC",
+        "Name": "Follower NPC",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_TeamMateNPC",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Treasure",
+        "Name": "Treasure Chest / Story Item",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Treasure",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Triangle",
+        "Name": "Drop - Compass",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Triangle",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_Triangle_Yellow",
+        "Name": "Drop - Compass 2",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_Triangle_Yellow",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_WaveR",
+        "Name": "S5 Nightmare Stake Guide Ring / S8 Ring 1 / +6",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_WaveR",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_YZZL",
+        "Name": "Path of the Brave",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_YZZL",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_ZhengzhanBOSS",
+        "Name": "God of Conquest - Boss",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_ZhengzhanBOSS",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_ZhengzhanEscape",
+        "Name": "God of Conquest - Runaway Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_ZhengzhanEscape",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_ZhengzhanMonster",
+        "Name": "God of Conquest - Beast",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_ZhengzhanMonster",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_cangkuGH",
+        "Name": "Guild Stash",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_cangkuGH",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_suijishijian_S11jiasuqi",
+        "Name": "S11 Random Event Battery",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_suijishijian_S11jiasuqi",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_suijishijian_S11xiaoxingbaoxianxiang",
+        "Name": "S11 Random Event Chest",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_suijishijian_S11xiaoxingbaoxianxiang",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_suijishijian_S11yayunbaobiao",
+        "Name": "S11 Random Event Runaway Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_suijishijian_S11yayunbaobiao",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_suijishijian_S11yunshuche",
+        "Name": "S11 Random Event Cash Truck",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_suijishijian_S11yunshuche",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_suijishijian_S11zengyuanhuangguai",
+        "Name": "S11 Random Event Rare Monster",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_suijishijian_S11zengyuanhuangguai",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_MiniMap_zhuangzhi",
+        "Name": "Secret Realm Device",
+        "Show": true,
+        "Icon": "game:UI_MiniMap_zhuangzhi",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_S16chest01",
+        "Name": "S16 Endgame Chest - White",
+        "Show": true,
+        "Icon": "game:UI_Minimap_S16chest01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_S16chest02",
+        "Name": "S16 Endgame Chest - Blue",
+        "Show": true,
+        "Icon": "game:UI_Minimap_S16chest02",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_S16chest03",
+        "Name": "S16 Endgame Chest - Purple",
+        "Show": true,
+        "Icon": "game:UI_Minimap_S16chest03",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_S16chest04",
+        "Name": "S16 Endgame Chest - Orange",
+        "Show": true,
+        "Icon": "game:UI_Minimap_S16chest04",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_S16chest05",
+        "Name": "S16 Endgame Chest - Red",
+        "Show": true,
+        "Icon": "game:UI_Minimap_S16chest05",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_S16chest06",
+        "Name": "S16 Endgame Chest - Colorful",
+        "Show": true,
+        "Icon": "game:UI_Minimap_S16chest06",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_S16chest_pet01",
+        "Name": "S16 Endgame Chest - Another Box - White",
+        "Show": true,
+        "Icon": "game:UI_Minimap_S16chest_pet01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_S16chest_pet02",
+        "Name": "S16 Endgame Chest - Another Box - Blue",
+        "Show": true,
+        "Icon": "game:UI_Minimap_S16chest_pet02",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_S16chest_pet03",
+        "Name": "S16 Endgame Chest - Another Box - Purple",
+        "Show": true,
+        "Icon": "game:UI_Minimap_S16chest_pet03",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_S16chest_pet04",
+        "Name": "S16 Endgame Chest - Another Box - Orange",
+        "Show": true,
+        "Icon": "game:UI_Minimap_S16chest_pet04",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_S16chest_pet05",
+        "Name": "S16 Endgame Chest - Another Box - Red",
+        "Show": true,
+        "Icon": "game:UI_Minimap_S16chest_pet05",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_S16chest_pet06",
+        "Name": "S16 Endgame Chest - Another Box - Colorful",
+        "Show": true,
+        "Icon": "game:UI_Minimap_S16chest_pet06",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_S16portal",
+        "Name": "S16 Portal",
+        "Show": true,
+        "Icon": "game:UI_Minimap_S16portal",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_S7energy",
+        "Name": "S7 Nitro",
+        "Show": true,
+        "Icon": "game:UI_Minimap_S7energy",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_S7gear_blue",
+        "Name": "S7 Gear Blue",
+        "Show": true,
+        "Icon": "game:UI_Minimap_S7gear_blue",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_S7gear_colorful",
+        "Name": "S7 Gear Colorful",
+        "Show": true,
+        "Icon": "game:UI_Minimap_S7gear_colorful",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_S7gear_orange",
+        "Name": "S7 Gear Orange",
+        "Show": true,
+        "Icon": "game:UI_Minimap_S7gear_orange",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_S7gear_purple",
+        "Name": "S7 Gear Purple",
+        "Show": true,
+        "Icon": "game:UI_Minimap_S7gear_purple",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_S7gear_red",
+        "Name": "S7 Gear Red",
+        "Show": true,
+        "Icon": "game:UI_Minimap_S7gear_red",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_S7gear_white",
+        "Name": "S7 Gear White",
+        "Show": true,
+        "Icon": "game:UI_Minimap_S7gear_white",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_SpeedRun_01",
+        "Name": "Speedrun S15 Season Effect",
+        "Show": true,
+        "Icon": "game:UI_Minimap_SpeedRun_01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_SpeedRun_02",
+        "Name": "Speedrun Hunt",
+        "Show": true,
+        "Icon": "game:UI_Minimap_SpeedRun_02",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_SpeedRun_03",
+        "Name": "Speedrun Conquest",
+        "Show": true,
+        "Icon": "game:UI_Minimap_SpeedRun_03",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_SpeedRun_04",
+        "Name": "Speedrun Wanted",
+        "Show": true,
+        "Icon": "game:UI_Minimap_SpeedRun_04",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_SpeedRun_05",
+        "Name": "Speedrun Might",
+        "Show": true,
+        "Icon": "game:UI_Minimap_SpeedRun_05",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_SpeedRun_06",
+        "Name": "Speedrun Cube",
+        "Show": true,
+        "Icon": "game:UI_Minimap_SpeedRun_06",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_SpeedRun_07",
+        "Name": "Speedrun Nightmare",
+        "Show": true,
+        "Icon": "game:UI_Minimap_SpeedRun_07",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_SpeedRun_Monster01",
+        "Name": "Speedrun Normal Monster",
+        "Show": true,
+        "Icon": "game:UI_Minimap_SpeedRun_Monster01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_SpeedRun_Monster02",
+        "Name": "Speedrun Rare Monster",
+        "Show": true,
+        "Icon": "game:UI_Minimap_SpeedRun_Monster02",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_SpeedRun_Monster04",
+        "Name": "Speedrun Boss",
+        "Show": true,
+        "Icon": "game:UI_Minimap_SpeedRun_Monster04",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Minimap_SpeedRun_Portal",
+        "Name": "Speedrun Portal",
+        "Show": true,
+        "Icon": "game:UI_Minimap_SpeedRun_Portal",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Monster_S12_Bottle",
+        "Name": "S12 Rune Bottle (Monster)",
+        "Show": true,
+        "Icon": "game:UI_Monster_S12_Bottle",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Mystic_Card06",
+        "Name": "Birdman Knife Thrower",
+        "Show": true,
+        "Icon": "game:UI_Mystic_Card06",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_S12jixie_MiniMap_fenliejinxieshenxiang",
+        "Name": "Split Machine - Lesser Idol",
+        "Show": true,
+        "Icon": "game:UI_S12jixie_MiniMap_fenliejinxieshenxiang",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_S12juli_MiniMap_huijinjijia",
+        "Name": "King's Might - Divine Mech",
+        "Show": true,
+        "Icon": "game:UI_S12juli_MiniMap_huijinjijia",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_S12mofang_MiniMap_xiaolifang",
+        "Name": "Cube Energy",
+        "Show": true,
+        "Icon": "game:UI_S12mofang_MiniMap_xiaolifang",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_S12qiulong_MiniMap_baoziqiuche",
+        "Name": "Blessing Gate - Main Monster",
+        "Show": true,
+        "Icon": "game:UI_S12qiulong_MiniMap_baoziqiuche",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_S12qiulong_MiniMap_gold",
+        "Name": "Blessing Gate - Gladiator Rare Monster",
+        "Show": true,
+        "Icon": "game:UI_S12qiulong_MiniMap_gold",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_S12qiulong_MiniMap_huangguai",
+        "Name": "Blessing Gate - Rare Monster",
+        "Show": true,
+        "Icon": "game:UI_S12qiulong_MiniMap_huangguai",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_S12qiulong_MiniMap_jinseqiuche",
+        "Name": "Blessing Gate - Golden Main Monster",
+        "Show": true,
+        "Icon": "game:UI_S12qiulong_MiniMap_jinseqiuche",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_S12zhongshen_MiniMap_baoxiang",
+        "Name": "Gods' Chest",
+        "Show": true,
+        "Icon": "game:UI_S12zhongshen_MiniMap_baoxiang",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_S2Level_Fight_Portal",
+        "Name": "S2 Void Sea",
+        "Show": true,
+        "Icon": "game:UI_S2Level_Fight_Portal",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_S2Level_MiniMap_S2Chest",
+        "Name": "S2 Void Chest / S6 Chest / +1",
+        "Show": true,
+        "Icon": "game:UI_S2Level_MiniMap_S2Chest",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_S2Level_MiniMap_S2Portal03",
+        "Name": "S2 Void Lighthouse",
+        "Show": true,
+        "Icon": "game:UI_S2Level_MiniMap_S2Portal03",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_S2Level_MiniMap_S2Stone",
+        "Name": "S2 Undying Fire",
+        "Show": true,
+        "Icon": "game:UI_S2Level_MiniMap_S2Stone",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Settings_Dacontroller01",
+        "Name": "Legendary Sniper",
+        "Show": true,
+        "Icon": "game:UI_Settings_Dacontroller01",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Settings_Dacontroller01_x",
+        "Name": "Sniper",
+        "Show": true,
+        "Icon": "game:UI_Settings_Dacontroller01_x",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      },
+      {
+        "Key": "UI_Task_ICONpotal",
+        "Name": "S6 Portal",
+        "Show": true,
+        "Icon": "game:UI_Task_ICONpotal",
+        "Colour": "#FFFFFFFF",
+        "Scale": 1,
+        "OverrideGameIcon": false
+      }
+    ]
   }
 }

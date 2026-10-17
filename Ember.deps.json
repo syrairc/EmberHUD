@@ -7,17 +7,17 @@
   "targets": {
     ".NETCoreApp,Version=v10.0": {},
     ".NETCoreApp,Version=v10.0/win-x64": {
-      "Ember/1.0.66": {
+      "Ember/1.0.67": {
         "dependencies": {
-          "EmberHUD.Api": "1.0.66",
-          "EmberUpdater": "1.0.66",
+          "EmberHUD.Api": "1.0.67",
+          "EmberUpdater": "1.0.67",
           "Hexa.NET.ImGui.Backends": "1.0.18",
           "Microsoft.CodeAnalysis.CSharp": "5.0.0",
           "Svg.Skia": "5.2.3",
           "Vortice.Direct3D11": "3.8.2",
           "Vortice.DirectComposition": "3.8.2",
-          "EmberLauncher.Reference": "1.0.66.0",
-          "EmberUpdater.Reference": "1.0.66.0"
+          "EmberLauncher.Reference": "1.0.67.0",
+          "EmberUpdater.Reference": "1.0.67.0"
         },
         "runtime": {
           "Ember.dll": {}
@@ -298,28 +298,28 @@
           }
         }
       },
-      "EmberHUD.Api/1.0.66": {
+      "EmberHUD.Api/1.0.67": {
         "dependencies": {
           "Hexa.NET.ImGui": "2.2.9"
         },
         "runtime": {
           "EmberHUD.Api.dll": {
-            "assemblyVersion": "1.0.66.0",
-            "fileVersion": "1.0.66.0"
+            "assemblyVersion": "1.0.67.0",
+            "fileVersion": "1.0.67.0"
           }
         }
       },
-      "EmberLauncher/1.0.66": {
+      "EmberLauncher/1.0.67": {
         "runtime": {
           "EmberLauncher.dll": {
             "fileVersion": "0.0.0.0"
           }
         }
       },
-      "EmberUpdater/1.0.66": {
+      "EmberUpdater/1.0.67": {
         "dependencies": {
-          "EmberHUD.Api": "1.0.66",
-          "EmberLauncher": "1.0.66",
+          "EmberHUD.Api": "1.0.67",
+          "EmberLauncher": "1.0.67",
           "Hexa.NET.ImGui.Backends": "1.0.18",
           "Vortice.Direct3D11": "3.8.2",
           "Vortice.DirectComposition": "3.8.2"
@@ -330,26 +330,26 @@
           }
         }
       },
-      "EmberLauncher.Reference/1.0.66.0": {
+      "EmberLauncher.Reference/1.0.67.0": {
         "runtime": {
           "EmberLauncher.dll": {
-            "assemblyVersion": "1.0.66.0",
-            "fileVersion": "1.0.66.0"
+            "assemblyVersion": "1.0.67.0",
+            "fileVersion": "1.0.67.0"
           }
         }
       },
-      "EmberUpdater.Reference/1.0.66.0": {
+      "EmberUpdater.Reference/1.0.67.0": {
         "runtime": {
           "EmberUpdater.dll": {
-            "assemblyVersion": "1.0.66.0",
-            "fileVersion": "1.0.66.0"
+            "assemblyVersion": "1.0.67.0",
+            "fileVersion": "1.0.67.0"
           }
         }
       }
     }
   },
   "libraries": {
-    "Ember/1.0.66": {
+    "Ember/1.0.67": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -522,27 +522,27 @@
       "path": "vortice.mathematics/2.1.0",
       "hashPath": "vortice.mathematics.2.1.0.nupkg.sha512"
     },
-    "EmberHUD.Api/1.0.66": {
+    "EmberHUD.Api/1.0.67": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "EmberLauncher/1.0.66": {
+    "EmberLauncher/1.0.67": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "EmberUpdater/1.0.66": {
+    "EmberUpdater/1.0.67": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "EmberLauncher.Reference/1.0.66.0": {
+    "EmberLauncher.Reference/1.0.67.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "EmberUpdater.Reference/1.0.66.0": {
+    "EmberUpdater.Reference/1.0.67.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

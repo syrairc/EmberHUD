@@ -1,1 +1,105 @@
-{}
+{
+  "General": {
+    "Show": true,
+    "Lock": true,
+    "MoveKey": "Alt",
+    "HideBehindPanels": true,
+    "X": 3039,
+    "Y": 603,
+    "Width": 360
+  },
+  "Sections": {
+    "Title": true,
+    "Level": true,
+    "Enemies": true,
+    "EnemiesBar": false,
+    "Xp": true,
+    "Content": true,
+    "Modifiers": true
+  },
+  "Look": {
+    "Title": {
+      "Scale": 1.25,
+      "Face": "Bold",
+      "Color": "#FFFFFFFF",
+      "BgEnabled": false,
+      "BgColor": "#000000B4",
+      "BorderEnabled": false,
+      "BorderColor": "#FFFFFFFF",
+      "BorderThickness": 1,
+      "BorderRounding": 2,
+      "StrokeEnabled": false,
+      "StrokeColor": "#000000FF",
+      "ShadowEnabled": true,
+      "ShadowColor": "#000000A0"
+    },
+    "Lines": {
+      "Scale": 1,
+      "Face": "Regular",
+      "Color": "#CBCBCBFF",
+      "BgEnabled": false,
+      "BgColor": "#000000B4",
+      "BorderEnabled": false,
+      "BorderColor": "#FFFFFFFF",
+      "BorderThickness": 1,
+      "BorderRounding": 2,
+      "StrokeEnabled": false,
+      "StrokeColor": "#000000FF",
+      "ShadowEnabled": true,
+      "ShadowColor": "#000000A0"
+    },
+    "ContentText": {
+      "Scale": 1,
+      "Face": "Regular",
+      "Color": "#FFFFFFFF",
+      "BgEnabled": false,
+      "BgColor": "#000000B4",
+      "BorderEnabled": false,
+      "BorderColor": "#FFFFFFFF",
+      "BorderThickness": 1,
+      "BorderRounding": 2,
+      "StrokeEnabled": false,
+      "StrokeColor": "#000000FF",
+      "ShadowEnabled": true,
+      "ShadowColor": "#000000A0"
+    },
+    "Modifiers": {
+      "Scale": 1,
+      "Face": "Regular",
+      "Color": "#CBCBCBFF",
+      "BgEnabled": false,
+      "BgColor": "#000000B4",
+      "BorderEnabled": false,
+      "BorderColor": "#FFFFFFFF",
+      "BorderThickness": 1,
+      "BorderRounding": 2,
+      "StrokeEnabled": false,
+      "StrokeColor": "#000000FF",
+      "ShadowEnabled": true,
+      "ShadowColor": "#000000A0"
+    },
+    "Bar": {
+      "Scale": 1,
+      "Face": "Regular",
+      "Color": "#CBCBCBFF",
+      "BgEnabled": false,
+      "BgColor": "#000000B4",
+      "BorderEnabled": false,
+      "BorderColor": "#FFFFFFFF",
+      "BorderThickness": 1,
+      "BorderRounding": 2,
+      "StrokeEnabled": false,
+      "StrokeColor": "#000000FF",
+      "ShadowEnabled": true,
+      "ShadowColor": "#000000A0"
+    },
+    "BarFill": "#F9B626FF",
+    "BarTrack": "#00000080",
+    "BarHeight": 18,
+    "Underline": "#765718FF",
+    "IconSize": 20,
+    "Done": "#6CD96CFF",
+    "Active": "#F9B626FF",
+    "Pending": "#A0A0A0FF"
+  }
+}

@@ -1,1 +1,86 @@
-{}
+{
+  "General": {
+    "Show": true,
+    "Lock": true,
+    "MoveKey": "Alt",
+    "HideBehindPanels": true,
+    "KeepAfterStop": true,
+    "Exact": false,
+    "X": 40,
+    "Y": 520,
+    "Width": 280
+  },
+  "Combat": {
+    "Show": false,
+    "HideInTown": true,
+    "CountOverkill": false,
+    "Exact": false,
+    "Window": 5,
+    "X": 960,
+    "Y": 1266,
+    "Width": 280
+  },
+  "Look": {
+    "Title": {
+      "Scale": 1.15,
+      "Face": "Bold",
+      "Color": "#FFFFFFFF",
+      "BgEnabled": false,
+      "BgColor": "#000000B4",
+      "BorderEnabled": false,
+      "BorderColor": "#FFFFFFFF",
+      "BorderThickness": 1,
+      "BorderRounding": 2,
+      "StrokeEnabled": false,
+      "StrokeColor": "#000000FF",
+      "ShadowEnabled": true,
+      "ShadowColor": "#000000A0"
+    },
+    "Labels": {
+      "Scale": 1,
+      "Face": "Regular",
+      "Color": "#CBCBCBFF",
+      "BgEnabled": false,
+      "BgColor": "#000000B4",
+      "BorderEnabled": false,
+      "BorderColor": "#FFFFFFFF",
+      "BorderThickness": 1,
+      "BorderRounding": 2,
+      "StrokeEnabled": false,
+      "StrokeColor": "#000000FF",
+      "ShadowEnabled": true,
+      "ShadowColor": "#000000A0"
+    },
+    "Values": {
+      "Scale": 1,
+      "Face": "Bold",
+      "Color": "#F9B626FF",
+      "BgEnabled": false,
+      "BgColor": "#000000B4",
+      "BorderEnabled": false,
+      "BorderColor": "#FFFFFFFF",
+      "BorderThickness": 1,
+      "BorderRounding": 2,
+      "StrokeEnabled": false,
+      "StrokeColor": "#000000FF",
+      "ShadowEnabled": true,
+      "ShadowColor": "#000000A0"
+    },
+    "Note": {
+      "Scale": 1,
+      "Face": "Regular",
+      "Color": "#A0A0A0FF",
+      "BgEnabled": false,
+      "BgColor": "#000000B4",
+      "BorderEnabled": false,
+      "BorderColor": "#FFFFFFFF",
+      "BorderThickness": 1,
+      "BorderRounding": 2,
+      "StrokeEnabled": false,
+      "StrokeColor": "#000000FF",
+      "ShadowEnabled": true,
+      "ShadowColor": "#000000A0"
+    },
+    "Background": "#000000B0"
+  }
+}
