@@ -91,6 +91,8 @@ public sealed class Settings : PluginSettings
     public float MaxDistance = 25;
     public bool HideBehindPanels = true;
     public bool AnchorToGameBar;
+    public TextLine BossBarHp = new() { Template = "{hp} / {hpmax}" };
+    public TextRow BossBarHpRow = TextRow.OnBar;
     public CastBarSettings? CastBar;
     public BucketSettings[] Buckets = DefaultBuckets();
     public List<StyleOverride> Overrides = new();
@@ -144,6 +146,9 @@ public sealed class Settings : PluginSettings
             cast.Text.Style ??= TextStyle.Hud();
         }
         CastBar = null;
+        BossBarHp ??= new() { Template = "{hp} / {hpmax}" };
+        BossBarHp.Template ??= "";
+        BossBarHp.Style ??= TextStyle.Hud();
         Overrides ??= new();
         Overrides.RemoveAll(row => row is null);
         foreach (var row in Overrides)

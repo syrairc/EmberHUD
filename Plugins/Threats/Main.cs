@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Numerics;
@@ -14,6 +15,7 @@ public sealed class Main : Plugin<Settings>
     internal Func<long> Clock = Stopwatch.GetTimestamp;
     long _lastDanger;
     long _groundSince;
+    readonly HashSet<(int, int)> _rings = [];
 
     public override void Initialize() => RegisterHotkey("Toggle", "Shows or hides the telegraphs", () => Settings.Show = !Settings.Show, new Hotkey(Key.F9));
 
@@ -55,8 +57,9 @@ public sealed class Main : Plugin<Settings>
         {
             ref readonly var projectile = ref projectiles[i];
             if (!Settings.Allows(projectile.OwnerRarity, false)) continue;
-            inDanger |= ProjectileLine.Draw(projectile, Settings, at, seconds);
+            inDanger |= ProjectileLine.Draw(projectile, Settings, at, seconds, _rings);
         }
+        _rings.Clear();
         if (inDanger) _lastDanger = now;
         if (Settings.MoveAlert && _lastDanger != 0 && now - _lastDanger <= AlertHoldSeconds * Stopwatch.Frequency)
             EmberHUD.Draw.TextOutlined(Settings.MoveAlertText, ImGui.GetIO().DisplaySize / 2, Settings.DangerColour, Color.Black, 2, Align.Center | Align.Middle, Settings.MoveAlertSize);

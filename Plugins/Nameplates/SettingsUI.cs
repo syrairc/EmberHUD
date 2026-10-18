@@ -44,6 +44,12 @@ static class SettingsUI
         Setting.Slider("Max distance", ref s.MaxDistance, 1, 10000, "In distance units, plates beyond this distance from the player are not drawn", log: true);
         Setting.Checkbox("Hide behind full-screen panels", ref s.HideBehindPanels);
         Setting.Checkbox("Anchor to the game's HP bar", ref s.AnchorToGameBar, "Monsters only - the plate sits on the game's own health bar, so the bucket bar width and height are ignored while this is on");
+        ImGui.SeparatorText("Boss bar HP");
+        Setting.Checkbox("Show boss HP on the boss bar", ref s.BossBarHp.Enabled, "Current / max HP of the boss on the game's boss HP bar at the top of the screen");
+        Setting.Choice("Boss HP row", ref s.BossBarHpRow);
+        Setting.Input("Boss HP template", ref s.BossBarHp.Template, $"Tokens: {Tokens}");
+        Setting.Style("Boss HP style", s.BossBarHp.Style);
+        Setting.Choice("Boss HP align", ref s.BossBarHp.Align);
     }
 
     static void EditCast(CastBarSettings cast)

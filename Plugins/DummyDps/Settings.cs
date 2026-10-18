@@ -26,6 +26,8 @@ public sealed class CombatTab
     public bool HideInTown = true;
     public bool CountOverkill;
     public bool Exact;
+    public bool ShowOnBossBar;
+    public int BossBarOffsetY = 4;
     public int Window = 5;
     public int X = 1600;
     public int Y = 780;
@@ -72,6 +74,8 @@ public sealed class Settings : PluginSettings
         Setting.Checkbox("Hide in town", ref Combat.HideInTown, "Hides the overlay in Ember's Rest and stops reading combat data there - stays on while the training dummy is running");
         Setting.Checkbox("Count overkill", ref Combat.CountOverkill, "Count the damage a hit does beyond the monster's remaining HP");
         Setting.Checkbox("Exact numbers", ref Combat.Exact, "Full digits instead of K / M / B / T / Qa");
+        Setting.Checkbox("DPS under boss bar", ref Combat.ShowOnBossBar, "A DPS readout right below the game's boss HP bar at the top of the screen, works with the combat panel off");
+        Setting.Slider("Boss bar offset Y", ref Combat.BossBarOffsetY, -100, 200, "Pixels below the boss HP bar, negative moves it up over the bar");
         Setting.Slider("Window seconds", ref Combat.Window, 1, 30);
         Setting.Slider("X", ref Combat.X, 0, 7680);
         Setting.Slider("Y", ref Combat.Y, 0, 4320);

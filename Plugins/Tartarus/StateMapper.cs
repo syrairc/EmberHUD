@@ -84,7 +84,7 @@ public static class StateMapper
 
         assumed.AddRange(["Start card and scratch marks are assumed to be none.", "Rat nests, prey and tusk marks are assumed none, and a marked cell's event is drawn from the 14 the game has.", "Tool uses left are assumed to be the defaults."]);
         var run = new Run(rules with { Days = state.MaxDay, RingSize = state.Size, ReplaceAfterConsume = true }, new Rng(1)) { Day = state.Day, Position = state.Position, Chromatics = state.Chromatics };
-        if (tracked.SwapUsedToday) assumed.Add("The swap was used today, and the game still offers devours after it, so the simulator is told the swap is unused.");
+        run.Replaced = tracked.SwapUsedToday;
         foreach (var id in (tracked.ToolsHeld ?? []).Union(state.Instruments).Order())
         {
             if (Tools.TryGetValue(id, out var tool)) run.Held.Add(tool);

@@ -111,8 +111,9 @@ public sealed class Main : Plugin<Settings>
         var onCard = Enumerable.Range(0, choice.Options.Length).Where(i => popup || doors || choice.Options[i].Kind is TartarusOptionKind.Consume or TartarusOptionKind.Replace or TartarusOptionKind.End or TartarusOptionKind.Instigate or TartarusOptionKind.Bestow);
         if (doors) onCard = onCard.OrderBy(i => choice.Options[i].Param).ThenBy(i => choice.Options[i].Cell);
         var cardsShown = parts.Any(part => part.Name.StartsWith("List_S16Board_Bottom_"));
-        var picking = !popup && !doors && !cardsShown;
-        if (picking) onCard = onCard.Where(i => choice.Options[i].Kind == TartarusOptionKind.Consume);
+        var picking = !popup && !cardsShown;
+        var roomPick = picking && doors;
+        if (picking) onCard = onCard.Where(i => choice.Options[i].Kind is TartarusOptionKind.Consume or TartarusOptionKind.Door);
         else if (!popup && !doors)
         {
             var consumes = onCard.Where(i => choice.Options[i].Kind == TartarusOptionKind.Consume).ToList();
@@ -130,7 +131,7 @@ public sealed class Main : Plugin<Settings>
             {
                 if (part.Name != name) continue;
                 if (advice[i].Glow) Draw.GlowRect(part.Min, part.Max, advice[i].Top ? GameColors.Positive : GameColors.Gold);
-                if (advice[i].Reason.Length > 0) Draw.Text(advice[i].Reason, new Vector2((part.Min.X + part.Max.X) / 2, part.Max.Y + 18), advice[i].Glow ? (advice[i].Top ? GameColors.Positive : GameColors.Gold) : GameColors.TextDim, Align.Center | Align.Middle);
+                if (advice[i].Reason.Length > 0 && (!roomPick || advice[i].Glow)) Draw.Text(advice[i].Reason, new Vector2((part.Min.X + part.Max.X) / 2, part.Max.Y + 18), advice[i].Glow ? (advice[i].Top ? GameColors.Positive : GameColors.Gold) : GameColors.TextDim, Align.Center | Align.Middle);
             }
         }
         return picking || cardsShown || popup;

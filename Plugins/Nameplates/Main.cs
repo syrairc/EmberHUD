@@ -13,10 +13,18 @@ public sealed class Main : Plugin<Settings>
         BarTextures.Load(BarTextures.DropInFolder);
     }
 
+    void DrawBossBarHp(GameState state)
+    {
+        if (!Settings.BossBarHp.Enabled || state.BossBar is not { } bar || Resolver.BossOnBar(state.Entities, bar.Percent) is not { } boss) return;
+        PlateRenderer.DrawBossBarHp(Settings.BossBarHp, Settings.BossBarHpRow, new PlateData(boss.Name, boss.Life, boss.MaxLife, 0, boss.Rarity.ToString(), boss.Kind.ToString()), bar.Rect);
+    }
+
     public override void Render()
     {
         var state = Game.State;
-        if (Settings.HideBehindPanels && state.Ui.AnyFullScreen || state.Camera is not { } camera) return;
+        if (Settings.HideBehindPanels && state.Ui.AnyFullScreen) return;
+        DrawBossBarHp(state);
+        if (state.Camera is not { } camera) return;
         var viewport = ImGui.GetIO().DisplaySize;
         if (Settings.AnyCastBar()) Game.WantCasts();
         var player = state.Player;

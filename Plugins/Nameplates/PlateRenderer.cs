@@ -36,6 +36,17 @@ public static class PlateRenderer
         DrawLine(cast.Text, data, min, max, new Vector2(0, (min.Y + max.Y) / 2), Align.Middle);
     }
 
+    public static void DrawBossBarHp(TextLine line, TextRow row, in PlateData data, ScreenRect bar)
+    {
+        var (y, vertical) = row switch
+        {
+            TextRow.Above => (bar.Min.Y - TextGap, Align.Bottom),
+            TextRow.Below => (bar.Max.Y + TextGap, Align.TopLeft),
+            _ => ((bar.Min.Y + bar.Max.Y) / 2, Align.Middle),
+        };
+        DrawLine(line, data, bar.Min, bar.Max, new Vector2(0, y), vertical);
+    }
+
     static void DrawBar(BarStyle bar, Vector2 min, Vector2 max, float fraction)
     {
         Draw.RectFilled(min, max, bar.Back);
