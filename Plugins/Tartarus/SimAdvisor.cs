@@ -19,7 +19,7 @@ public static class SimAdvisor
         if (state?.Choice is not { Options: { } options } || map is null) return new Advice([], "");
         var found = options.Select(option => map.Run is null ? null : ranked?.FirstOrDefault(entry => Matches(entry.Move, option))).ToArray();
         var glow = new bool[options.Length];
-        var core = Core(map, ranked, found, glow);
+        var core = Core(map, ranked, found, glow, options);
         int? top = glow.Any(on => on) ? Array.IndexOf(found, Pick(ranked!)) : null;
         if (ranked is null && instant is { } early && core == "thinking" && Array.FindIndex(options, option => Matches(early, option)) is var guess and >= 0) glow[guess] = true;
         if (ranked is null && glow.Any(on => on)) top = Array.IndexOf(glow, true);
@@ -36,17 +36,18 @@ public static class SimAdvisor
 
     static Ranked Pick(Ranked[] ranked) => ranked.FirstOrDefault(entry => entry.Strategy) is { } mine && Close(ranked[0], mine) ? mine : ranked[0];
 
-    static string Core(MapResult map, Ranked[]? ranked, Ranked?[] found, bool[] glow)
+    static string Core(MapResult map, Ranked[]? ranked, Ranked?[] found, bool[] glow, TartarusOption[] options)
     {
         if (map.Mismatch is not null) return $"mismatch: {map.Mismatch}";
         if (map.Unsupported is not null) return map.Unsupported;
         if (map.Run is null || ranked is null) return "thinking";
-        if (found.Length == 0 || found.Any(entry => entry is null)) return "unsure: not every option is simulated";
+        var simulated = Enumerable.Range(0, found.Length).Where(i => options[i].Kind != TartarusOptionKind.Other).ToArray();
+        if (simulated.Length == 0 || simulated.Any(i => found[i] is null)) return "unsure: not every option is simulated";
 
-        if (found.Length == 1) return "only option";
+        if (simulated.Length == 1) return "only option";
 
         var pick = Pick(ranked);
-        for (var i = 0; i < found.Length; i++) glow[i] = found[i] == pick || Close(ranked[0], found[i]!);
+        foreach (var i in simulated) glow[i] = found[i] == pick || Close(ranked[0], found[i]!);
         return $"{glow.Count(on => on)} best";
     }
 

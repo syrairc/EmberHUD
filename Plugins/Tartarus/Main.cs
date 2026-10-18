@@ -154,11 +154,15 @@ public sealed class Main : Plugin<Settings>
         var width = 0f;
         foreach (var (left, right, _, _) in rows) width = MathF.Max(width, Draw.MeasureText(left, _style).X + Gap + Draw.MeasureText(right, _style).X);
         foreach (var line in summary) width = MathF.Max(width, Draw.MeasureText(line, _style).X);
+        var progress = _worker.Progress;
+        var progressText = progress is { } p ? $"{p.Done}/{p.Total} sims  {p.Elapsed.TotalSeconds:0.0}s{(p.Finished ? "" : $"  ETA {p.Eta.TotalSeconds:0.0}s")}" : "";
+        width = MathF.Max(width, Draw.MeasureText(progressText, _style).X);
         var rowHeight = Draw.RowHeight(_style);
         _overlay.Locked = Settings.Lock;
         _overlay.MoveHeld = Settings.MoveKey.Key != Key.None && Input.IsDown(Settings.MoveKey.Key);
         var origin = new Vector2(Settings.PanelX, Settings.PanelY);
-        var size = new Vector2(width + Pad * 2, rowHeight * (rows.Length + summary.Length) + Pad * 2);
+        const float BarHeight = 4;
+        var size = new Vector2(width + Pad * 2, rowHeight * (rows.Length + summary.Length + (progress is null ? 0 : 1)) + (progress is null ? 0 : BarHeight + 2) + Pad * 2);
         var (hovered, _, active) = _overlay.Handle("tartarus", ref origin, size, ref Settings.PanelX, ref Settings.PanelY, ref _unusedWidth, 60, 4000, ref _unusedHeight, 0, 0, Overlay.ResizeEdge.None);
         if (hovered || active) Overlay.ClickBlocker("tartarus", origin, size);
         Draw.RectFilled(origin, origin + size, GameColors.LabelBackground, 4);
@@ -179,5 +183,12 @@ public sealed class Main : Plugin<Settings>
             Draw.Text(summary[i], new Vector2(origin.X + Pad, y), footer);
             y += rowHeight;
         }
+        if (progress is not { } shown) return;
+        footer.Color = GameColors.TextDim;
+        Draw.Text(progressText, new Vector2(origin.X + Pad, y), footer);
+        y += rowHeight + 2;
+        var barStart = new Vector2(origin.X + Pad, y);
+        Draw.RectFilled(barStart, barStart + new Vector2(width, BarHeight), System.Drawing.Color.FromArgb(60, GameColors.TextDim), 2);
+        Draw.RectFilled(barStart, barStart + new Vector2(width * shown.Done / Math.Max(1, shown.Total), BarHeight), shown.Finished ? GameColors.Positive : GameColors.Gold, 2);
     }
 }

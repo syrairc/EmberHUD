@@ -11,7 +11,7 @@ public static class Solver
 {
     const int StepLimit = 5000;
 
-    public static Ranked[] Rank(Run start, int playouts, Rng rng, CancellationToken cancel = default)
+    public static Ranked[] Rank(Run start, int playouts, Rng rng, CancellationToken cancel = default, Action<int>? progress = null)
     {
         var moves = start.Legal();
         if (moves.Count <= 1) return [.. moves.Select(move => new Ranked(move, 0, 0, 0, true))];
@@ -27,6 +27,7 @@ public static class Solver
                 values[i].Add(end.Chromatics);
                 best[i] += end.Chromatics > 0 ? Tiers.Chromatic : end.Cells.Where(cell => cell.Open).Select(cell => cell.Tier).DefaultIfEmpty(0).Max();
             }
+            progress?.Invoke(values[0].Count);
         }
         var order = Enumerable.Range(0, moves.Count).OrderByDescending(i => values[i].Count == 0 ? 0 : values[i].Average()).ThenByDescending(i => best[i]).ToArray();
         return [.. order.Select(i => Summarize(moves[i], values[i], values[order[0]], i == order[0], moves[i] == pick))];
