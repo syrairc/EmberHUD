@@ -13,6 +13,8 @@ public sealed partial class Settings
 
         Controls.Section("Telegraphs");
         RarityRow("Monsters", ref TelegraphNormal, ref TelegraphMagic, ref TelegraphRare, ref TelegraphBoss, "tg");
+        Setting.Checkbox("Hide short casts", ref HideShortCasts, "Hides telegraphs whose total cast time is below the minimum below");
+        Setting.Slider("Minimum cast time", ref MinCastSeconds, 0.1f, 5, "Seconds");
         Setting.Slider("Placeholder radius", ref PlaceholderRadius, 50, 1000, "v1 area is a placeholder circle at the locked target point, NOT the real hit box");
         Setting.Color("Outline colour", ref TelegraphColour);
         Setting.Color("Fill colour", ref TelegraphFillColour);
@@ -29,6 +31,11 @@ public sealed partial class Settings
         Setting.Checkbox("Show hit width", ref ShowHitWidth, "Faint band under each line, as wide as its danger zone (projectile radius x Radius scale)");
         Setting.Color("Line colour", ref LineColour);
         Setting.Slider("Animation speed", ref AnimationSpeed, 50, 3000, "Only used by the Animated style");
+
+        Controls.Section("Ground hazards");
+        Setting.Checkbox("Ground areas", ref GroundAreas);
+        Setting.Color("Area colour", ref AreaColour);
+        Setting.Slider("Ground alert delay", ref GroundAlertSeconds, 0, 10, "Seconds inside a pool before the move alert fires");
 
         Controls.Section("Danger");
         Setting.Color("Danger colour", ref DangerColour);

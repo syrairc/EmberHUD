@@ -24,6 +24,13 @@
   "ShowPurple": false,
   "ShowPink": false,
   "ShowOrange": true,
+  "GroundEnabled": true,
+  "GroundGrey": false,
+  "GroundCyan": false,
+  "GroundPurple": false,
+  "GroundPink": false,
+  "GroundOrange": true,
+  "GroundNonEquipment": false,
   "RefreshMinutes": 60,
   "Season": 0,
   "Contribute": false

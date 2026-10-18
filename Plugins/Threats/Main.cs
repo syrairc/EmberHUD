@@ -13,6 +13,7 @@ public sealed class Main : Plugin<Settings>
 
     internal Func<long> Clock = Stopwatch.GetTimestamp;
     long _lastDanger;
+    long _groundSince;
 
     public override void Initialize() => RegisterHotkey("Toggle", "Shows or hides the telegraphs", () => Settings.Show = !Settings.Show, new Hotkey(Key.F9));
 
@@ -22,8 +23,25 @@ public sealed class Main : Plugin<Settings>
         if (!Settings.Show || Settings.HideBehindPanels && state.Ui.AnyFullScreen || state.Camera is null || state.Player is not { } player) return;
         Game.WantCasts();
         Game.WantProjectiles();
+        Game.WantGroundHazards();
         var at = new Vector2(player.Position.X, player.Position.Y);
+        var now = Clock();
         var inDanger = false;
+        var inArea = false;
+        if (Settings.GroundAreas)
+        {
+            var hazards = state.GroundHazards;
+            for (var i = 0; i < hazards.Length; i++)
+            {
+                ref readonly var hazard = ref hazards[i];
+                if (!GroundHazards.Draw(hazard, Settings, at)) continue;
+                if (hazard.Kind == HazardKind.Damage) inDanger = true;
+                else inArea = true;
+            }
+        }
+        if (!inArea) _groundSince = 0;
+        else if (_groundSince == 0) _groundSince = now;
+        inDanger |= inArea && now - _groundSince >= Settings.GroundAlertSeconds * Stopwatch.Frequency;
         var entities = state.Entities;
         for (var i = 0; i < entities.Length; i++)
         {
@@ -39,7 +57,6 @@ public sealed class Main : Plugin<Settings>
             if (!Settings.Allows(projectile.OwnerRarity, false)) continue;
             inDanger |= ProjectileLine.Draw(projectile, Settings, at, seconds);
         }
-        var now = Clock();
         if (inDanger) _lastDanger = now;
         if (Settings.MoveAlert && _lastDanger != 0 && now - _lastDanger <= AlertHoldSeconds * Stopwatch.Frequency)
             EmberHUD.Draw.TextOutlined(Settings.MoveAlertText, ImGui.GetIO().DisplaySize / 2, Settings.DangerColour, Color.Black, 2, Align.Center | Align.Middle, Settings.MoveAlertSize);

@@ -59,6 +59,7 @@ public sealed class BucketSettings
     public bool Show = true;
     public bool DamagedOnly;
     public PlateStyle Style = new();
+    public CastBarSettings? CastBar;
 }
 
 public sealed class CastBarSettings
@@ -67,6 +68,8 @@ public sealed class CastBarSettings
     public float OffsetY = 4;
     public BarStyle Bar = new() { Width = 100, Height = 14, Fill = Color.FromArgb(0xFF, 0xFF, 0xA0, 0x28) };
     public TextLine Text = new() { Enabled = true, Template = "{cast} {left}s" };
+
+    public CastBarSettings Clone() => new() { Enabled = Enabled, OffsetY = OffsetY, Bar = Bar.Clone(), Text = Text.Clone() };
 }
 
 public sealed class StyleOverride
@@ -88,7 +91,7 @@ public sealed class Settings : PluginSettings
     public float MaxDistance = 25;
     public bool HideBehindPanels = true;
     public bool AnchorToGameBar;
-    public CastBarSettings CastBar = new();
+    public CastBarSettings? CastBar;
     public BucketSettings[] Buckets = DefaultBuckets();
     public List<StyleOverride> Overrides = new();
 
@@ -108,11 +111,18 @@ public sealed class Settings : PluginSettings
 
     static BucketSettings Plate(float width, float height, Color fill, bool show = true)
     {
-        var bucket = new BucketSettings { Show = show };
+        var bucket = new BucketSettings { Show = show, CastBar = new() };
         bucket.Style.Bar.Width = width;
         bucket.Style.Bar.Height = height;
         bucket.Style.Bar.Fill = fill;
         return bucket;
+    }
+
+    internal bool AnyCastBar()
+    {
+        foreach (var bucket in Buckets)
+            if (bucket.CastBar?.Enabled == true) return true;
+        return false;
     }
 
     internal float Displayed(float worldDistance) => worldDistance / (float.IsFinite(DistanceUnit) && DistanceUnit > 0 ? DistanceUnit : 100);
@@ -123,13 +133,17 @@ public sealed class Settings : PluginSettings
         var buckets = new BucketSettings[defaults.Length];
         for (var i = 0; i < buckets.Length; i++) buckets[i] = Buckets is not null && i < Buckets.Length && Buckets[i] is { } bucket ? bucket : defaults[i];
         Buckets = buckets;
-        foreach (var bucket in Buckets) bucket.Style = Normalize(bucket.Style);
-        CastBar ??= new();
-        CastBar.Bar ??= new();
-        CastBar.Bar.Texture ??= "";
-        CastBar.Text ??= new();
-        CastBar.Text.Template ??= "";
-        CastBar.Text.Style ??= TextStyle.Hud();
+        foreach (var bucket in Buckets)
+        {
+            bucket.Style = Normalize(bucket.Style);
+            var cast = bucket.CastBar ??= CastBar?.Clone() ?? new();
+            cast.Bar ??= new();
+            cast.Bar.Texture ??= "";
+            cast.Text ??= new();
+            cast.Text.Template ??= "";
+            cast.Text.Style ??= TextStyle.Hud();
+        }
+        CastBar = null;
         Overrides ??= new();
         Overrides.RemoveAll(row => row is null);
         foreach (var row in Overrides)

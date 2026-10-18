@@ -23,12 +23,14 @@ public static class Tags
         return (fe / 1e6).ToString("0.#", invariant) + "M";
     }
 
-    public static string? Text(InventoryItem item, IReadOnlyDictionary<int, Price> prices)
+    public static string? Text(InventoryItem item, IReadOnlyDictionary<int, Price> prices) => Text(item.BaseId, item.Count, item.Bag == InventoryBag.Equipment, prices);
+
+    public static string? Text(int baseId, int count, bool gear, IReadOnlyDictionary<int, Price> prices)
     {
-        if (!prices.TryGetValue(item.BaseId, out var price)) return null;
-        if (item.Bag == InventoryBag.Equipment && price.Low is { } low && price.High is { } high && low != high && Format(low) is { } from && Format(high) is { } to)
+        if (!prices.TryGetValue(baseId, out var price)) return null;
+        if (gear && price.Low is { } low && price.High is { } high && low != high && Format(low) is { } from && Format(high) is { } to)
             return $"{from}-{to}";
-        return Format(price.Median * item.Count);
+        return Format(price.Median * count);
     }
 
     public static Vector2 Anchor(Corner corner, Vector2 cellMin, Vector2 cellMax, Vector2 tagSize) => new(

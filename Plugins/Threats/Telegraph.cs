@@ -27,7 +27,7 @@ public static class Telegraph
 
     public static bool Draw(Entity caster, Settings settings, Vector2 player)
     {
-        if (caster.Cast is not { } cast || !Active(cast)) return false;
+        if (caster.Cast is not { } cast || !Active(cast) || settings.TooShort(cast)) return false;
         var inside = Inside(cast, settings, player);
         if (Game.State.Camera is not { } camera) return inside;
         var origin = new Vector2(caster.Position.X, caster.Position.Y);

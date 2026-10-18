@@ -44,9 +44,12 @@ static class SettingsUI
         Setting.Slider("Max distance", ref s.MaxDistance, 1, 10000, "In distance units, plates beyond this distance from the player are not drawn", log: true);
         Setting.Checkbox("Hide behind full-screen panels", ref s.HideBehindPanels);
         Setting.Checkbox("Anchor to the game's HP bar", ref s.AnchorToGameBar, "Monsters only - the plate sits on the game's own health bar, so the bucket bar width and height are ignored while this is on");
-        ImGui.SeparatorText("Monster cast bar");
-        var cast = s.CastBar;
-        Setting.Checkbox("Show cast bar", ref cast.Enabled, "Monsters only - a bar under the plate that fills while the monster winds up a skill. {cast} and {left} work in any plate text too");
+    }
+
+    static void EditCast(CastBarSettings cast)
+    {
+        ImGui.SeparatorText("Cast bar");
+        Setting.Checkbox("Show cast bar", ref cast.Enabled, "A bar under the plate that fills while the monster winds up a skill. {cast} and {left} work in any plate text too");
         Setting.Slider("Cast offset Y", ref cast.OffsetY, -200, 200, "Pixels below the plate bar, negative moves it up over the plate");
         Setting.Slider("Cast bar width", ref cast.Bar.Width, 10, 400);
         Setting.Slider("Cast bar height", ref cast.Bar.Height, 2, 80);
@@ -91,6 +94,7 @@ static class SettingsUI
         Setting.Checkbox("Show", ref bucket.Show);
         Setting.Checkbox("Damaged only", ref bucket.DamagedOnly, "Only draw the plate once the target has lost health");
         EditStyle(id, bucket.Style, s);
+        if (i <= (int)Bucket.Boss) EditCast(bucket.CastBar!);
         ImGui.PopID();
     }
 

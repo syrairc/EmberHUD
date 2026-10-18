@@ -1,3 +1,4 @@
+using System;
 using System.Drawing;
 using EmberHUD;
 
@@ -25,6 +26,8 @@ public sealed partial class Settings : PluginSettings
     public float FillOpacity = 0.45f;
     public bool ShowCountdown = true;
     public float CountdownSize = 120;
+    public bool HideShortCasts;
+    public float MinCastSeconds = 1.0f;
 
     public LineStyle Style = LineStyle.Gradient;
     public float LineLength = 1500;
@@ -34,10 +37,20 @@ public sealed partial class Settings : PluginSettings
     public Color LineColour = Color.FromArgb(230, 60, 220, 255);
     public float AnimationSpeed = 600;
 
+    public bool GroundAreas = true;
+    public Color AreaColour = Color.FromArgb(200, 230, 120, 40);
+    public float GroundAlertSeconds = 1.0f;
+
     public Color DangerColour = Color.FromArgb(255, 255, 40, 120);
     public bool MoveAlert;
     public string MoveAlertText = "MOVE";
     public float MoveAlertSize = 48;
+
+    public bool TooShort(Cast cast)
+    {
+        var total = cast.Progress < 1 ? cast.SecondsLeft / (1 - cast.Progress) : cast.SecondsLeft;
+        return HideShortCasts && total > 0 && MathF.Round(total, 2) < MinCastSeconds;
+    }
 
     public bool Allows(Rarity rarity, bool telegraphs) => rarity switch
     {

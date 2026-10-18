@@ -3,39 +3,6 @@
   "MaxDistance": 25,
   "HideBehindPanels": true,
   "AnchorToGameBar": true,
-  "CastBar": {
-    "Enabled": false,
-    "OffsetY": 4,
-    "Bar": {
-      "Width": 100,
-      "Height": 14,
-      "BorderWidth": 1,
-      "Fill": "#FFA028FF",
-      "Back": "#000000A0",
-      "Border": "#000000FF",
-      "Texture": ""
-    },
-    "Text": {
-      "Enabled": true,
-      "Template": "{cast} {left}s",
-      "Style": {
-        "Scale": 1,
-        "Face": "Regular",
-        "Color": "#CBCBCBFF",
-        "BgEnabled": false,
-        "BgColor": "#000000B4",
-        "BorderEnabled": false,
-        "BorderColor": "#FFFFFFFF",
-        "BorderThickness": 1,
-        "BorderRounding": 2,
-        "StrokeEnabled": false,
-        "StrokeColor": "#000000FF",
-        "ShadowEnabled": true,
-        "ShadowColor": "#000000A0"
-      },
-      "Align": "Center"
-    }
-  },
   "Buckets": [
     {
       "Show": true,
@@ -112,6 +79,39 @@
         },
         "OffsetY": 0,
         "DrawBar": false
+      },
+      "CastBar": {
+        "Enabled": false,
+        "OffsetY": 4,
+        "Bar": {
+          "Width": 100,
+          "Height": 14,
+          "BorderWidth": 1,
+          "Fill": "#FFA028FF",
+          "Back": "#000000A0",
+          "Border": "#000000FF",
+          "Texture": ""
+        },
+        "Text": {
+          "Enabled": true,
+          "Template": "{cast} {left}s",
+          "Style": {
+            "Scale": 1,
+            "Face": "Regular",
+            "Color": "#CBCBCBFF",
+            "BgEnabled": false,
+            "BgColor": "#000000B4",
+            "BorderEnabled": false,
+            "BorderColor": "#FFFFFFFF",
+            "BorderThickness": 1,
+            "BorderRounding": 2,
+            "StrokeEnabled": false,
+            "StrokeColor": "#000000FF",
+            "ShadowEnabled": true,
+            "ShadowColor": "#000000A0"
+          },
+          "Align": "Center"
+        }
       }
     },
     {
@@ -189,6 +189,39 @@
         },
         "OffsetY": 0,
         "DrawBar": false
+      },
+      "CastBar": {
+        "Enabled": false,
+        "OffsetY": 4,
+        "Bar": {
+          "Width": 100,
+          "Height": 14,
+          "BorderWidth": 1,
+          "Fill": "#FFA028FF",
+          "Back": "#000000A0",
+          "Border": "#000000FF",
+          "Texture": ""
+        },
+        "Text": {
+          "Enabled": true,
+          "Template": "{cast} {left}s",
+          "Style": {
+            "Scale": 1,
+            "Face": "Regular",
+            "Color": "#CBCBCBFF",
+            "BgEnabled": false,
+            "BgColor": "#000000B4",
+            "BorderEnabled": false,
+            "BorderColor": "#FFFFFFFF",
+            "BorderThickness": 1,
+            "BorderRounding": 2,
+            "StrokeEnabled": false,
+            "StrokeColor": "#000000FF",
+            "ShadowEnabled": true,
+            "ShadowColor": "#000000A0"
+          },
+          "Align": "Center"
+        }
       }
     },
     {
@@ -266,6 +299,39 @@
         },
         "OffsetY": 0,
         "DrawBar": false
+      },
+      "CastBar": {
+        "Enabled": false,
+        "OffsetY": 4,
+        "Bar": {
+          "Width": 100,
+          "Height": 14,
+          "BorderWidth": 1,
+          "Fill": "#FFA028FF",
+          "Back": "#000000A0",
+          "Border": "#000000FF",
+          "Texture": ""
+        },
+        "Text": {
+          "Enabled": true,
+          "Template": "{cast} {left}s",
+          "Style": {
+            "Scale": 1,
+            "Face": "Regular",
+            "Color": "#CBCBCBFF",
+            "BgEnabled": false,
+            "BgColor": "#000000B4",
+            "BorderEnabled": false,
+            "BorderColor": "#FFFFFFFF",
+            "BorderThickness": 1,
+            "BorderRounding": 2,
+            "StrokeEnabled": false,
+            "StrokeColor": "#000000FF",
+            "ShadowEnabled": true,
+            "ShadowColor": "#000000A0"
+          },
+          "Align": "Center"
+        }
       }
     },
     {
@@ -343,6 +409,39 @@
         },
         "OffsetY": 0,
         "DrawBar": false
+      },
+      "CastBar": {
+        "Enabled": false,
+        "OffsetY": 4,
+        "Bar": {
+          "Width": 100,
+          "Height": 14,
+          "BorderWidth": 1,
+          "Fill": "#FFA028FF",
+          "Back": "#000000A0",
+          "Border": "#000000FF",
+          "Texture": ""
+        },
+        "Text": {
+          "Enabled": true,
+          "Template": "{cast} {left}s",
+          "Style": {
+            "Scale": 1,
+            "Face": "Regular",
+            "Color": "#CBCBCBFF",
+            "BgEnabled": false,
+            "BgColor": "#000000B4",
+            "BorderEnabled": false,
+            "BorderColor": "#FFFFFFFF",
+            "BorderThickness": 1,
+            "BorderRounding": 2,
+            "StrokeEnabled": false,
+            "StrokeColor": "#000000FF",
+            "ShadowEnabled": true,
+            "ShadowColor": "#000000A0"
+          },
+          "Align": "Center"
+        }
       }
     },
     {
@@ -420,6 +519,39 @@
         },
         "OffsetY": 0,
         "DrawBar": false
+      },
+      "CastBar": {
+        "Enabled": false,
+        "OffsetY": 4,
+        "Bar": {
+          "Width": 100,
+          "Height": 14,
+          "BorderWidth": 1,
+          "Fill": "#FFA028FF",
+          "Back": "#000000A0",
+          "Border": "#000000FF",
+          "Texture": ""
+        },
+        "Text": {
+          "Enabled": true,
+          "Template": "{cast} {left}s",
+          "Style": {
+            "Scale": 1,
+            "Face": "Regular",
+            "Color": "#CBCBCBFF",
+            "BgEnabled": false,
+            "BgColor": "#000000B4",
+            "BorderEnabled": false,
+            "BorderColor": "#FFFFFFFF",
+            "BorderThickness": 1,
+            "BorderRounding": 2,
+            "StrokeEnabled": false,
+            "StrokeColor": "#000000FF",
+            "ShadowEnabled": true,
+            "ShadowColor": "#000000A0"
+          },
+          "Align": "Center"
+        }
       }
     },
     {
@@ -497,6 +629,39 @@
         },
         "OffsetY": 0,
         "DrawBar": false
+      },
+      "CastBar": {
+        "Enabled": false,
+        "OffsetY": 4,
+        "Bar": {
+          "Width": 100,
+          "Height": 14,
+          "BorderWidth": 1,
+          "Fill": "#FFA028FF",
+          "Back": "#000000A0",
+          "Border": "#000000FF",
+          "Texture": ""
+        },
+        "Text": {
+          "Enabled": true,
+          "Template": "{cast} {left}s",
+          "Style": {
+            "Scale": 1,
+            "Face": "Regular",
+            "Color": "#CBCBCBFF",
+            "BgEnabled": false,
+            "BgColor": "#000000B4",
+            "BorderEnabled": false,
+            "BorderColor": "#FFFFFFFF",
+            "BorderThickness": 1,
+            "BorderRounding": 2,
+            "StrokeEnabled": false,
+            "StrokeColor": "#000000FF",
+            "ShadowEnabled": true,
+            "ShadowColor": "#000000A0"
+          },
+          "Align": "Center"
+        }
       }
     },
     {
@@ -574,6 +739,39 @@
         },
         "OffsetY": 0,
         "DrawBar": true
+      },
+      "CastBar": {
+        "Enabled": false,
+        "OffsetY": 4,
+        "Bar": {
+          "Width": 100,
+          "Height": 14,
+          "BorderWidth": 1,
+          "Fill": "#FFA028FF",
+          "Back": "#000000A0",
+          "Border": "#000000FF",
+          "Texture": ""
+        },
+        "Text": {
+          "Enabled": true,
+          "Template": "{cast} {left}s",
+          "Style": {
+            "Scale": 1,
+            "Face": "Regular",
+            "Color": "#CBCBCBFF",
+            "BgEnabled": false,
+            "BgColor": "#000000B4",
+            "BorderEnabled": false,
+            "BorderColor": "#FFFFFFFF",
+            "BorderThickness": 1,
+            "BorderRounding": 2,
+            "StrokeEnabled": false,
+            "StrokeColor": "#000000FF",
+            "ShadowEnabled": true,
+            "ShadowColor": "#000000A0"
+          },
+          "Align": "Center"
+        }
       }
     },
     {
@@ -651,6 +849,39 @@
         },
         "OffsetY": 0,
         "DrawBar": true
+      },
+      "CastBar": {
+        "Enabled": false,
+        "OffsetY": 4,
+        "Bar": {
+          "Width": 100,
+          "Height": 14,
+          "BorderWidth": 1,
+          "Fill": "#FFA028FF",
+          "Back": "#000000A0",
+          "Border": "#000000FF",
+          "Texture": ""
+        },
+        "Text": {
+          "Enabled": true,
+          "Template": "{cast} {left}s",
+          "Style": {
+            "Scale": 1,
+            "Face": "Regular",
+            "Color": "#CBCBCBFF",
+            "BgEnabled": false,
+            "BgColor": "#000000B4",
+            "BorderEnabled": false,
+            "BorderColor": "#FFFFFFFF",
+            "BorderThickness": 1,
+            "BorderRounding": 2,
+            "StrokeEnabled": false,
+            "StrokeColor": "#000000FF",
+            "ShadowEnabled": true,
+            "ShadowColor": "#000000A0"
+          },
+          "Align": "Center"
+        }
       }
     }
   ],
