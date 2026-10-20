@@ -19,9 +19,9 @@ public static class SimAdvisor
         if (state?.Choice is not { Options: { } options } || map is null) return new Advice([], "");
         var found = options.Select(option => map.Run is null ? null : ranked?.FirstOrDefault(entry => Matches(entry.Move, option))).ToArray();
         var glow = new bool[options.Length];
-        var core = Core(map, ranked, found, glow, options);
-        int? top = glow.Any(on => on) ? Array.IndexOf(found, Pick(ranked!)) : null;
-        if (ranked is null && instant is { } early && core == "thinking" && Array.FindIndex(options, option => Matches(early, option)) is var guess and >= 0) glow[guess] = true;
+        var core = Core(map, ranked, found, glow, options, settings);
+        int? top = glow.Any(on => on) ? Array.IndexOf(found, Pick(ranked!, settings)) : null;
+        if (ranked is null && !settings.SkipStrategy && instant is { } early && core == "thinking" && Array.FindIndex(options, option => Matches(early, option)) is var guess and >= 0) glow[guess] = true;
         if (ranked is null && glow.Any(on => on)) top = Array.IndexOf(glow, true);
         var advice = options.Select((option, i) => found[i] is { } entry
             ? new OptionAdvice(option.Id, new ValueRange(entry.Value - entry.Spread, entry.Value + entry.Spread), glow[i], entry.Value.ToString("0.00", CultureInfo.InvariantCulture), top == i)
@@ -34,9 +34,9 @@ public static class SimAdvisor
 
     static bool Close(Ranked best, Ranked other) => best.Value - other.Value <= Math.Max(1.96 * other.GapSe, SwitchMin);
 
-    static Ranked Pick(Ranked[] ranked) => ranked.FirstOrDefault(entry => entry.Strategy) is { } mine && Close(ranked[0], mine) ? mine : ranked[0];
+    static Ranked Pick(Ranked[] ranked, Settings settings) => !settings.SkipStrategy && ranked.FirstOrDefault(entry => entry.Strategy) is { } mine && Close(ranked[0], mine) ? mine : ranked[0];
 
-    static string Core(MapResult map, Ranked[]? ranked, Ranked?[] found, bool[] glow, TartarusOption[] options)
+    static string Core(MapResult map, Ranked[]? ranked, Ranked?[] found, bool[] glow, TartarusOption[] options, Settings settings)
     {
         if (map.Mismatch is not null) return $"mismatch: {map.Mismatch}";
         if (map.Unsupported is not null) return map.Unsupported;
@@ -46,8 +46,8 @@ public static class SimAdvisor
 
         if (simulated.Length == 1) return "only option";
 
-        var pick = Pick(ranked);
-        foreach (var i in simulated) glow[i] = found[i] == pick || Close(ranked[0], found[i]!);
+        var pick = Pick(ranked, settings);
+        foreach (var i in simulated) glow[i] = found[i] == pick || !settings.OnlyBest && Close(ranked[0], found[i]!);
         return $"{glow.Count(on => on)} best";
     }
 

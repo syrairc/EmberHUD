@@ -49,11 +49,17 @@ public static class ProjectileLine
             if (rings is null || rings.Add((projectile.OwnerId, (int)(radius / Slack))))
             {
                 var ringWidth = float.IsFinite(settings.LineWidth) ? Math.Clamp(settings.LineWidth, 0.5f, 64f) : 1f;
-                Ground.Circle(centre, radius, colour, ringWidth);
+                if (settings.Style == LineStyle.Solid)
+                {
+                    Span<Vector2> ring = stackalloc Vector2[48];
+                    Geometry.RegularPolygon(centre, radius, ring);
+                    Ground.Polyline(ring, colour, ringWidth, true, group: inside ? Groups.LinesDanger : Groups.Lines);
+                }
+                else Ground.Circle(centre, radius, colour, ringWidth);
                 if (settings.ShowHitWidth && halfWidth > 0)
                 {
-                    Ground.Circle(centre, radius + halfWidth, Color.FromArgb(colour.A / 4, colour));
-                    if (radius > halfWidth) Ground.Circle(centre, radius - halfWidth, Color.FromArgb(colour.A / 4, colour));
+                    Ground.Circle(centre, radius + halfWidth, Groups.Band(colour));
+                    if (radius > halfWidth) Ground.Circle(centre, radius - halfWidth, Groups.Band(colour));
                 }
             }
             return inside;
@@ -63,7 +69,7 @@ public static class ProjectileLine
         {
             Span<Vector2> band = stackalloc Vector2[4];
             Geometry.OrientedRect((projectile.Position + end) / 2, Vector2.Normalize(projectile.Direction), halfWidth * 2, Length(settings), band);
-            Ground.PolygonFilled(band, Color.FromArgb(colour.A / 4, colour));
+            Ground.PolygonFilled(band, Groups.Band(colour), group: inside ? Groups.BandsDanger : Groups.Bands);
         }
 
         var width = float.IsFinite(settings.LineWidth) ? Math.Clamp(settings.LineWidth, 0.5f, 64f) : 1f;
@@ -77,7 +83,7 @@ public static class ProjectileLine
                 Ground.DashedLine(projectile.Position, end, colour, width, Dash, Gap, phase);
                 break;
             default:
-                Ground.Line(projectile.Position, end, colour, width);
+                Ground.Line(projectile.Position, end, colour, width, group: inside ? Groups.LinesDanger : Groups.Lines);
                 break;
         }
 

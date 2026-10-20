@@ -21,6 +21,9 @@ public sealed class Settings : PluginSettings
     public bool NearEnabled = true;
     public float NearRadius = 500;
     public Hotkey PickupKey = new(Key.A);
+    public bool PauseEnabled = true;
+    public Hotkey PauseKey = new(Key.Alt);
+    public float PauseSeconds = 5;
     public bool GemsEnabled = true;
     public List<TierStyle> Tiers = DefaultTiers();
     public float GlobalScale = 1;
@@ -62,6 +65,7 @@ public sealed class Settings : PluginSettings
     public void Normalize()
     {
         NearRadius = float.IsFinite(NearRadius) ? Math.Clamp(NearRadius, 50, 3000) : 500;
+        PauseSeconds = Clamp(PauseSeconds, 0.5f, 60, 5);
         GlobalScale = Clamp(GlobalScale, 0.25f, 3, 1);
         GemSpacing = Clamp(GemSpacing, 0, 2, 0.1f);
         AnchorY = Clamp(AnchorY, 0, 1, 0);

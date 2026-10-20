@@ -12,7 +12,7 @@ namespace Prices;
 
 public sealed record PriceFile(int Season, string? Newest, Dictionary<int, Price> Rows);
 
-public sealed record Synced(PriceFile? File, int? Season, string Source, string? Error);
+public sealed record Synced(PriceFile? File, int? Season, string Source, string? Error, string Databases = "", IReadOnlyDictionary<PriceSource, IReadOnlyDictionary<int, Price>>? Tables = null);
 
 public static class PriceSync
 {
@@ -23,7 +23,7 @@ public static class PriceSync
     static readonly TimeSpan Recent = TimeSpan.FromDays(7);
 
     public static string PricesUrl(int season, string? since, int offset) =>
-        $"{Base}/rest/v1/aggregated_prices?season_id=eq.{season}&select=config_base_id,price_fe_median,price_fe_p10,price_fe_p90,updated_at&order=config_base_id&limit={PageSize}&offset={offset}"
+        $"{Base}/rest/v1/aggregated_prices?season_id=eq.{season}&select=config_base_id,price_fe_median,price_fe_p10,price_fe_p90,submission_count,unique_devices,updated_at&order=config_base_id&limit={PageSize}&offset={offset}"
         + (since is null ? "" : $"&updated_at=gt.{since.Replace("+", "%2B")}");
 
     public static (Dictionary<int, Price> Rows, string? Newest) Parse(string json)
@@ -43,7 +43,7 @@ public static class PriceSync
             count++;
             newest = Later(newest, row.GetProperty("updated_at").GetString());
             if (row.GetProperty("price_fe_median").ValueKind != JsonValueKind.Number) continue;
-            rows[row.GetProperty("config_base_id").GetInt32()] = new Price(row.GetProperty("price_fe_median").GetSingle(), Optional(row, "price_fe_p10"), Optional(row, "price_fe_p90"));
+            rows[row.GetProperty("config_base_id").GetInt32()] = new Price(row.GetProperty("price_fe_median").GetSingle(), Optional(row, "price_fe_p10"), Optional(row, "price_fe_p90"), Stamp(row.GetProperty("updated_at").GetString()), OptionalInt(row, "submission_count"), OptionalInt(row, "unique_devices"));
         }
         return (rows, newest, count);
     }
@@ -94,31 +94,34 @@ public static class PriceSync
         }
     }
 
+    public static int? CachedSeason(string directory, int setting, int? log) => setting > 0 ? setting : log ?? NewestCachedSeason(directory);
+
     public static string? CachedPath(string directory, int setting, int? log) =>
-        (setting > 0 ? setting : log ?? NewestCachedSeason(directory)) is { } season ? Path.Combine(directory, $"prices-{season}.json") : null;
+        CachedSeason(directory, setting, log) is { } season ? Path.Combine(directory, $"prices-{season}.json") : null;
+
+    internal static (int? Season, string Source, string? Error) ResolveSeason(HttpClient http, string directory, int setting, int? log)
+    {
+        if (setting > 0) return (setting, "settings", null);
+        if (log is { } fromLog) return (fromLog, "game log", null);
+        int? season;
+        string? error = null;
+        try
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post, Base + "/rest/v1/rpc/get_available_seasons") { Content = new StringContent("{}", Encoding.UTF8, "application/json") };
+            season = LatestSeason(Send(http, request).GetAwaiter().GetResult(), DateTimeOffset.UtcNow);
+            if (season is null) error = "no season with recent prices";
+        }
+        catch (Exception ex)
+        {
+            season = null;
+            error = ex.Message;
+        }
+        return season is null ? (NewestCachedSeason(directory), "cached", error) : (season, "server", error);
+    }
 
     static Synced SyncCore(HttpClient http, string directory, int setting, int? log, bool full)
     {
-        int? season;
-        var source = "server";
-        string? error = null;
-        if (setting > 0) (season, source) = (setting, "settings");
-        else if (log is { } fromLog) (season, source) = (fromLog, "game log");
-        else
-        {
-            try
-            {
-                var request = new HttpRequestMessage(HttpMethod.Post, Base + "/rest/v1/rpc/get_available_seasons") { Content = new StringContent("{}", Encoding.UTF8, "application/json") };
-                season = LatestSeason(Send(http, request).GetAwaiter().GetResult(), DateTimeOffset.UtcNow);
-                if (season is null) error = "no season with recent prices";
-            }
-            catch (Exception ex)
-            {
-                season = null;
-                error = ex.Message;
-            }
-            if (season is null) (season, source) = (NewestCachedSeason(directory), "cached");
-        }
+        var (season, source, error) = ResolveSeason(http, directory, setting, log);
         if (season is not { } id) return new Synced(null, null, source, error);
         var path = Path.Combine(directory, $"prices-{id}.json");
         var cached = Load(path);
@@ -187,6 +190,9 @@ public static class PriceSync
 
     static float? Optional(JsonElement row, string name) =>
         row.TryGetProperty(name, out var value) && value.ValueKind == JsonValueKind.Number ? value.GetSingle() : null;
+
+    static int? OptionalInt(JsonElement row, string name) =>
+        row.TryGetProperty(name, out var value) && value.ValueKind == JsonValueKind.Number ? value.GetInt32() : null;
 
     static DateTimeOffset Stamp(string? stamp) => DateTimeOffset.Parse(stamp!, CultureInfo.InvariantCulture);
 

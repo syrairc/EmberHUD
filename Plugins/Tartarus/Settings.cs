@@ -14,6 +14,8 @@ public sealed class Settings : PluginSettings
     public bool HighlightCards = true;
     public bool ShowAssumed = true;
     public int Playouts = 300;
+    public bool OnlyBest;
+    public bool SkipStrategy;
     public int ChromaticCap = 10;
     public bool EaterKeepsBeast;
     public int SecondMealFromTier = 0;

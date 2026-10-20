@@ -16,6 +16,8 @@ static class SettingsUI
     public static void DrawAdvice(Settings s)
     {
         Setting.Slider("Playouts", ref s.Playouts, 20, 2000, "Simulated runs per option, more is steadier but slower to appear");
+        Setting.Checkbox("Only show the best", ref s.OnlyBest, "Glows one option, the best, instead of every option within the margin of error of it");
+        Setting.Checkbox("Skip the strategy pick", ref s.SkipStrategy, "Follows the highest playout value even when it is only slightly ahead. Off: the trained strategy's pick stays unless the playouts beat it clearly");
     }
 
     public static void DrawRules(Settings s)

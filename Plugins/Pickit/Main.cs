@@ -20,7 +20,7 @@ public sealed class Main : Plugin<Settings>
     public override void Tick()
     {
         if (Settings.NearEnabled || Settings.GemsEnabled) Game.WantGroundItems();
-        _autoloot.Step(Settings, Game.State, Input.IsDown, Send.Down, Send.Up, Send.Allowed);
+        _autoloot.Step(Settings, Game.State, Input.IsDown, Send.Down, Send.Up, Send.Allowed, Environment.TickCount64);
     }
 
     public override void Render()

@@ -38,6 +38,10 @@ static class SettingsUI
         Setting.Checkbox("Near items", ref s.NearEnabled, "Presses the pickup key while an item you can pick up is within the radius");
         if (s.NearEnabled) Setting.Slider("Radius", ref s.NearRadius, 50, 3000, "Ground distance from the player");
         Setting.Hotkey("Pickup key", ref s.PickupKey, "The key the game uses to pick up - modifiers are ignored", "pickupkey");
+        Setting.Checkbox("Pause on filter key", ref s.PauseEnabled, "Autoloot stops while the loot filter key is held and for the pause time after it is let go");
+        if (!s.PauseEnabled) return;
+        Setting.Hotkey("Filter key", ref s.PauseKey, "The game's loot filter key - modifiers are ignored", "pausekey");
+        Setting.Slider("Pause time", ref s.PauseSeconds, 0.5f, 60, "Seconds autoloot stays off after the filter key is let go", fmt: "%.1f");
     }
 
     static void Affixes(Settings s)

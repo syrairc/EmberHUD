@@ -25,13 +25,11 @@ public static class GroundHazards
         if (!Valid(hazard) || Game.State.Camera is null) return inside;
         Span<Vector2> ring = stackalloc Vector2[Segments];
         Geometry.RegularPolygon(hazard.Centre, hazard.Radius, ring);
-        var colour = inside ? settings.DangerColour : settings.AreaColour;
-        var opacity = float.IsFinite(settings.FillOpacity) ? Math.Clamp(settings.FillOpacity, 0f, 1f) : 0f;
-        var fill = Color.FromArgb((int)Math.Clamp(colour.A * opacity, 0f, 255f), colour);
+        var group = inside ? Groups.HazardsDanger : Groups.Hazards;
+        var fill = Groups.Fill(inside ? settings.DangerColour : settings.AreaColour, settings);
         if (hazard.InnerRadius <= 0)
         {
-            Ground.PolygonFilled(ring, fill);
-            Ground.Polyline(ring, colour, 3, true);
+            Ground.PolygonFilled(ring, fill, group: group);
             return inside;
         }
 
@@ -45,11 +43,9 @@ public static class GroundHazards
             quad[1] = ring[next];
             quad[2] = hole[next];
             quad[3] = hole[i];
-            Ground.PolygonFilled(quad, fill);
+            Ground.PolygonFilled(quad, fill, group: group);
         }
 
-        Ground.Polyline(ring, colour, 3, true);
-        Ground.Polyline(hole, colour, 3, true);
         return inside;
     }
 }

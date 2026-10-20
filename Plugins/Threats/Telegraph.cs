@@ -35,9 +35,6 @@ public static class Telegraph
         area = area[..Area(cast, settings.PlaceholderRadius, area)];
         if (area.Length == 0) return inside;
         var outline = inside ? settings.DangerColour : settings.TelegraphColour;
-        var fillBase = inside ? settings.DangerColour : settings.TelegraphFillColour;
-        var opacity = float.IsFinite(settings.FillOpacity) ? Math.Clamp(settings.FillOpacity, 0f, 1f) : 0f;
-        var fill = Color.FromArgb((int)Math.Clamp(fillBase.A * opacity, 0f, 255f), fillBase);
 
         var reach = 0f;
         foreach (var vertex in area) reach = MathF.Max(reach, Vector2.Distance(origin, vertex));
@@ -48,7 +45,7 @@ public static class Telegraph
             Geometry.RegularPolygon(origin, progress * reach, disc);
             Span<Vector2> clipped = stackalloc Vector2[Segments * 2];
             var count = Geometry.ClipConvex(area, disc, clipped);
-            if (count >= 3) Ground.PolygonFilled(clipped[..count], fill);
+            if (count >= 3) Ground.PolygonFilled(clipped[..count], Groups.Fill(inside ? settings.DangerColour : settings.TelegraphFillColour, settings), group: inside ? Groups.TelegraphFillDanger : Groups.TelegraphFill);
         }
 
         var travelled = 0f;

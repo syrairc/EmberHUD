@@ -8,16 +8,19 @@ sealed class Autoloot
 {
     public bool Holding { get; private set; }
 
-    public void Step(Settings s, GameState state, Func<Key, bool> isDown, Func<Key, bool> down, Func<Key, bool> up, bool sendAllowed)
+    long _pausedUntil;
+
+    public void Step(Settings s, GameState state, Func<Key, bool> isDown, Func<Key, bool> down, Func<Key, bool> up, bool sendAllowed, long nowMs = 0)
     {
         if (!sendAllowed)
         {
             Holding = false;
             return;
         }
+        if (s.PauseEnabled && s.PauseKey.Key != Key.None && isDown(s.PauseKey.Key)) _pausedUntil = nowMs + (long)(s.PauseSeconds * 1000);
         var key = s.PickupKey.Key;
         if (!Holding && isDown(key)) return;
-        var wanted = state.Paused != true && ((s.HoldKeyEnabled && isDown(s.HoldKey.Key)) || (s.NearEnabled && NearOwnedItem(s, state)));
+        var wanted = nowMs >= _pausedUntil && state.Paused != true && ((s.HoldKeyEnabled && isDown(s.HoldKey.Key)) || (s.NearEnabled && NearOwnedItem(s, state)));
         if (wanted && !Holding) Holding = down(key);
         else if (!wanted && Holding)
         {

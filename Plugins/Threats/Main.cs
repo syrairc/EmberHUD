@@ -23,6 +23,7 @@ public sealed class Main : Plugin<Settings>
     {
         var state = Game.State;
         if (!Settings.Show || Settings.HideBehindPanels && state.Ui.AnyFullScreen || state.Camera is null || state.Player is not { } player) return;
+        using (EmberHUD.Draw.Layer(DrawLayer.Back)) Groups.Declare(Settings);
         Game.WantCasts();
         Game.WantProjectiles();
         Game.WantGroundHazards();
