@@ -7,7 +7,7 @@
   "targets": {
     ".NETCoreApp,Version=v10.0": {},
     ".NETCoreApp,Version=v10.0/win-x64": {
-      "EmberLauncher/1.0.214": {
+      "EmberLauncher/1.0.215": {
         "runtime": {
           "EmberLauncher.dll": {}
         }
@@ -15,7 +15,7 @@
     }
   },
   "libraries": {
-    "EmberLauncher/1.0.214": {
+    "EmberLauncher/1.0.215": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
