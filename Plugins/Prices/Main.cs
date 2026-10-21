@@ -20,6 +20,10 @@ public sealed class Main : Plugin<Settings>
     const float SortGap = 8;
     const string SortPart = "UIButton_Arrage";
 
+    static readonly System.Drawing.Color CompareGreen = System.Drawing.Color.FromArgb(0x5C, 0xD6, 0x6B);
+    static readonly System.Drawing.Color CompareRed = System.Drawing.Color.FromArgb(0xE5, 0x57, 0x4F);
+    static readonly System.Drawing.Color CompareGrey = System.Drawing.Color.FromArgb(0xB0, 0xB0, 0xB0);
+
     static readonly Dictionary<int, Price> NoPrices = [];
 
     readonly Dictionary<(int BaseId, int Count, bool Gear, ulong Legendary, bool Unidentified), string> _tags = [];
@@ -44,6 +48,7 @@ public sealed class Main : Plugin<Settings>
     CancellationTokenSource? _stopContributing;
     readonly Dictionary<int, InventoryItem[]> _stashTabs = [];
     readonly Overlay _overlay = new();
+    readonly CompareCache _compare = new();
     int _unusedWidth, _unusedHeight;
 
     internal string DataDirectory { get; set; } = Path.Combine(AppContext.BaseDirectory, "Config", "Prices");
@@ -57,6 +62,8 @@ public sealed class Main : Plugin<Settings>
     internal BackgroundJob<Synced> Job { get; set; } = new();
 
     internal Func<long> Clock { get; set; } = () => Environment.TickCount64;
+
+    internal Func<Vector2> Cursor { get; set; } = () => Hexa.NET.ImGui.ImGui.GetMousePos();
 
     internal Func<long> UnixClock { get; set; } = () => DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
@@ -403,6 +410,42 @@ public sealed class Main : Plugin<Settings>
         DrawInventory();
         DrawTotals();
         DrawGround();
+        DrawCompare();
+    }
+
+    internal static string CompareLabel(float value) =>
+        Math.Abs(value) < 0.05f ? "0%" : value == 999 ? "+999%" : (value > 0 ? "+" : "") + value.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture) + "%";
+
+    void DrawCompare()
+    {
+        var page = Settings.CompareEnabled ? Game.State.Trade : null;
+        _compare.SettleMs = Settings.CompareHoverMs;
+        _compare.Feed(page, Game.State.Compare, Cursor(), Clock());
+        if (page is null) return;
+        var style = Settings.CompareText.Clone();
+        foreach (var listing in page.Listings)
+        {
+            if (_compare.Rows(page.Page, listing) is not { } rows) continue;
+            using var clip = Draw.Clip(listing.Min, listing.Max);
+            DrawCompareSide(rows, row => row.Damage, Settings.CompareDamageCorner, Settings.CompareDamageX, Settings.CompareDamageY, listing, style, Game.State.Compare);
+            DrawCompareSide(rows, row => row.Survival, Settings.CompareSurvivalCorner, Settings.CompareSurvivalX, Settings.CompareSurvivalY, listing, style, Game.State.Compare);
+        }
+    }
+
+    static void DrawCompareSide(CompareRow[] rows, Func<CompareRow, float?> pick, Corner corner, int offsetX, int offsetY, TradeListing listing, TextStyle style, EquipCompare? tooltip)
+    {
+        var bottom = corner is Corner.BottomLeft or Corner.BottomRight;
+        for (var i = 0; i < rows.Length; i++)
+        {
+            if (pick(rows[i]) is not { } value) continue;
+            var text = CompareLabel(value);
+            style.Color = text == "0%" ? CompareGrey : value > 0 ? CompareGreen : CompareRed;
+            var size = Draw.MeasureText(text, style);
+            var below = bottom ? i - (rows.Length - 1) : i;
+            var at = Tags.Anchor(corner, listing.Min, listing.Max, size) + new Vector2(offsetX, offsetY + below * size.Y);
+            if (CompareRects.Hit(tooltip, at, at + size)) continue;
+            Draw.Text(text, at, style);
+        }
     }
 
     void DrawTotals()

@@ -68,6 +68,16 @@ public sealed partial class Settings : PluginSettings
     public bool GroundOrange = true;
     public bool GroundNonEquipment;
 
+    public bool CompareEnabled = true;
+    public Corner CompareDamageCorner = Corner.BottomLeft;
+    public int CompareDamageX;
+    public int CompareDamageY;
+    public Corner CompareSurvivalCorner = Corner.BottomRight;
+    public int CompareSurvivalX;
+    public int CompareSurvivalY;
+    public int CompareHoverMs = CompareCache.DefaultSettleMs;
+    public TextStyle CompareText = new() { ShadowEnabled = true };
+
     public const int MinRefreshMinutes = 5;
 
     static bool Pick(int rareValue, bool grey, bool cyan, bool purple, bool pink, bool orange) => rareValue switch { 1 => grey, 2 => cyan, 3 => purple, 4 => pink, 100 => orange, _ => true };
@@ -213,7 +223,7 @@ public sealed partial class Settings : PluginSettings
     string _seasonText = "";
     bool _seasonEditing;
 
-    public override void Draw() => Layout.TabBar("prices", ("Prices", DrawPrices), ("Ground Items", DrawGround), ("Totals", DrawTotals), ("Database", DrawDatabase), ("Share", DrawShare));
+    public override void Draw() => Layout.TabBar("prices", ("Prices", DrawPrices), ("Ground Items", DrawGround), ("Totals", DrawTotals), ("Compare", DrawCompare), ("Database", DrawDatabase), ("Share", DrawShare));
 
     internal void DrawTotals()
     {
@@ -221,6 +231,22 @@ public sealed partial class Settings : PluginSettings
         Setting.Checkbox("Show low-high range", ref TotalRange, "Show the totals as low-high - every item at its low price, then every item at its high price. Off = only the low total");
         Setting.Checkbox("Lock", ref Lock, "The stash total ignores the mouse while locked - hold the move key to drag it anyway");
         Setting.Hotkey("Move key", ref MoveKey, "Hold to move the stash total while locked");
+    }
+
+    internal void DrawCompare()
+    {
+        Setting.Checkbox("Show compare numbers", ref CompareEnabled, "In the trade house, the damage and survival change the game shows when you hover an item are kept and drawn on that item's card, so you can read them for every card you hovered. A card is read again when you hover it after its listing changed");
+        ImGui.SeparatorText("Damage");
+        Setting.Choice("Corner", ref CompareDamageCorner, "Which corner of the card the damage change sits in. Two compare rows stack away from the card edge", id: "CompareDamageCorner");
+        Setting.Slider("Offset X", ref CompareDamageX, -100, 100, "Pixels from the corner, positive moves the number right", id: "CompareDamageX");
+        Setting.Slider("Offset Y", ref CompareDamageY, -100, 100, "Pixels from the corner, positive moves the number down", id: "CompareDamageY");
+        ImGui.SeparatorText("Survival");
+        Setting.Choice("Corner", ref CompareSurvivalCorner, "Which corner of the card the survival change sits in. Two compare rows stack away from the card edge", id: "CompareSurvivalCorner");
+        Setting.Slider("Offset X", ref CompareSurvivalX, -100, 100, "Pixels from the corner, positive moves the number right", id: "CompareSurvivalX");
+        Setting.Slider("Offset Y", ref CompareSurvivalY, -100, 100, "Pixels from the corner, positive moves the number down", id: "CompareSurvivalY");
+        ImGui.Separator();
+        Setting.Slider("Hover time (ms)", ref CompareHoverMs, 0, 1000, "How long the numbers must stay the same before they are kept for the card. Only filters flicker while the game rewrites the tooltip, it no longer affects which card the numbers go to. Lower is faster", id: "CompareHoverMs");
+        Setting.Style("Text", CompareText, "Size, background and shadow of the numbers - the colour follows the sign (green better, red worse, grey equal)");
     }
 
     internal void DrawGround()
