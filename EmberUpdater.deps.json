@@ -7,14 +7,14 @@
   "targets": {
     ".NETCoreApp,Version=v10.0": {},
     ".NETCoreApp,Version=v10.0/win-x64": {
-      "EmberUpdater/1.0.215": {
+      "EmberUpdater/1.0.219": {
         "dependencies": {
-          "EmberHUD.Api": "1.0.215",
-          "EmberLauncher": "1.0.215",
+          "EmberHUD.Api": "1.0.219",
+          "EmberLauncher": "1.0.219",
           "Hexa.NET.ImGui.Backends": "1.0.18",
           "Vortice.Direct3D11": "3.8.2",
           "Vortice.DirectComposition": "3.8.2",
-          "EmberLauncher.Reference": "1.0.215.0"
+          "EmberLauncher.Reference": "1.0.219.0"
         },
         "runtime": {
           "EmberUpdater.dll": {}
@@ -159,37 +159,37 @@
           }
         }
       },
-      "EmberHUD.Api/1.0.215": {
+      "EmberHUD.Api/1.0.219": {
         "dependencies": {
           "Clipper2": "2.0.0",
           "Hexa.NET.ImGui": "2.2.9"
         },
         "runtime": {
           "EmberHUD.Api.dll": {
-            "assemblyVersion": "1.0.215.0",
-            "fileVersion": "1.0.215.0"
+            "assemblyVersion": "1.0.219.0",
+            "fileVersion": "1.0.219.0"
           }
         }
       },
-      "EmberLauncher/1.0.215": {
+      "EmberLauncher/1.0.219": {
         "runtime": {
           "EmberLauncher.dll": {
             "fileVersion": "0.0.0.0"
           }
         }
       },
-      "EmberLauncher.Reference/1.0.215.0": {
+      "EmberLauncher.Reference/1.0.219.0": {
         "runtime": {
           "EmberLauncher.dll": {
-            "assemblyVersion": "1.0.215.0",
-            "fileVersion": "1.0.215.0"
+            "assemblyVersion": "1.0.219.0",
+            "fileVersion": "1.0.219.0"
           }
         }
       }
     }
   },
   "libraries": {
-    "EmberUpdater/1.0.215": {
+    "EmberUpdater/1.0.219": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -278,17 +278,17 @@
       "path": "vortice.mathematics/2.1.0",
       "hashPath": "vortice.mathematics.2.1.0.nupkg.sha512"
     },
-    "EmberHUD.Api/1.0.215": {
+    "EmberHUD.Api/1.0.219": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "EmberLauncher/1.0.215": {
+    "EmberLauncher/1.0.219": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "EmberLauncher.Reference/1.0.215.0": {
+    "EmberLauncher.Reference/1.0.219.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
