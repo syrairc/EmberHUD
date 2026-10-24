@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using EmberHUD;
+using EmberHUD.Ui;
 
 namespace NameplatesPlugin;
 

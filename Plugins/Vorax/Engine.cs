@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using EmberHUD;
 using Vorax.Sim;
@@ -12,9 +13,17 @@ public sealed class Engine(SolveSettings settings, Rng rng)
 
     sealed record Ranked(Pick Pick, double[] Values, double? RerollValue);
 
+    sealed record Plan(Ranker Rank, Func<Pick, double?> Estimate);
+
+    const int EstimateRollouts = 300;
+    const double StrategyGuessMilliseconds = 1000;
+
     static readonly Pick NoPick = new([], "");
 
     readonly HashSet<string> logged = [];
+    readonly Dictionary<string, double> strategyMilliseconds = [];
+
+    public Progress Progress { get; } = new();
 
     public Stage DetectStage(VoraxState state)
     {
@@ -26,13 +35,21 @@ public sealed class Engine(SolveSettings settings, Rng rng)
 
     public Advice? Advise(VoraxState state, Strategy? strategy, MapOptions options)
     {
+        Progress.Begin();
+        try { return Compute(state, strategy, options); }
+        finally { Progress.End(); }
+    }
+
+    Advice? Compute(VoraxState state, Strategy? strategy, MapOptions options)
+    {
         var stage = DetectStage(state);
         if (stage == Stage.None) return null;
         var name = strategy?.Name ?? "";
         var mapped = StateMapper.Map(state, options);
         if (mapped.State is not { } sim) return Failed(stage, name, LogOnce(mapped.Error));
-        var rank = BuildRanker(state, stage, sim, out var error);
-        if (rank is null) return Failed(stage, name, LogOnce(error));
+        var plan = BuildPlan(state, stage, sim, out var error);
+        if (plan is null) return Failed(stage, name, LogOnce(error));
+        var rank = plan.Rank;
 
         if (strategy is not null)
         {
@@ -41,9 +58,16 @@ public sealed class Engine(SolveSettings settings, Rng rng)
             var context = new StrategyContext(state, stage, chosen, maxTargets, (score, allowReroll) => rank(score, allowReroll).Pick, sim, OfferedSimIds(state, stage), stage == Stage.Target ? SelectedIndex(state) : -1);
             try
             {
+                Progress.Phase(0.5, strategyMilliseconds.GetValueOrDefault(name, StrategyGuessMilliseconds));
+                var started = Stopwatch.GetTimestamp();
                 var pick = Ask(strategy, stage, context);
+                strategyMilliseconds[name] = Stopwatch.GetElapsedTime(started).TotalMilliseconds;
                 error = pick is null ? $"{name} has no rule for {stage}" : Invalid(pick.Value, stage, state, sim, maxTargets);
-                if (error is null) return new(stage, AdviceSource.Strategy, name, pick!.Value, null, null, null);
+                if (error is null)
+                {
+                    Progress.Phase(1, settings.BudgetMilliseconds * 0.45);
+                    return new(stage, AdviceSource.Strategy, name, pick!.Value, null, null, null, Estimate(plan, pick.Value));
+                }
             }
             catch (Exception e)
             {
@@ -53,13 +77,21 @@ public sealed class Engine(SolveSettings settings, Rng rng)
 
         try
         {
+            Progress.Phase(1, settings.BudgetMilliseconds);
             var best = rank(null, true);
-            return new(stage, strategy is null ? AdviceSource.Simulator : AdviceSource.SimulatorFallback, name, best.Pick, best.Values, best.RerollValue, error);
+            var expected = best.Pick.IsReroll ? best.RerollValue : best.Values.Length > 0 ? best.Values.Max() : (double?)null;
+            return new(stage, strategy is null ? AdviceSource.Simulator : AdviceSource.SimulatorFallback, name, best.Pick, best.Values, best.RerollValue, error, expected);
         }
         catch (Exception e)
         {
             return Failed(stage, name, $"simulator threw {e.GetType().Name}: {e.Message}");
         }
+    }
+
+    static double? Estimate(Plan plan, Pick pick)
+    {
+        try { return plan.Estimate(pick); }
+        catch (Exception) { return null; }
     }
 
     static int[]? OfferedSimIds(VoraxState state, Stage stage)
@@ -115,9 +147,10 @@ public sealed class Engine(SolveSettings settings, Rng rng)
         return indexes.All(s => s is >= 0 and < SimState.DishCount && sim.Dishes[s] is not null) ? null : $"target [{string.Join(",", indexes)}] is not a monster";
     }
 
-    Ranker? BuildRanker(VoraxState state, Stage stage, SimState sim, out string? error)
+    Plan? BuildPlan(VoraxState state, Stage stage, SimState sim, out string? error)
     {
         error = null;
+        var estimating = settings with { Rollouts = Math.Min(settings.Rollouts, EstimateRollouts) };
         if (stage == Stage.Instrument)
         {
             var instruments = new List<int>();
@@ -132,11 +165,11 @@ public sealed class Engine(SolveSettings settings, Rng rng)
                 instruments.Add(instrumentId);
             }
 
-            return (score, _) =>
+            return new((score, _) =>
             {
                 var r = Solver.RankInstruments(sim, instruments, settings, score, rng);
                 return new(r.Best < 0 ? NoPick : Pick.One(r.Best, $"simulated {r.Values[r.Best]:0}"), r.Values, null);
-            };
+            }, pick => pick.Indexes is [var i] && i >= 0 && i < instruments.Count ? Solver.RankInstruments(sim, [instruments[i]], estimating, null, rng).Values[0] : null);
         }
 
         if (stage == Stage.Potion)
@@ -151,19 +184,24 @@ public sealed class Engine(SolveSettings settings, Rng rng)
                 potions.Add(!isKit && GameIds.TryPotion(card.Id, out var potionId) ? potionId : -1);
             }
 
-            return (score, allowReroll) =>
+            return new((score, allowReroll) =>
             {
                 var r = Solver.RankPotions(sim, potions, settings, score, allowReroll, rng, kits);
                 var pick = r.RerollBest ? Pick.Reroll($"reroll {r.RerollValue:0} beats {r.Values[r.Best]:0}") : r.Best < 0 ? NoPick : Pick.One(r.Best, $"simulated {r.Values[r.Best]:0}");
                 return new(pick, r.Values, allowReroll && state.Rerolls > 0 ? r.RerollValue : null);
-            };
+            }, pick =>
+            {
+                if (pick.IsReroll) return state.Rerolls > 0 ? Solver.RankPotions(sim, [], estimating, null, true, rng).RerollValue : null;
+                if (pick.Indexes is not [var i] || i < 0 || i >= potions.Count) return null;
+                return Solver.RankPotions(sim, [potions[i]], estimating, null, false, rng, [kits[i]]).Values[0];
+            });
         }
 
         GameIds.TryPotion(state.Offered[SelectedIndex(state)].Id, out var targetedPotion);
-        return (score, _) =>
+        return new((score, _) =>
         {
             var r = Solver.RankTargets(sim, targetedPotion, settings, score, rng);
             return r.Best < 0 ? new(NoPick, r.Values, null) : new(new(Solver.TargetOptions(sim, targetedPotion)[r.Best], $"simulated {r.Values[r.Best]:0}"), r.Values, null);
-        };
+        }, pick => pick.Indexes is { Length: > 0 } targets ? Solver.ValueOfTargets(sim, targetedPotion, targets, estimating, null, rng) : null);
     }
 }

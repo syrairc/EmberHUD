@@ -17,6 +17,7 @@ public sealed class Main : Plugin<Settings>
     const string GamePanelName = "S13GamePlayMain_C";
     readonly TextStyle _style = TextStyle.Hud();
     readonly Overlay _overlay = new();
+    readonly Overlay _barOverlay = new();
     int _unusedWidth, _unusedHeight;
     readonly Calibration _calibration = new(Log.Info);
     readonly RunTracker _tracker = new();
@@ -61,6 +62,7 @@ public sealed class Main : Plugin<Settings>
         if (!Settings.Enabled || Game.State.Vorax is not { } state) return;
         var advice = AdviceOverride ?? (_worker is { } worker && worker.Matches(state) ? worker.Latest : null);
         if (Settings.ShowHighlights) DrawMarks(state, advice);
+        if (Settings.ShowBar) DrawBar(state, advice);
         if (Settings.ShowPanel) DrawPanel(state, advice);
     }
 
@@ -75,6 +77,50 @@ public sealed class Main : Plugin<Settings>
             label.Color = colour;
             Draw.Text(mark.Label, new Vector2(mark.Min.X, mark.Min.Y - Draw.RowHeight(_style)), label);
         }
+    }
+
+    void DrawBar(VoraxState state, Advice? advice)
+    {
+        if (state.Offered.Length == 0 || state.Phase == VoraxPhase.Other) return;
+        var style = Settings.BarText;
+        var rowHeight = Draw.RowHeight(style);
+        var barHeight = Math.Max(4f, rowHeight * 0.3f);
+        var size = new Vector2(Settings.BarWidth, Pad * 2 + rowHeight + 4 + barHeight);
+        _barOverlay.Locked = Settings.Lock;
+        _barOverlay.MoveHeld = Settings.MoveKey.Key != Key.None && Input.IsDown(Settings.MoveKey.Key);
+        var origin = new Vector2(Settings.BarX, Settings.BarY);
+        var (hovered, _, active) = _barOverlay.Handle("voraxbar", ref origin, size, ref Settings.BarX, ref Settings.BarY, ref Settings.BarWidth, 200, 1200);
+        if (hovered || active) Overlay.ClickBlocker("voraxbar", origin, size);
+        Draw.RectFilled(origin, origin + size, Settings.BarBackground, 4);
+        if (_barOverlay.Movable) Overlay.DragHint(origin, origin + size, active, hovered, Overlay.ResizeEdge.Right);
+
+        var right = BarScore(advice);
+        var rightWidth = Draw.MeasureText(right, style).X;
+        Draw.Text(PickText(state, advice, size.X - Pad * 2 - rightWidth - 16, style), origin + new Vector2(Pad), style);
+        Draw.Text(right, origin + new Vector2(size.X - Pad, Pad), style, Align.Right);
+
+        var progress = _worker?.Progress;
+        var fraction = progress is { Active: true } ? (float)progress.Fraction : advice is null ? 0f : 1f;
+        var top = origin.Y + size.Y - Pad - barHeight;
+        Draw.Bar(new Vector2(origin.X + Pad, top), new Vector2(origin.X + size.X - Pad, top + barHeight), fraction, Settings.BarFill, Settings.BarTrack);
+    }
+
+    internal static string BarScore(Advice? advice) => advice?.Expected is { } expected ? $"Est. {expected:N0}" : "Est. -";
+
+    internal static string PickText(VoraxState state, Advice? advice, float maxWidth, TextStyle style)
+    {
+        var text = PickText(state, advice);
+        if (Draw.MeasureText(text, style).X <= maxWidth) return text;
+        while (text.Length > 1 && Draw.MeasureText(text + "...", style).X > maxWidth) text = text[..^1];
+        return text + "...";
+    }
+
+    internal static string PickText(VoraxState state, Advice? advice)
+    {
+        if (advice is null) return "thinking...";
+        if (advice.Pick.IsReroll) return "Reroll";
+        var indexes = advice.Pick.Indexes ?? [];
+        return indexes.Length == 0 ? "-" : string.Join(", ", indexes.Select(i => PickName(state, advice.Stage, i)));
     }
 
     void DrawPanel(VoraxState state, Advice? advice)
@@ -120,7 +166,8 @@ public sealed class Main : Plugin<Settings>
         var rows = new List<(string, string, Color)>();
         if (advice is null)
         {
-            if (state.Offered.Length > 0) rows.Add(("Advice", "thinking...", GameColors.TextDim));
+            if (state.Phase == VoraxPhase.Other) rows.Add(("Advice", "none for this screen", GameColors.TextDim));
+            else if (state.Offered.Length > 0) rows.Add(("Advice", "thinking...", GameColors.TextDim));
             return rows;
         }
 

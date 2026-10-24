@@ -223,7 +223,7 @@ public sealed partial class Settings : PluginSettings
     string _seasonText = "";
     bool _seasonEditing;
 
-    public override void Draw() => Layout.TabBar("prices", ("Prices", DrawPrices), ("Ground Items", DrawGround), ("Totals", DrawTotals), ("Compare", DrawCompare), ("Database", DrawDatabase), ("Share", DrawShare));
+    public override void Draw() => Layout.TabBar("prices", ("Prices", DrawPrices), ("Sources", DrawSources), ("Ground Items", DrawGround), ("Totals", DrawTotals), ("Compare", DrawCompare), ("Wealth", DrawWealth), ("Database", DrawDatabase), ("Share", DrawShare));
 
     internal void DrawTotals()
     {
@@ -289,7 +289,6 @@ public sealed partial class Settings : PluginSettings
         _seasonEditing = ImGui.IsItemActive();
         if (entered) Season = int.TryParse(_seasonText, out var typed) ? Math.Max(0, typed) : 0;
         if (Status.Length > 0) ImGui.TextDisabled(Status);
-        DrawSources();
         Setting.Checkbox("Share Exchange prices", ref Contribute, "Reads the game log (Settings > Other > Enable Log) and sends the prices of your Exchange searches to TITrack's price server, the same way TITrack does. Off = nothing is read or sent");
         if (Contribute && ContributeStatus.Length > 0) ImGui.TextDisabled(ContributeStatus);
     }
@@ -305,7 +304,6 @@ public sealed partial class Settings : PluginSettings
 
     void DrawSources()
     {
-        ImGui.SeparatorText("Price databases");
         ImGui.TextDisabled("Drag to reorder - higher in the list wins when two databases price the same item");
         List<PriceSource> order = [.. Order()];
         if (ListEditor.ReorderableList("sources", order, ref _selectedSource, (source, _) =>

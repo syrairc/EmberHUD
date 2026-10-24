@@ -35,6 +35,7 @@ public sealed class Reaction
 public sealed class Settings : PluginSettings
 {
     public int GlobalCooldownMs = 250;
+    public bool Debug;
     public List<Reaction> Reactions = [];
     [JsonIgnore] public List<string> Log = [];
 

@@ -97,6 +97,7 @@ public sealed class RunLog(Action<string> log)
             reason = advice.Pick.Reason,
             values = advice.Values?.Select(v => Math.Round(v)),
             rerollValue = advice.RerollValue is { } r ? Math.Round(r) : (double?)null,
+            expected = advice.Expected is { } e ? Math.Round(e) : (double?)null,
             error = advice.Error,
             ms = clock.ElapsedMilliseconds,
         });
@@ -111,6 +112,9 @@ public sealed class RunLog(Action<string> log)
             var index = Array.FindIndex(before.Offered, c => c.Id == id);
             Emit("instrument", new { round = state.Round, id, index, followed = Followed(Stage.Instrument, a => a.Pick.Indexes is [var i] && i == index) });
         }
+
+        foreach (var card in state.Protocols.Where(c => before.Protocols.All(o => o.Id != c.Id)))
+            Emit("protocol", new { round = state.Round, card = Card(card), offered = before.Offered.Select(Card) });
 
         if (state.Round > before.Round)
         {

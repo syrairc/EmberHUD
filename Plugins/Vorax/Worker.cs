@@ -30,6 +30,8 @@ public sealed class Worker(Engine engine) : IDisposable
         }
     }
 
+    internal Progress Progress => engine.Progress;
+
     internal bool ThreadAlive => thread?.IsAlive == true;
 
     public bool Matches(VoraxState state)

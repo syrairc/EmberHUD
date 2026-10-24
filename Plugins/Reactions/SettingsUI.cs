@@ -41,6 +41,7 @@ static class SettingsUI
     {
         Controls.Section("Reactions");
         Setting.Slider("Global cooldown (ms)", ref s.GlobalCooldownMs, 0, 2000, "Minimum gap between any two reactions firing");
+        Setting.Checkbox("Debug log", ref s.Debug, "Log why a reaction is not firing (Log tab)");
         selected = Math.Clamp(selected, 0, Math.Max(0, s.Reactions.Count - 1));
         Layout.MasterDetail("reactions", 260, () => DrawList(s), () => DrawEditor(s));
     }

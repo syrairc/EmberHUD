@@ -78,6 +78,9 @@
   "ShareTitrack": false,
   "ShareEtor": false,
   "ShareLocal": true,
+  "TrackWealth": true,
+  "SnapshotMinutes": 5,
+  "WealthPaused": false,
   "Priority": [
     "Etor",
     "Titrack",
