@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace Tartarus.Sim;
 
-public sealed record Ranked(Move Move, double Value, double Spread, double GapSe = 0, bool Strategy = false);
+public sealed record Ranked(Move Move, double Value, double Spread, double GapSe = 0, bool Quick = false);
 
 public static class Solver
 {
@@ -15,7 +15,7 @@ public static class Solver
     {
         var moves = start.Legal();
         if (moves.Count <= 1) return [.. moves.Select(move => new Ranked(move, 0, 0, 0, true))];
-        var pick = Strategy.Choose(start, new Rng(1));
+        var pick = Policy.Choose(start, new Rng(1));
         var values = moves.Select(_ => new List<int>()).ToArray();
         var best = new double[moves.Count];
         while (values[0].Count < playouts && !cancel.IsCancellationRequested)
@@ -63,7 +63,7 @@ public static class Solver
         for (var step = 0; step < StepLimit && !run.Over; step++)
         {
             if (run.Legal().Count == 0) break;
-            run.Apply(Strategy.Choose(run, play));
+            run.Apply(Policy.Choose(run, play));
         }
         return run;
     }

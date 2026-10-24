@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using EmberHUD;
@@ -10,33 +11,33 @@ public readonly record struct ValueRange(double Low, double High);
 
 public sealed record OptionAdvice(int OptionId, ValueRange Value, bool Glow, string Reason, bool Top = false);
 
-public sealed record Advice(OptionAdvice[] Options, string Summary);
+public sealed record Advice(OptionAdvice[] Options, string Summary, string Source = "");
 
 public static class SimAdvisor
 {
-    public static Advice Advise(TartarusState state, MapResult map, Ranked[]? ranked, Settings settings, Move? instant = null)
+    public static Advice Advise(TartarusState state, MapResult map, Ranked[]? ranked, Settings settings, Move? instant = null, IReadOnlyList<Strategy>? strategies = null)
     {
         if (state?.Choice is not { Options: { } options } || map is null) return new Advice([], "");
         var found = options.Select(option => map.Run is null ? null : ranked?.FirstOrDefault(entry => Matches(entry.Move, option))).ToArray();
         var glow = new bool[options.Length];
-        var core = Core(map, ranked, found, glow, options, settings);
-        int? top = glow.Any(on => on) ? Array.IndexOf(found, Pick(ranked!, settings)) : null;
-        if (ranked is null && !settings.SkipStrategy && instant is { } early && core == "thinking" && Array.FindIndex(options, option => Matches(early, option)) is var guess and >= 0) glow[guess] = true;
-        if (ranked is null && glow.Any(on => on)) top = Array.IndexOf(glow, true);
+        Resolved? resolved = null;
+        Resolved Resolve() => resolved ??= StrategyEngine.Resolve(settings.Mode, map.Run, ranked, instant, strategies);
+        var core = Core(map, ranked, found, glow, options, settings, Resolve);
+        int? top = null;
+        if (core == "thinking" && ranked is null && Resolve().Move is { } guess && Array.FindIndex(options, option => Matches(guess, option)) is var at and >= 0) glow[at] = true;
+        if (glow.Any(on => on)) top = ranked is null ? Array.IndexOf(glow, true) : Array.FindIndex(found, entry => entry is not null && entry.Move == resolved?.Move);
         var advice = options.Select((option, i) => found[i] is { } entry
             ? new OptionAdvice(option.Id, new ValueRange(entry.Value - entry.Spread, entry.Value + entry.Spread), glow[i], entry.Value.ToString("0.00", CultureInfo.InvariantCulture), top == i)
             : new OptionAdvice(option.Id, default, glow[i], "", top == i)).ToArray();
         var notes = settings.ShowAssumed && map.Assumed.Length > 0 ? $"assumed: {string.Join('\n', map.Assumed)}\n" : "";
-        return new Advice(advice, notes + core);
+        return new Advice(advice, notes + core, resolved is { Move: not null } ? resolved.Source : "");
     }
 
     const double SwitchMin = 0.05;
 
-    static bool Close(Ranked best, Ranked other) => best.Value - other.Value <= Math.Max(1.96 * other.GapSe, SwitchMin);
+    internal static bool Close(Ranked best, Ranked other) => best.Value - other.Value <= Math.Max(1.96 * other.GapSe, SwitchMin);
 
-    static Ranked Pick(Ranked[] ranked, Settings settings) => !settings.SkipStrategy && ranked.FirstOrDefault(entry => entry.Strategy) is { } mine && Close(ranked[0], mine) ? mine : ranked[0];
-
-    static string Core(MapResult map, Ranked[]? ranked, Ranked?[] found, bool[] glow, TartarusOption[] options, Settings settings)
+    static string Core(MapResult map, Ranked[]? ranked, Ranked?[] found, bool[] glow, TartarusOption[] options, Settings settings, Func<Resolved> resolve)
     {
         if (map.Mismatch is not null) return $"mismatch: {map.Mismatch}";
         if (map.Unsupported is not null) return map.Unsupported;
@@ -46,8 +47,8 @@ public static class SimAdvisor
 
         if (simulated.Length == 1) return "only option";
 
-        var pick = Pick(ranked, settings);
-        foreach (var i in simulated) glow[i] = found[i] == pick || !settings.OnlyBest && Close(ranked[0], found[i]!);
+        var pick = resolve().Move;
+        foreach (var i in simulated) glow[i] = found[i]?.Move == pick || !settings.OnlyBest && Close(ranked[0], found[i]!);
         return $"{glow.Count(on => on)} best";
     }
 

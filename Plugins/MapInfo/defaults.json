@@ -15,6 +15,7 @@
     "EnemiesBar": false,
     "Xp": true,
     "Content": true,
+    "Vorax": true,
     "Modifiers": true
   },
   "Look": {

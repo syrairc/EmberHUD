@@ -18,8 +18,14 @@ public sealed class Main : Plugin<Settings>
     Move? _instant;
     int _boardKey;
     int _generation;
+    DecisionLog? _decisions;
+    int? _seenKey;
+    int _rankedLogged;
+    string _adviceSignature = "";
 
     internal InmateLogger Logger { get; } = new();
+
+    internal Action<string>? Sink { get; set; }
 
     public Advice? Advice { get; private set; }
 
@@ -30,8 +36,33 @@ public sealed class Main : Plugin<Settings>
         _state = state;
         _tracker ??= new RunTracker(Logger.DataDirectory, Logger.Seconds);
         var tracked = _tracker.Update(state);
+        LogSeen(state, tracked);
         Advice = state?.Choice is { Kind: not TartarusChoiceKind.Event } ? Advise(state, tracked) : null;
+        LogAdvice();
         Logger.Tick();
+    }
+
+    void Record(string kind, Func<object?> data)
+    {
+        if (!Settings.LogDecisions) return;
+        (_decisions ??= new(Sink)).Write(kind, data);
+    }
+
+    void LogSeen(TartarusState? state, TrackedRun tracked)
+    {
+        var key = state is null ? 0 : BoardKey(state, tracked, Settings.ToRules());
+        if (key == _seenKey) return;
+        _seenKey = key;
+        Record("state", () => new { state, tracked.SwapUsedToday });
+    }
+
+    void LogAdvice()
+    {
+        var advice = Advice;
+        var signature = advice is null ? "" : $"{advice.Summary}|{advice.Source}|{string.Join(',', advice.Options.Select(option => $"{option.OptionId}{(option.Glow ? 'g' : '-')}{(option.Top ? 't' : '-')}{option.Reason}"))}";
+        if (signature == _adviceSignature) return;
+        _adviceSignature = signature;
+        Record("advice", () => new { generation = _generation, mode = Settings.Mode, advice });
     }
 
     Advice Advise(TartarusState state, TrackedRun tracked)
@@ -46,15 +77,21 @@ public sealed class Main : Plugin<Settings>
             _generation++;
             _worker.Playouts = Settings.ClampedPlayouts;
             if (_map.Run is { } run) _worker.Submit(run, _generation);
+            Record("map", () => new { generation = _generation, mode = Settings.Mode, playouts = Settings.ClampedPlayouts, rules, _map.Mismatch, _map.Unsupported, _map.Assumed, legal = _map.Run?.Legal(), instant = _instant });
         }
         var (ranked, generation) = _worker.Latest;
+        if (ranked is not null && generation == _generation && _rankedLogged != generation)
+        {
+            _rankedLogged = generation;
+            Record("ranked", () => new { generation, elapsedMs = _worker.Progress?.Elapsed.TotalMilliseconds, ranked = ranked.Take(10) });
+        }
         return SimAdvisor.Advise(state, _map, generation == _generation ? ranked : null, Settings, _instant);
     }
 
     static Move? Instant(Run? run)
     {
         if (run is null) return null;
-        try { return Strategy.Choose(run, new Rng(1)); }
+        try { return Policy.Choose(run, new Rng(1)); }
         catch (Exception error)
         {
             Log.Error(error, "tartarus instant pick");
@@ -141,6 +178,8 @@ public sealed class Main : Plugin<Settings>
     {
         if (!Settings.ShowPanel || Advice is not { } advice || _state is not { Cells: not null, Choice: { Options: not null } choice } state || advice.Options.Length != choice.Options.Length) return;
         var summary = advice.Summary.Split('\n');
+        var noteLines = summary.Length - 1;
+        if (advice.Source != "") summary = [.. summary, advice.Source];
         var rows = new (string Left, string Right, bool Glow, bool Top)[choice.Options.Length];
         for (var i = 0; i < rows.Length; i++)
         {
@@ -179,7 +218,7 @@ public sealed class Main : Plugin<Settings>
         var footer = _style.Clone();
         for (var i = 0; i < summary.Length; i++)
         {
-            var warn = i < summary.Length - 1 || summary[i].StartsWith("mismatch") || summary[i].StartsWith("unsure");
+            var warn = i < noteLines || summary[i].StartsWith("mismatch") || summary[i].StartsWith("unsure");
             footer.Color = warn ? GameColors.Gold : GameColors.TextDim;
             Draw.Text(summary[i], new Vector2(origin.X + Pad, y), footer);
             y += rowHeight;

@@ -26,6 +26,7 @@ public sealed class SectionsTab
     public bool EnemiesBar;
     public bool Xp = true;
     public bool Content = true;
+    public bool Vorax = true;
     public bool Modifiers = true;
 }
 
@@ -77,6 +78,7 @@ public sealed class Settings : PluginSettings
         Setting.Checkbox("Enemies as progress bar", ref Sections.EnemiesBar, "Needs Remaining enemies on - replaces the enemy count with a bar that fills as enemies die, text is remaining / the highest count seen this map");
         Setting.Checkbox("XP gain", ref Sections.Xp, "Only shows when the game's value could be read");
         Setting.Checkbox("Content", ref Sections.Content, "Vigil, tarot, gods, etc with a done / in progress / not done mark");
+        Setting.Checkbox("Vorax elites left", ref Sections.Vorax, "Elites left on the map from the Vorax Monitor buff, ticked when they are all dead. Only shows once the buff has been seen in the map");
         Setting.Checkbox("Modifiers", ref Sections.Modifiers, "Every map modifier with text that isn't already a content row");
     }
 

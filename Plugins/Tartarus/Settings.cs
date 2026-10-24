@@ -15,7 +15,8 @@ public sealed class Settings : PluginSettings
     public bool ShowAssumed = true;
     public int Playouts = 300;
     public bool OnlyBest;
-    public bool SkipStrategy;
+    public string Mode = StrategyEngine.DefaultMode;
+    public bool LogDecisions = true;
     public int ChromaticCap = 10;
     public bool EaterKeepsBeast;
     public int SecondMealFromTier = 0;

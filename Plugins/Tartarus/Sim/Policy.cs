@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Tartarus.Sim;
 
-public static class Strategy
+public static class Policy
 {
     public static Move Choose(Run run, Rng rng)
     {

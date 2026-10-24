@@ -1,4 +1,8 @@
+using System;
+using System.Linq;
+using EmberHUD;
 using EmberHUD.Ui;
+using Hexa.NET.ImGui;
 
 namespace Tartarus;
 
@@ -17,7 +21,19 @@ static class SettingsUI
     {
         Setting.Slider("Playouts", ref s.Playouts, 20, 2000, "Simulated runs per option, more is steadier but slower to appear");
         Setting.Checkbox("Only show the best", ref s.OnlyBest, "Glows one option, the best, instead of every option within the margin of error of it");
-        Setting.Checkbox("Skip the strategy pick", ref s.SkipStrategy, "Follows the highest playout value even when it is only slightly ahead. Off: the trained strategy's pick stays unless the playouts beat it clearly");
+        DrawMode(s);
+        Setting.Checkbox("Log decisions", ref s.LogDecisions, "Logs what the plugin sees and advises to the Ember log (Info, Tartarus source), one line per change");
+    }
+
+    static void DrawMode(Settings s)
+    {
+        var strategies = Registry.All();
+        var labels = strategies.Select(strategy => strategy.Name).ToArray();
+        var index = Math.Max(0, Array.IndexOf(labels, Array.IndexOf(labels, s.Mode) < 0 ? StrategyEngine.DefaultMode : s.Mode));
+        ImGui.TextUnformatted("Mode");
+        ImGui.SameLine(160);
+        if (Combo.Option(ref index, labels, "tartarusmode", 260)) s.Mode = labels[index];
+        if (strategies[index].Description != "") ImGui.TextDisabled(strategies[index].Description);
     }
 
     public static void DrawRules(Settings s)

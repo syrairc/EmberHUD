@@ -456,13 +456,21 @@ public sealed class Main : Plugin<Settings>
         Game.WantInventory();
         var icon = TagIcon(out var hasIcon);
         if (state.Inventory is { } inventory && SortButton(state.Ui) is { } sort)
-            DrawTag(TotalText(TotalOf(inventory)), icon, hasIcon, size => new Vector2(sort.Min.X - SortGap - size.X, (sort.Min.Y + sort.Max.Y - size.Y) / 2));
+            DrawTag(BagTotalText(inventory, state.Bag), icon, hasIcon, size => new Vector2(sort.Min.X - SortGap - size.X, (sort.Min.Y + sort.Max.Y - size.Y) / 2));
         if (state.Stash is { } stash && _stashTabs.TryGetValue(stash.Tab, out var tab))
         {
             (double Low, double High) all = default;
             foreach (var items in _stashTabs.Values) all = TotalOf(items) is var (low, high) ? (all.Low + low, all.High + high) : all;
             DrawTag($"{TotalText(TotalOf(tab))} / {TotalText(all)}", icon, hasIcon, Movable);
         }
+    }
+
+    internal string BagTotalText(InventoryItem[] inventory, BagView? bag)
+    {
+        var all = TotalText(TotalOf(inventory));
+        if (bag is null) return all;
+        var tab = TotalText(TotalOf(inventory.Where(item => item.Bag == bag.Tab)));
+        return tab == all ? all : $"{tab} ({all})";
     }
 
     internal (double Low, double High) TotalOf(IEnumerable<InventoryItem> items)

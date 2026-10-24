@@ -1,1 +1,1 @@
-{ "Enabled": true, "ShowPanel": true, "Lock": true, "MoveKey": "Alt", "PanelX": 2750, "PanelY": 200 }
+{ "Enabled": true, "ShowPanel": true, "ShowHighlights": true, "Debug": false, "Lock": true, "MoveKey": "Alt", "PanelX": 2750, "PanelY": 200, "Mode": "Simulator", "RerollMargin": 5, "Rollouts": 200, "BudgetMilliseconds": 1500 }

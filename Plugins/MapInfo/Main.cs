@@ -17,9 +17,10 @@ internal readonly record struct Laid(Row Row, string[] Lines, float LineHeight, 
 public sealed class Main : Plugin<Settings>
 {
     internal const float Gap = 4;
+    internal const int VoraxBuffId = 43022;
     const float UnderlineGap = 4;
 
-    internal static List<Row> Rows(MapInfo map, SectionsTab show, int? enemyMax = null)
+    internal static List<Row> Rows(MapInfo map, SectionsTab show, int? enemyMax = null, int? voraxLeft = null)
     {
         List<Row> rows = [];
         if (show.Title && map.Name.Length > 0) rows.Add(new Row(RowKind.Title, map.Name));
@@ -28,13 +29,15 @@ public sealed class Main : Plugin<Settings>
         var bar = show.Enemies && show.EnemiesBar;
         if (show.Enemies && !bar && map.Remaining is { } remaining) parts.Add($"{remaining} enemies");
         if (parts.Count > 0) rows.Add(new Row(RowKind.Line, string.Join(" · ", parts)));
-        if (bar && map.Remaining is { } left)
+        if (bar && map.Remaining is { } enemiesLeft)
         {
-            var max = Math.Max(enemyMax ?? 0, left);
-            rows.Add(new Row(RowKind.Bar, $"{left} / {max}", Remaining: left, Max: max));
+            var max = Math.Max(enemyMax ?? 0, enemiesLeft);
+            rows.Add(new Row(RowKind.Bar, $"{enemiesLeft} / {max}", Remaining: enemiesLeft, Max: max));
         }
         if (show.Xp && map.XpGain is { } xp) rows.Add(new Row(RowKind.Line, $"Map Base XP gain: {xp}"));
         if (show.Content) rows.AddRange(map.Content.Select(c => new Row(RowKind.Content, c.Total > 1 ? $"{c.Name}  {c.Done}/{c.Total}" : c.Name, c)));
+        if (show.Vorax && voraxLeft is { } left)
+            rows.Add(new Row(RowKind.Content, left > 0 ? $"Vorax Elites  {left} left" : "Vorax Elites  cleared", new MapContent("Vorax Elites", "game:UI_MiniMap_S13jingyingguai", left > 0 ? ContentState.Active : ContentState.Done)));
         if (show.Modifiers) rows.AddRange(map.Modifiers.Select(m => new Row(RowKind.Modifier, m)));
         return rows;
     }
@@ -78,12 +81,45 @@ public sealed class Main : Plugin<Settings>
     int _max;
     MapInfo? _laidMap;
     int _laidMax;
+    int? _laidVorax;
     float _laidWidth;
     long _laidAt;
     float _laidHeight;
     List<Laid> _laid = [];
 
-    public override void Tick() => EnemyMax(Game.State.AreaId, Game.State.Area?.Remaining);
+    int _voraxArea = -1;
+    bool _voraxSeen;
+    int _voraxLeft;
+    int? _vorax;
+
+    public override void Tick()
+    {
+        var state = Game.State;
+        EnemyMax(state.AreaId, state.Area?.Remaining);
+        if (state.Area is null || !Settings.Sections.Vorax) return;
+        Game.WantCharacter();
+        _vorax = VoraxLeft(state.AreaId, state.Buffs);
+    }
+
+    internal int? VoraxLeft(int areaId, Buff[]? buffs)
+    {
+        if (areaId != _voraxArea)
+        {
+            _voraxArea = areaId;
+            _voraxSeen = false;
+        }
+        if (buffs is not null)
+        {
+            var found = buffs.Where(b => b.Id == VoraxBuffId).Select(b => (int?)b.Stacks).FirstOrDefault();
+            if (found is { } stacks)
+            {
+                _voraxSeen = true;
+                _voraxLeft = stacks;
+            }
+            else if (_voraxSeen) _voraxLeft = 0;
+        }
+        return _voraxSeen ? _voraxLeft : null;
+    }
 
     internal void EnemyMax(int areaId, int? remaining)
     {
@@ -101,12 +137,13 @@ public sealed class Main : Plugin<Settings>
     internal List<Laid> LaidFor(MapInfo map, long now)
     {
         var width = Settings.General.Width;
-        if (ReferenceEquals(map, _laidMap) && _max == _laidMax && width == _laidWidth && now - _laidAt < 250) return _laid;
+        if (ReferenceEquals(map, _laidMap) && _max == _laidMax && _vorax == _laidVorax && width == _laidWidth && now - _laidAt < 250) return _laid;
         _laidMap = map;
         _laidMax = _max;
+        _laidVorax = _vorax;
         _laidWidth = width;
         _laidAt = now;
-        _laid = Layout(Rows(map, Settings.Sections, _max), Settings.Look, width);
+        _laid = Layout(Rows(map, Settings.Sections, _max, _vorax), Settings.Look, width);
         _laidHeight = _laid.Sum(l => l.Height);
         return _laid;
     }
