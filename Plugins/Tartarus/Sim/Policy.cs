@@ -27,9 +27,10 @@ public static class Policy
 
     static double ToolGain(Run run, ToolId tool)
     {
-        if (run.Tools.Count == 0) return ToolSets.Single[(int)tool] - ToolSets.Base;
+        var table = run.Chance.Tools ?? ToolSets.Standard;
+        if (run.Tools.Count == 0) return table.Single[(int)tool] - table.Base;
         var sum = 0.0;
-        foreach (var held in run.Tools) sum += ToolSets.Pair(held, tool) - ToolSets.Single[(int)held];
+        foreach (var held in run.Tools) sum += table.Pair(held, tool) - table.Single[(int)held];
         return sum / run.Tools.Count;
     }
 

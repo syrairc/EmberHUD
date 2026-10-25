@@ -15,6 +15,10 @@ public sealed partial class Settings : PluginSettings
     public Corner Corner = Corner.TopLeft;
     public int OffsetX = 6;
     public int OffsetY = 8;
+    public int MapRewardOffsetX;
+    public int MapRewardOffsetY;
+    public int BossRewardOffsetX;
+    public int BossRewardOffsetY;
     public TextStyle Text = new() { Color = Color.FromArgb(0xF9, 0xDD, 0x75), ShadowEnabled = true };
     public bool ShowIcon = true;
     public bool ShowGrey = true;
@@ -223,7 +227,7 @@ public sealed partial class Settings : PluginSettings
     string _seasonText = "";
     bool _seasonEditing;
 
-    public override void Draw() => Layout.TabBar("prices", ("Prices", DrawPrices), ("Sources", DrawSources), ("Ground Items", DrawGround), ("Totals", DrawTotals), ("Compare", DrawCompare), ("Wealth", DrawWealth), ("Database", DrawDatabase), ("Share", DrawShare));
+    public override void Draw() => Layout.TabBar("prices", ("Prices", DrawPrices), ("Sources", DrawSources), ("Ground Items", DrawGround), ("Totals", DrawTotals), ("Compare", DrawCompare), ("Wealth", DrawWealth), ("Overlay", DrawOverlay), ("Database", DrawDatabase), ("Share", DrawShare));
 
     internal void DrawTotals()
     {
@@ -266,6 +270,10 @@ public sealed partial class Settings : PluginSettings
         Setting.Choice("Corner", ref Corner, "Which corner of the cell the tag sits in - bottom-right is where the game draws its own item count");
         Setting.Slider("Offset X", ref OffsetX, -100, 100, "Pixels from the corner, positive moves the tag right");
         Setting.Slider("Offset Y", ref OffsetY, -100, 100, "Pixels from the corner, positive moves the tag down");
+        Setting.Slider("Map screen offset X", ref MapRewardOffsetX, -100, 100, "Pixels from the corner on the Netherrealm map screen rewards and drops, positive moves the tag right", id: "MapRewardOffsetX");
+        Setting.Slider("Map screen offset Y", ref MapRewardOffsetY, -100, 100, "Pixels from the corner on the Netherrealm map screen rewards and drops, positive moves the tag down", id: "MapRewardOffsetY");
+        Setting.Slider("Boss screen offset X", ref BossRewardOffsetX, -100, 100, "Pixels from the corner on the boss rewards screen, positive moves the tag right", id: "BossRewardOffsetX");
+        Setting.Slider("Boss screen offset Y", ref BossRewardOffsetY, -100, 100, "Pixels from the corner on the boss rewards screen, positive moves the tag down", id: "BossRewardOffsetY");
         Setting.Style("Text", Text, "Colour, size, background and shadow of the tag");
         Setting.Checkbox("Show FE icon", ref ShowIcon, "The FE icon in front of the number - needs the game icons from Setup");
         Setting.Checkbox("Grey gear", ref ShowGrey, "Price tags on grey frame gear (normal)");

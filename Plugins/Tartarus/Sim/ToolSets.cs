@@ -42,9 +42,7 @@ static class ToolSets
         4.637,
     ];
 
-    public static double Pair(ToolId first, ToolId second)
-    {
-        var (a, b) = first < second ? ((int)first, (int)second) : ((int)second, (int)first);
-        return Pairs[a * (2 * Single.Length - a - 1) / 2 + b - a - 1];
-    }
+    public static readonly ToolTable Standard = new(Base, Single, Pairs);
+
+    public static double Pair(ToolId first, ToolId second) => Standard.Pair(first, second);
 }

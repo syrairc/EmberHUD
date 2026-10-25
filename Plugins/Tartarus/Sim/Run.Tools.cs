@@ -98,7 +98,7 @@ public sealed partial class Run
     void Fate()
     {
         var groups = Inmates().GroupBy(cell => (Cells[cell].Beast, Cells[cell].Tier)).Where(group => group.Count() >= 2).ToList();
-        if (groups.Count == 0 || !Roll(60)) return;
+        if (groups.Count == 0 || !Roll(Chance.CoinPercent ?? 60)) return;
         var matching = groups[Pick(groups.Count)].ToList();
         var gone = matching[Pick(matching.Count)];
         matching.Remove(gone);

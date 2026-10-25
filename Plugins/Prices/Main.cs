@@ -19,6 +19,8 @@ public sealed class Main : Plugin<Settings>
     const float GroundGap = 4;
     const float SortGap = 8;
     const string SortPart = "UIButton_Arrage";
+    internal const string BoothPanel = "AuctionHouseV2_C";
+    internal const string StashPart = "Button_WareHouse";
 
     static readonly System.Drawing.Color CompareGreen = System.Drawing.Color.FromArgb(0x5C, 0xD6, 0x6B);
     static readonly System.Drawing.Color CompareRed = System.Drawing.Color.FromArgb(0xE5, 0x57, 0x4F);
@@ -49,6 +51,9 @@ public sealed class Main : Plugin<Settings>
     readonly Dictionary<int, InventoryItem[]> _stashTabs = [];
     readonly Overlay _overlay = new();
     readonly CompareCache _compare = new();
+    readonly ProfitOverlay _profit = new();
+    ProfitView? _profitView;
+    long _nextProfitAt;
     int _unusedWidth, _unusedHeight;
     WealthTracker? _wealth;
     volatile bool _wealthDirty;
@@ -83,7 +88,10 @@ public sealed class Main : Plugin<Settings>
 
     internal Func<string?> CharacterName { get; set; } = () => "Account";
 
-    internal WealthTracker Wealth => _wealth ??= new WealthTracker(() => Now()) { Open = key => WealthStore.Load(WealthDirectory, key) };
+    internal WealthTracker Wealth => _wealth ??= new WealthTracker(() => Now()) { Open = key => WealthStore.Load(WealthDirectory, key), Include = CountsTowardsWealth };
+
+    bool CountsTowardsWealth(InventoryItem item) =>
+        item.BaseId == Valuation.FeBaseId || Settings.Shows(item) && !Settings.TooCheap(item, Tags.Value(item, _prices, Legendary));
 
     internal Task? WealthSave { get; private set; }
 
@@ -106,6 +114,7 @@ public sealed class Main : Plugin<Settings>
         Settings.PurgeLocal = PurgeNow;
         (Settings.ShareFolder, Settings.ExportShare, Settings.ImportShare) = (ShareDirectory, ExportShare, ImportShare);
         (Settings.WealthStatus, Settings.WealthReset, Settings.WealthOpen) = (WealthStatus, Wealth.Reset, OpenDashboard);
+        Settings.SessionReset = Wealth.Session.Restart;
         CopyDashboard();
         _fullKey = null;
         if (PriceSources.Cached(DataDirectory, Settings.Active, Settings.Season, LogSeason) is { } cached) Apply(cached.Synced, cached.At);
@@ -563,10 +572,26 @@ public sealed class Main : Plugin<Settings>
     public override void Render()
     {
         DrawInventory();
+        DrawMapReward();
         DrawTotals();
         DrawGround();
         DrawCompare();
+        DrawProfit();
     }
+
+    void DrawProfit()
+    {
+        if (!(Settings.Enabled && Settings.TrackWealth && !Settings.WealthPaused && (Settings.ProfitFull || Settings.ProfitCompact)) || !ProfitShown(Game.State, Settings)) return;
+        if (Clock() >= _nextProfitAt)
+        {
+            _nextProfitAt = Clock() + 250;
+            _profitView = Wealth.Session.View(Wealth.CurrentRun, Wealth.Current ?? Wealth.Last, Wealth.Store?.Data.Tabs ?? [], Wealth.BagWealth);
+        }
+        _profit.Draw(Settings, _profitView, TagIcon(out var hasIcon, Settings.ProfitIcon), hasIcon);
+    }
+
+    internal static bool ProfitShown(GameState state, Settings settings) =>
+        !(settings.ProfitHideFullScreen && state.Ui.AnyFullScreen && !(settings.ProfitKeepOnTradeHouse && state.Trade is not null));
 
     internal static string CompareLabel(float value) =>
         Math.Abs(value) < 0.05f ? "0%" : value == 999 ? "+999%" : (value > 0 ? "+" : "") + value.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture) + "%";
@@ -607,10 +632,17 @@ public sealed class Main : Plugin<Settings>
     {
         var state = Game.State;
         if (state.Stash is { } shown && state.StashItems is { } shownItems) _stashTabs[shown.Tab] = shownItems;
-        if (!Settings.ShowTotals || OpenKind(state.Ui) is null) return;
+        var booth = BoothOpen(state.Ui);
+        if (!Settings.ShowTotals || (!booth && OpenKind(state.Ui) is null)) return;
         Game.WantInventory();
         var icon = TagIcon(out var hasIcon);
-        if (state.Inventory is { } inventory && SortButton(state.Ui) is { } sort)
+        if (booth && state.Booth is { } view && state.Inventory is { } stock)
+        {
+            if (FindPart(state.Ui, p => p.Name == BoothPanel, StashPart) is { } stashButton)
+                DrawTag(BagTotalText(stock, view), icon, hasIcon, size => new Vector2(stashButton.Min.X - SortGap - size.X, (stashButton.Min.Y + stashButton.Max.Y - size.Y) / 2));
+            return;
+        }
+        if (state.Inventory is { } inventory && FindPart(state.Ui, p => p.Kind == PanelKind.Inventory, SortPart) is { } sort)
             DrawTag(BagTotalText(inventory, state.Bag), icon, hasIcon, size => new Vector2(sort.Min.X - SortGap - size.X, (sort.Min.Y + sort.Max.Y - size.Y) / 2));
         if (state.Stash is { } stash && _stashTabs.TryGetValue(stash.Tab, out var tab))
         {
@@ -653,12 +685,14 @@ public sealed class Main : Plugin<Settings>
         return origin;
     }
 
-    static NamedRect? SortButton(GameUi ui)
+    static bool BoothOpen(GameUi ui) => ui.Panels.Any(p => p.Name == BoothPanel);
+
+    static NamedRect? FindPart(GameUi ui, Func<GamePanel, bool> panel, string part)
     {
-        foreach (var panel in ui.Panels)
-            if (panel.Kind == PanelKind.Inventory)
-                foreach (var part in panel.Parts)
-                    if (part.Name == SortPart) return part;
+        foreach (var candidate in ui.Panels)
+            if (panel(candidate))
+                foreach (var rect in candidate.Parts)
+                    if (rect.Name == part) return rect;
         return null;
     }
 
@@ -668,6 +702,15 @@ public sealed class Main : Plugin<Settings>
     {
         if (!Settings.Enabled) return;
         var state = Game.State;
+        if (BoothOpen(state.Ui))
+        {
+            Game.WantInventory();
+            if (state.Booth is { } booth && state.Inventory is { } stock)
+            {
+                DrawTags(stock, booth.ClipMin, booth.ClipMax, booth.Cells, item => item.Bag == booth.Tab);
+                return;
+            }
+        }
         var kind = OpenKind(state.Ui);
         if (kind is null) return;
         Game.WantInventory();
@@ -679,6 +722,23 @@ public sealed class Main : Plugin<Settings>
         else if (state.Stash is { } stash && state.StashItems is { } items)
             DrawTags(items, stash.ClipMin, stash.ClipMax, stash.Cells, _ => true);
     }
+
+    void DrawMapReward()
+    {
+        if (!Settings.Enabled || Game.State.MapReward is not { } view) return;
+        var icon = TagIcon(out var hasIcon);
+        var offset = RewardOffset(view);
+        foreach (var reward in view.Items)
+        {
+            var legendary = reward.SpecialId != 0;
+            var item = new InventoryItem(legendary ? InventoryBag.Equipment : InventoryBag.Commodities, 0, "", reward.BaseId, 0, 0, 0, reward.Count, 0, 0) { SpecialId = reward.SpecialId, Unidentified = legendary };
+            var text = legendary ? TagFor(reward.BaseId, reward.Count, true, reward.SpecialId, true, [], []) : TagFor(reward.BaseId, reward.Count, false);
+            if (Settings.TooCheap(item, Tags.Value(item, _prices, legendary ? Legendary : null)) || text is null) continue;
+            DrawTag(text, icon, hasIcon, size => Tags.Anchor(Settings.Corner, reward.Min, reward.Max, size) + offset);
+        }
+    }
+
+    internal Vector2 RewardOffset(MapRewardView view) => view.Boss ? new Vector2(Settings.BossRewardOffsetX, Settings.BossRewardOffsetY) : new Vector2(Settings.MapRewardOffsetX, Settings.MapRewardOffsetY);
 
     void DrawTags(IReadOnlyList<InventoryItem> items, Vector2 clipMin, Vector2 clipMax, BagCell[] cells, Func<InventoryItem, bool> onTab)
     {
@@ -707,10 +767,10 @@ public sealed class Main : Plugin<Settings>
         }
     }
 
-    Sprite TagIcon(out bool hasIcon)
+    Sprite TagIcon(out bool hasIcon, bool? wanted = null)
     {
         Sprite icon = default;
-        hasIcon = Settings.ShowIcon && Draw.TryGameIcon(FeIcon, out icon);
+        hasIcon = (wanted ?? Settings.ShowIcon) && Draw.TryGameIcon(FeIcon, out icon);
         return icon;
     }
 
@@ -741,7 +801,7 @@ public sealed class Main : Plugin<Settings>
         var key = (baseId, count, gear, specialId == 0 ? 0 : LegendaryPrices.Key(specialId, affixIds), specialId != 0 && unidentified);
         if (_tags.TryGetValue(key, out var text)) return text;
         text = specialId != 0 && (Legendary?.Of(specialId, unidentified, affixIds) ?? Tags.Find(_prices, specialId)) is { } special
-            ? Tags.Text(special, 1, gear) is { } priced ? (unidentified ? "?" + priced : priced) : null
+            ? Tags.Text(special, 1, gear) is { } priced ? (unidentified ? priced + "*" : priced) : null
             : Tags.Text(baseId, count, gear, _prices);
         if (text is not null) _tags[key] = text;
         return text;

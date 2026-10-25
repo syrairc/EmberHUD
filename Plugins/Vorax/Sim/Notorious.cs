@@ -27,8 +27,13 @@ public sealed class Notorious
     const int MaxSteps = 300;
 
     readonly int _futures;
+    readonly DrawProfile _draw;
 
-    public Notorious(int futures = 0) => _futures = futures > 0 ? futures : Environment.ProcessorCount >= 8 ? 64 : 32;
+    public Notorious(int futures = 0, DrawProfile? draw = null)
+    {
+        _futures = futures > 0 ? futures : Environment.ProcessorCount >= 8 ? 64 : 32;
+        _draw = draw ?? DrawModel.Standard;
+    }
 
     sealed class Node(SimState sim, int[] hand, KitDef? box, Rng rng)
     {
@@ -244,7 +249,7 @@ public sealed class Notorious
     {
         var rng = node.Rng;
         var id = node.Hand[option.Card];
-        if (DrawModel.KitOf(id) is { } kit && node.Box is null) return new(node.Sim, DrawModel.DrawHand(rng, kit.Amount, kit), kit, rng);
+        if (DrawModel.KitOf(id) is { } kit && node.Box is null) return new(node.Sim, DrawModel.DrawHand(rng, kit.Amount, kit, _draw), kit, rng);
         return Deal(Round.Play(node.Sim, id, option.Targets, rng), rng);
     }
 
@@ -254,16 +259,16 @@ public sealed class Notorious
     {
         var sim = node.Sim.Clone();
         sim.Rerolls--;
-        return new(sim, DrawModel.DrawHand(node.Rng, 3), null, node.Rng);
+        return new(sim, DrawModel.DrawHand(node.Rng, 3, null, _draw), null, node.Rng);
     }
 
-    static Node Deal(SimState sim, Rng rng)
+    Node Deal(SimState sim, Rng rng)
     {
         if (sim.Over || sim.Round > Round.PotionRounds && sim.PendingInstrumentPicks == 0) return new(sim, [], null, rng);
-        return new(sim, sim.PendingInstrumentPicks > 0 ? DrawModel.DrawInstruments(rng, sim.Instruments) : DrawModel.DrawHand(rng, 3), null, rng);
+        return new(sim, sim.PendingInstrumentPicks > 0 ? DrawModel.DrawInstruments(rng, sim.Instruments) : DrawModel.DrawHand(rng, 3, null, _draw), null, rng);
     }
 
-    static Node PickInstrument(Node node, int card, Rng rng)
+    Node PickInstrument(Node node, int card, Rng rng)
     {
         var sim = node.Sim.Clone();
         var id = node.Hand[card];
@@ -275,6 +280,6 @@ public sealed class Notorious
         if (sim.PendingInstrumentPicks > 0) sim.PendingInstrumentPicks--;
         if (sim.PendingInstrumentPicks > 0 && sim.Instruments.Count < Round.MaxInstruments) return new(sim, DrawModel.DrawInstruments(rng, sim.Instruments), null, rng);
         sim.PendingInstrumentPicks = 0;
-        return new(sim, sim.Round > Round.PotionRounds ? [] : DrawModel.DrawHand(rng, 3), null, rng);
+        return new(sim, sim.Round > Round.PotionRounds ? [] : DrawModel.DrawHand(rng, 3, null, _draw), null, rng);
     }
 }

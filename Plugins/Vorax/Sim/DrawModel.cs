@@ -4,6 +4,11 @@ using System.Linq;
 namespace Vorax.Sim;
 
 // Offer weights are the Notorious fork numbers, fitted on real runs (hand draws, supreme chance, instrument offers), the game never shows them
+public sealed record DrawProfile(double SupremeChance, IReadOnlyDictionary<int, double> Offer)
+{
+    public int[] OfferIds { get; } = [.. Offer.Keys.Order()];
+}
+
 public static class DrawModel
 {
     const double SupremeChance = 0.013;
@@ -13,6 +18,17 @@ public static class DrawModel
     static readonly Dictionary<int, double> Offer = BuildOffer();
     static readonly int[] OfferIds = [.. Offer.Keys.Order()];
     static readonly IReadOnlyList<(int SimId, double Weight)> Default = BuildDefault();
+
+    public static DrawProfile Standard { get; } = new(SupremeChance, Offer);
+
+    // TLI Overlay Plus's crowd counts of card slots (20,866 boards, 2026-10-21) by sim id, kits included
+    public static DrawProfile OverlayPlus { get; } = new(0.0082, new Dictionary<int, double>
+    {
+        [0] = 31, [1] = 34, [2] = 26, [3] = 24, [4] = 30, [5] = 20, [6] = 31, [7] = 34, [8] = 27, [9] = 35, [10] = 44, [11] = 29,
+        [12] = 40, [13] = 44, [14] = 31, [15] = 20, [16] = 42, [17] = 36, [18] = 41, [19] = 29, [20] = 34, [21] = 43, [22] = 39,
+        [23] = 46, [24] = 46, [25] = 49, [26] = 54, [27] = 68, [28] = 64, [29] = 46, [30] = 43, [31] = 59, [32] = 40,
+        [Large] = 10, [Small] = 15, [RareSmall] = 20,
+    });
 
     static readonly Dictionary<int, double> InstrumentBasic = new()
     {
@@ -89,13 +105,13 @@ public static class DrawModel
     }
 
     // a hand the way the fork deals it: per slot a supreme roll, then a weighted pick without repeats. An opened kit deals by its own rarity weights
-    public static int[] DrawHand(Rng rng, int count, KitDef? kit = null)
+    public static int[] DrawHand(Rng rng, int count, KitDef? kit = null, DrawProfile? profile = null)
     {
         var taken = new HashSet<int>();
         var hand = new List<int>();
         for (var n = 0; n < count; n++)
         {
-            var pick = kit is { } k ? DrawFromKit(rng, k, taken) : DrawNormal(rng, taken);
+            var pick = kit is { } k ? DrawFromKit(rng, k, taken) : DrawNormal(rng, taken, profile ?? Standard);
             if (pick < 0) break;
             taken.Add(pick);
             hand.Add(pick);
@@ -103,19 +119,19 @@ public static class DrawModel
         return [.. hand];
     }
 
-    static int DrawNormal(Rng rng, HashSet<int> taken)
+    static int DrawNormal(Rng rng, HashSet<int> taken, DrawProfile profile)
     {
-        var supreme = rng.NextDouble() < SupremeChance;
-        var common = OfferIds.Where(id => !taken.Contains(id)).ToList();
+        var supreme = rng.NextDouble() < profile.SupremeChance;
+        var common = profile.OfferIds.Where(id => !taken.Contains(id)).ToList();
         var rare = Supreme.Where(id => !taken.Contains(id)).ToList();
         var list = supreme ? rare : common;
         if (list.Count == 0) list = supreme ? common : rare;
         if (list.Count == 0) return -1;
         if (supreme && rare.Count > 0) return rng.Pick(list);
-        var roll = rng.NextDouble() * list.Sum(id => Offer.GetValueOrDefault(id, 1));
+        var roll = rng.NextDouble() * list.Sum(id => profile.Offer.GetValueOrDefault(id, 1));
         foreach (var id in list)
         {
-            roll -= Offer.GetValueOrDefault(id, 1);
+            roll -= profile.Offer.GetValueOrDefault(id, 1);
             if (roll < 0) return id;
         }
         return list[^1];

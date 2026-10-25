@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Tartarus.Sim;
 
-internal sealed record Chance(double[]? BeastWeights = null, double[]? DoorTierWeights = null, double[]? ReplaceTierWeights = null, Func<int, int>? Index = null);
+internal sealed record Chance(double[]? BeastWeights = null, double[]? DoorTierWeights = null, double[]? ReplaceTierWeights = null, Func<int, int>? Index = null, ToolTable? Tools = null, int? CoinPercent = null);
 
 public sealed partial class Run
 {

@@ -29,22 +29,7 @@ public static class Resolver
         }
     }
 
-    const double BossBarTolerance = 0.1;
-
-    public static Entity? BossOnBar(Entity[] entities, float percent)
-    {
-        Entity? best = null;
-        var bestGap = BossBarTolerance;
-        foreach (var entity in entities)
-        {
-            if (entity.Kind != EntityKind.Monster || entity.Rarity != Rarity.Boss || entity.Friendly || entity.Hidden || !(entity.MaxLife > 0)) continue;
-            var gap = Math.Abs(entity.Life / entity.MaxLife - percent);
-            if (gap > bestGap) continue;
-            best = entity;
-            bestGap = gap;
-        }
-        return best;
-    }
+    public static Entity? BossOnBar(Entity[] entities, float percent) => GameState.BossOnBar(entities, percent);
 
     public static PlateStyle? Resolve(Settings settings, in Entity entity, float distance)
     {

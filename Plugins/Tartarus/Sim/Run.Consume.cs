@@ -42,6 +42,7 @@ public sealed partial class Run
     {
         var eater = Cells[eaterCell];
         if (!eater.Open || eater.Tier is < 0 or >= Tiers.Chromatic) return [];
+        if (eater.Tier == Tiers.Ultimate && Chromatics >= Rules.ChromaticCap) return [];
         return [.. Enumerable.Range(0, Cells.Length).Where(cell => cell != eaterCell && Eatable(eater, cell))];
     }
 

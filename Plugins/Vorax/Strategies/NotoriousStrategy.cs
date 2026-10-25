@@ -4,9 +4,15 @@ using Vorax.Sim;
 namespace Vorax;
 
 // The method of the community Notorious solver: shortlist by the expected board after the round, then play the shortlist out on shared seeded futures with a learned board value, ranked by Activity capped at 950,000
-public sealed class NotoriousStrategy : Strategy
+public class NotoriousStrategy : Strategy
 {
-    readonly Notorious _search = new();
+    readonly Notorious _search;
+
+    public NotoriousStrategy() : this(DrawModel.Standard)
+    {
+    }
+
+    protected NotoriousStrategy(DrawProfile draw) => _search = new Notorious(draw: draw);
 
     public override string Name => "Notorious v1";
 

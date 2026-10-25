@@ -63,9 +63,53 @@ public sealed class Main : Plugin<Settings>
         _session.Add(Sample(Game.State, Game.State.Paused == true, _clock.Elapsed.TotalSeconds));
     }
 
+    readonly Overlay _overlay = new();
+    readonly TextStyle _deathStyle = TextStyle.Hud();
+    int _unusedWidth, _unusedHeight;
+
+    void RenderDeath(GameState state)
+    {
+        if (!Settings.ShowDeathPanel || DeathInfo.From(state, _session) is not { } death) return;
+        const float Pad = 8;
+        const float BarHeight = 10;
+        const float MinWidth = 260;
+        var title = death.TokenInUse ? "No XP will be lost" : $"-{Numbers.Compact(death.Loss)} XP ({death.Percent.ToString("0.#", CultureInfo.InvariantCulture)}% of the level)";
+        var detail = death.TokenInUse ? "Revival token in use" : $"~{Eta(death.Hours)} of farming to earn it back";
+        var caption = $"{Numbers.Compact(death.Xp.Exp)} / {Numbers.Compact(death.Xp.ToNext)}  (level {death.Xp.Level})";
+        var width = MathF.Max(MinWidth, MathF.Max(Draw.MeasureText(title, _deathStyle).X, MathF.Max(Draw.MeasureText(detail, _deathStyle).X, Draw.MeasureText(caption, _deathStyle).X)));
+        var rowHeight = Draw.RowHeight(_deathStyle);
+        _overlay.Locked = Settings.Lock;
+        _overlay.MoveHeld = Settings.MoveKey.Key != Key.None && Input.IsDown(Settings.MoveKey.Key);
+        var origin = new Vector2(Settings.PanelX, Settings.PanelY);
+        var size = new Vector2(width + Pad * 2, rowHeight * 3 + BarHeight + 4 + Pad * 2);
+        var (hovered, _, active) = _overlay.Handle("xp-death", ref origin, size, ref Settings.PanelX, ref Settings.PanelY, ref _unusedWidth, 60, 4000, ref _unusedHeight, 0, 0, Overlay.ResizeEdge.None);
+        if (hovered || active) Overlay.ClickBlocker("xp-death", origin, size);
+        if (Settings.BackgroundOpacity > 0)
+            Draw.RectFilled(origin, origin + size, System.Drawing.Color.FromArgb(Math.Clamp(Settings.BackgroundOpacity, 0, 100) * 255 / 100, GameColors.LabelBackground), 4);
+        if (_overlay.Movable) Overlay.DragHint(origin, origin + size, active, hovered, Overlay.ResizeEdge.None);
+
+        var text = _deathStyle.Clone();
+        var at = new Vector2(origin.X + Pad, origin.Y + Pad);
+        text.Color = death.TokenInUse ? GameColors.Positive : GameColors.Negative;
+        Draw.Text(title, at, text);
+        at.Y += rowHeight;
+        text.Color = GameColors.TextDim;
+        Draw.Text(detail, at, text);
+        at.Y += rowHeight + 2;
+
+        var barMax = at + new Vector2(width, BarHeight);
+        float X(float fraction) => at.X + width * Math.Clamp(fraction, 0, 1);
+        Draw.RectFilled(at, barMax, System.Drawing.Color.FromArgb(90, GameColors.TextDim), 2);
+        Draw.RectFilled(at, new Vector2(X(death.Kept), barMax.Y), GameColors.Xp, 2);
+        if (death.Loss > 0) Draw.RectFilled(new Vector2(X(death.Kept), at.Y), new Vector2(X(death.Current), barMax.Y), GameColors.Negative);
+        at.Y += BarHeight + 2;
+        Draw.Text(caption, at, text);
+    }
+
     public override void Render()
     {
         var state = Game.State;
+        RenderDeath(state);
         if (!Visible(state, Settings) || state.XpBar is not { } bar) return;
         var y = bar.Min.Y - Settings.OffsetY;
         DrawLine(Settings.Left, bar.Min.X, y);

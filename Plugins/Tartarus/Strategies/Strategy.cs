@@ -6,5 +6,7 @@ public abstract class Strategy
 
     public virtual string Description => "";
 
+    internal virtual Sim.Chance Chance => new();
+
     public virtual StrategyPick? Choose(StrategyContext c) => null;
 }

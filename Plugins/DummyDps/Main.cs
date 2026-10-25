@@ -66,6 +66,8 @@ public sealed class Main : Plugin<Settings>
     readonly Overlay _panel = new();
     readonly Overlay _combatPanel = new();
     internal readonly CombatMeter _meter = new();
+    internal readonly CombatMeter _bossMeter = new();
+    int _bossId;
     bool _countedOverkill;
     int _keptArea = int.MinValue;
     double? _pausedFrom;
@@ -80,6 +82,7 @@ public sealed class Main : Plugin<Settings>
         {
             _countedOverkill = Settings.Combat.CountOverkill;
             _meter.Reset();
+            _bossMeter.Reset();
         }
 
         if (Game.State.Combat is not { } combat) return;
@@ -94,7 +97,28 @@ public sealed class Main : Plugin<Settings>
             _pausedTotal += combat.Seconds - from;
             _pausedFrom = null;
         }
-        _meter.Add(combat.Seconds - _pausedTotal, Settings.Combat.CountOverkill ? combat.Raw : combat.Effective, Game.State.AreaId, Settings.Combat.Window);
+        var seconds = combat.Seconds - _pausedTotal;
+        var overkill = Settings.Combat.CountOverkill;
+        _meter.Add(seconds, overkill ? combat.Raw : combat.Effective, Game.State.AreaId, Settings.Combat.Window);
+        TickBoss(seconds, combat, overkill);
+    }
+
+    void TickBoss(double seconds, CombatStats combat, bool overkill)
+    {
+        if (Game.State.BossOnBar() is not { } boss)
+        {
+            _bossId = 0;
+            _bossMeter.Reset();
+            return;
+        }
+
+        if (boss.Id != _bossId)
+        {
+            _bossId = boss.Id;
+            _bossMeter.Reset();
+        }
+        combat.ByVictim.TryGetValue(boss.Id, out var damage);
+        _bossMeter.Add(seconds, overkill ? damage.Raw : damage.Effective, Game.State.AreaId, Settings.Combat.Window);
     }
 
     public override void Initialize()
@@ -112,7 +136,7 @@ public sealed class Main : Plugin<Settings>
             DrawPanel(_panel, "dummydps", "Training dummy", Rows(state.WoodStake!, general.Exact), ref general.X, ref general.Y, ref general.Width);
         if (CombatVisible(state, combat, general.HideBehindPanels) && _meter.HasFight)
             DrawPanel(_combatPanel, "combatdps", "Combat DPS", CombatRows(_meter, combat.Exact), ref combat.X, ref combat.Y, ref combat.Width);
-        if (BossReadout(state, combat, general.HideBehindPanels) && BossLine(_meter, combat.Exact) is { Length: > 0 } line)
+        if (BossReadout(state, combat, general.HideBehindPanels) && BossLine(_bossMeter, combat.Exact) is { Length: > 0 } line)
         {
             var bar = state.BossBar!.Rect;
             Draw.Text(line, new Vector2((bar.Min.X + bar.Max.X) / 2, bar.Max.Y + combat.BossBarOffsetY), Settings.Look.Values, Align.Center);

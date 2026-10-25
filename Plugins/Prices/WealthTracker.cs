@@ -20,6 +20,8 @@ public sealed class WealthTracker(Func<DateTimeOffset> now)
     int? lastTab;
     DateTimeOffset lastTabAt;
 
+    public ProfitSession Session { get; } = new(now);
+
     public Func<string, WealthStore> Open { get; set; } = _ => new WealthStore();
 
     public string? Key { get; private set; }
@@ -28,7 +30,13 @@ public sealed class WealthTracker(Func<DateTimeOffset> now)
 
     public Snapshot? Last { get; private set; }
 
+    public Snapshot? Current { get; private set; }
+
     public bool Paused { get; set; }
+
+    public Func<InventoryItem, bool> Include { get; set; } = _ => true;
+
+    public float? BagWealth { get; private set; }
 
     readonly List<(string Key, WealthStore Store)> retired = [];
 
@@ -67,7 +75,7 @@ public sealed class WealthTracker(Func<DateTimeOffset> now)
         StashTab? stored = null;
         if (state.Stash is { } stash && state.StashItems is { } items && (lastTab != stash.Tab || at - lastTabAt >= StashEvery))
         {
-            var lines = Valuation.Value(items, prices, at, state.AreaId, area.Name, area.IsTown).Lines;
+            var lines = Valuation.Value(items.Where(Include).ToArray(), prices, at, state.AreaId, area.Name, area.IsTown).Lines;
             var old = store.Data.Tabs.FirstOrDefault(tab => tab.Index == stash.Tab);
             if (old is null || !old.Lines.SequenceEqual(lines))
             {
@@ -82,7 +90,8 @@ public sealed class WealthTracker(Func<DateTimeOffset> now)
         {
             if (at - lastLiveAt < LiveEvery) return added;
             lastLiveAt = at;
-            var live = Valuation.Value(bag, prices, at, state.AreaId, area.Name, area.IsTown);
+            var live = Current = Valuation.Value(bag, prices, at, state.AreaId, area.Name, area.IsTown);
+            BagWealth = Shown(bag, at, state, area);
             if (lastLive is not null && live.Lines.SequenceEqual(lastLive)) return added;
             lastLive = live.Lines;
             if (runs.Open is null)
@@ -94,19 +103,28 @@ public sealed class WealthTracker(Func<DateTimeOffset> now)
             return true;
         }
         var snapshot = Valuation.Value(bag, prices, at, state.AreaId, area.Name, area.IsTown);
+        BagWealth = Shown(bag, at, state, area);
         store.AddSnapshot(snapshot, stored is null ? [] : [stored], Names(snapshot, store), Icons(snapshot, store));
         lastLive = snapshot.Lines;
-        if (runs.OnSnapshot(snapshot, prices) is { } run) store.AddRun(run);
+        if (runs.OnSnapshot(snapshot, prices) is { } run)
+        {
+            store.AddRun(run);
+            Session.Add(run);
+        }
         store.SetOpen(runs.Open);
-        (Last, lastArea, lastSnapshotAt) = (snapshot, (state.AreaId, area.Name), at);
+        (Last, Current, lastArea, lastSnapshotAt) = (snapshot, snapshot, (state.AreaId, area.Name), at);
         return true;
     }
+
+    float Shown(InventoryItem[] bag, DateTimeOffset at, GameState state, MapInfo area) =>
+        Valuation.Value(bag.Where(Include).ToArray(), prices, at, state.AreaId, area.Name, area.IsTown).Total;
 
     public void Reset()
     {
         Store?.Clear();
         runs.Reset();
-        (Last, lastArea, lastTab, lastLive) = (null, null, null, null);
+        Session.Restart();
+        (Last, Current, lastArea, lastTab, lastLive, BagWealth) = (null, null, null, null, null, null);
     }
 
     void Switch(string key)
@@ -125,7 +143,8 @@ public sealed class WealthTracker(Func<DateTimeOffset> now)
         }
         (Key, Store) = (key, back ?? Open(key));
         runs.Reset();
-        (Last, lastArea, lastTab, lastLive) = (null, null, null, null);
+        Session.Restart();
+        (Last, Current, lastArea, lastTab, lastLive, BagWealth) = (null, null, null, null, null, null);
     }
 
     static IEnumerable<int> Ids(Snapshot snapshot, WealthStore store) =>

@@ -72,6 +72,7 @@ public sealed class Main : Plugin<Settings>
         if (_map is null || key != _boardKey)
         {
             _map = StateMapper.Map(state, tracked, rules);
+            if (_map.Run is { } mapped) mapped.Chance = Registry.ByName(Settings.Mode)?.Chance ?? new();
             _boardKey = key;
             _instant = Instant(_map.Run);
             _generation++;
@@ -104,6 +105,7 @@ public sealed class Main : Plugin<Settings>
         var key = new HashCode();
         key.Add(rules);
         key.Add(Settings.ClampedPlayouts);
+        key.Add(Settings.Mode);
         key.Add(tracked.SwapUsedToday);
         key.Add(state.Position);
         key.Add(state.Size);
