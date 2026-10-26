@@ -82,7 +82,7 @@ public sealed partial class Run
                 foreach (var cell in Inmates().Where(cell => Cells[cell].Tier < Tiers.Legendary)) Raise(cell, 1);
                 break;
             default:
-                foreach (var cell in Sample([.. Inmates().Where(cell => !Meals(cell).Any(meal => Cells[meal].Open))], 4)) Hunger(cell);
+                foreach (var cell in Sample([.. Inmates().Where(cell => !Hungry(cell))], 4)) Hunger(cell);
                 break;
         }
     }
@@ -90,7 +90,19 @@ public sealed partial class Run
     void Hunger(int cell)
     {
         if (!Cells[cell].Open) return;
-        var fed = Enum.GetValues<Beast>().Where(beast => Inmates().Any(other => other != cell && Reaches(Cells[cell] with { Beast = beast }, Cells[other]))).ToList();
+        var fed = Feeders(cell);
         if (fed.Count > 0) Cells[cell] = Cells[cell] with { Beast = fed[Pick(fed.Count)] };
+    }
+
+    List<Beast> Feeders(int cell) => [.. Enum.GetValues<Beast>().Where(beast => Inmates().Any(other => other != cell && Reaches(Cells[cell] with { Beast = beast }, Cells[other])))];
+
+    bool Hungry(int cell) => Meals(cell).Any(meal => Cells[meal].Open);
+
+    public TreasurePreview PreviewTreasure()
+    {
+        var inmates = Inmates();
+        var bare = inmates.Where(cell => !Hungry(cell)).ToList();
+        int[] upgrades = [.. Enumerable.Range(0, Tiers.Legendary).Select(tier => inmates.Count(cell => Cells[cell].Tier == tier))];
+        return new(Cells.Skip(1).Count(cell => cell.Open), Cells.Skip(1).Count(cell => !cell.Open), inmates.Count(Hungry), upgrades, bare.Count, bare.Count(cell => Feeders(cell).Count > 0));
     }
 }

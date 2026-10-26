@@ -7,16 +7,12 @@ namespace Tartarus;
 public sealed class Settings : PluginSettings
 {
     public bool ShowPanel = true;
-    public bool Lock = true;
-    public Hotkey MoveKey = new(Key.Alt);
-    public int PanelX = 40;
-    public int PanelY = 430;
     public bool HighlightCards = true;
-    public bool ShowAssumed = true;
     public int Playouts = 300;
     public bool OnlyBest;
     public string Mode = StrategyEngine.DefaultMode;
     public bool LogDecisions = true;
+    public bool LogRunData;
     public int ChromaticCap = 10;
     public bool EaterKeepsBeast;
     public int SecondMealFromTier = 0;

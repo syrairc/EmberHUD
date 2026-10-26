@@ -216,6 +216,12 @@ public static class Policy
         return best;
     }
 
+    internal static Move ChainMeal(Run run)
+    {
+        var best = BestDevour(run, new Worth(run), run.Legal());
+        return best.Score > double.NegativeInfinity ? best.Move : new Move(MoveKind.StopChain);
+    }
+
     static Move Chain(Run run, Worth worth, IReadOnlyList<Move> legal)
     {
         var best = BestDevour(run, worth, legal);

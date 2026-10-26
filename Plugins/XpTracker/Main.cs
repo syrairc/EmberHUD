@@ -55,9 +55,12 @@ public sealed class Main : Plugin<Settings>
         return new XpSample(xp, state.AreaId, area?.Name ?? "", area?.IsTown ?? false, paused, seconds);
     }
 
+    XpState? _aliveXp;
+
     public override void Tick()
     {
         Game.WantXp();
+        if (Game.State is { Death: null, Xp: { } alive }) _aliveXp = alive;
         Bind();
         _session.MapTimeOnly = Settings.MapTimeOnly;
         _session.Add(Sample(Game.State, Game.State.Paused == true, _clock.Elapsed.TotalSeconds));
@@ -69,7 +72,7 @@ public sealed class Main : Plugin<Settings>
 
     void RenderDeath(GameState state)
     {
-        if (!Settings.ShowDeathPanel || DeathInfo.From(state, _session) is not { } death) return;
+        if (!Settings.ShowDeathPanel || DeathInfo.From(state, _aliveXp, _session) is not { } death) return;
         const float Pad = 8;
         const float BarHeight = 10;
         const float MinWidth = 260;

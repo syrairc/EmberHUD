@@ -13,6 +13,7 @@ public sealed class GeneralTab
     public bool Lock = true;
     public Hotkey MoveKey = new(Key.Alt);
     public bool HideBehindPanels = true;
+    public bool HideBehindBag = true;
     public int X = 1520;
     public int Y = 300;
     public int Width = 360;
@@ -65,6 +66,7 @@ public sealed class Settings : PluginSettings
         Setting.Checkbox("Lock", ref General.Lock, "A locked panel ignores the mouse - hold the move key to drag or resize it anyway");
         Setting.Hotkey("Move key", ref General.MoveKey, "Hold to move or resize a locked panel");
         Setting.Checkbox("Hide behind full-screen panels", ref General.HideBehindPanels, "Nothing draws while the game has a full-screen panel open, e.g. the big map");
+        Setting.Checkbox("Hide behind inventory", ref General.HideBehindBag, "Nothing draws while the open inventory overlaps the panel");
         Setting.Slider("X", ref General.X, 0, 7680);
         Setting.Slider("Y", ref General.Y, 0, 4320);
         Setting.Slider("Width", ref General.Width, GeneralTab.MinWidth, GeneralTab.MaxWidth);

@@ -31,6 +31,8 @@ public enum ObjectiveKind : byte { None, King, Walk, Consume, Incident, Doors }
 
 public enum StartCard : byte { None, CageFight, IronLaw, Tyranny, Opulence }
 
+public sealed record TreasurePreview(int Opened, int Unopened, int Hungry, int[] Upgrades, int Bare, int Feedable);
+
 public readonly record struct Objective(ObjectiveKind Kind, int Progress = 0, bool Paid = false);
 
 public readonly record struct Offer(MoveKind Kind, int[] Options);

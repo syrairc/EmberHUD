@@ -7,15 +7,15 @@
   "targets": {
     ".NETCoreApp,Version=v10.0": {},
     ".NETCoreApp,Version=v10.0/win-x64": {
-      "EmberSetup/1.0.246": {
+      "EmberSetup/1.0.265": {
         "dependencies": {
-          "EmberHUD.Api": "1.0.246",
-          "EmberHUD.Assets": "1.0.246",
-          "EmberLauncher": "1.0.246",
+          "EmberHUD.Api": "1.0.265",
+          "EmberHUD.Assets": "1.0.265",
+          "EmberLauncher": "1.0.265",
           "Hexa.NET.ImGui.Backends": "1.0.18",
           "Vortice.Direct3D11": "3.8.2",
           "Vortice.DirectComposition": "3.8.2",
-          "EmberLauncher.Reference": "1.0.246.0"
+          "EmberLauncher.Reference": "1.0.265.0"
         },
         "runtime": {
           "EmberSetup.dll": {}
@@ -208,51 +208,51 @@
           }
         }
       },
-      "EmberHUD.Api/1.0.246": {
+      "EmberHUD.Api/1.0.265": {
         "dependencies": {
           "Clipper2": "2.0.0",
           "Hexa.NET.ImGui": "2.2.9"
         },
         "runtime": {
           "EmberHUD.Api.dll": {
-            "assemblyVersion": "1.0.246.0",
-            "fileVersion": "1.0.246.0"
+            "assemblyVersion": "1.0.265.0",
+            "fileVersion": "1.0.265.0"
           }
         }
       },
-      "EmberHUD.Assets/1.0.246": {
+      "EmberHUD.Assets/1.0.265": {
         "dependencies": {
           "BCnEncoder.Net": "2.1.0",
-          "EmberLauncher": "1.0.246",
+          "EmberLauncher": "1.0.265",
           "SkiaSharp": "4.148.0",
           "ZstdSharp.Port": "0.7.3"
         },
         "runtime": {
           "EmberHUD.Assets.dll": {
-            "assemblyVersion": "1.0.246.0",
-            "fileVersion": "1.0.246.0"
+            "assemblyVersion": "1.0.265.0",
+            "fileVersion": "1.0.265.0"
           }
         }
       },
-      "EmberLauncher/1.0.246": {
+      "EmberLauncher/1.0.265": {
         "runtime": {
           "EmberLauncher.dll": {
             "fileVersion": "0.0.0.0"
           }
         }
       },
-      "EmberLauncher.Reference/1.0.246.0": {
+      "EmberLauncher.Reference/1.0.265.0": {
         "runtime": {
           "EmberLauncher.dll": {
-            "assemblyVersion": "1.0.246.0",
-            "fileVersion": "1.0.246.0"
+            "assemblyVersion": "1.0.265.0",
+            "fileVersion": "1.0.265.0"
           }
         }
       }
     }
   },
   "libraries": {
-    "EmberSetup/1.0.246": {
+    "EmberSetup/1.0.265": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -376,22 +376,22 @@
       "path": "zstdsharp.port/0.7.3",
       "hashPath": "zstdsharp.port.0.7.3.nupkg.sha512"
     },
-    "EmberHUD.Api/1.0.246": {
+    "EmberHUD.Api/1.0.265": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "EmberHUD.Assets/1.0.246": {
+    "EmberHUD.Assets/1.0.265": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "EmberLauncher/1.0.246": {
+    "EmberLauncher/1.0.265": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "EmberLauncher.Reference/1.0.246.0": {
+    "EmberLauncher.Reference/1.0.265.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

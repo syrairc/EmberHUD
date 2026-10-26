@@ -1,1 +1,1 @@
-{ "ShowPanel": true, "Lock": true, "MoveKey": "Alt", "PanelX": 40, "PanelY": 897, "HighlightCards": true, "ShowAssumed": true, "LogDecisions": true, "Playouts": 1000, "ChromaticCap": 10, "EaterKeepsBeast": false, "SecondMealFromTier": 0, "ReplaceIsExecute": false }
+{ "ShowPanel": true, "HighlightCards": true, "LogDecisions": true, "LogRunData": false, "Playouts": 1000, "ChromaticCap": 10, "EaterKeepsBeast": false, "SecondMealFromTier": 0, "ReplaceIsExecute": false }

@@ -18,6 +18,8 @@ public static class SimAdvisor
     public static Advice Advise(TartarusState state, MapResult map, Ranked[]? ranked, Settings settings, Move? instant = null, IReadOnlyList<Strategy>? strategies = null)
     {
         if (state?.Choice is not { Options: { } options } || map is null) return new Advice([], "");
+        if (!state.Choice.Complete) return new Advice([.. options.Select(option => new OptionAdvice(option.Id, default, false, ""))], "thinking");
+        if (options.All(option => option.Kind != TartarusOptionKind.Other)) ranked = ranked?.Where(entry => options.Any(option => Matches(entry.Move, option))).ToArray();
         var found = options.Select(option => map.Run is null ? null : ranked?.FirstOrDefault(entry => Matches(entry.Move, option))).ToArray();
         var glow = new bool[options.Length];
         Resolved? resolved = null;
@@ -29,8 +31,7 @@ public static class SimAdvisor
         var advice = options.Select((option, i) => found[i] is { } entry
             ? new OptionAdvice(option.Id, new ValueRange(entry.Value - entry.Spread, entry.Value + entry.Spread), glow[i], entry.Value.ToString("0.00", CultureInfo.InvariantCulture), top == i)
             : new OptionAdvice(option.Id, default, glow[i], "", top == i)).ToArray();
-        var notes = settings.ShowAssumed && map.Assumed.Length > 0 ? $"assumed: {string.Join('\n', map.Assumed)}\n" : "";
-        return new Advice(advice, notes + core, resolved is { Move: not null } ? resolved.Source : "");
+        return new Advice(advice, core,resolved is { Move: not null } ? resolved.Source : "");
     }
 
     const double SwitchMin = 0.05;

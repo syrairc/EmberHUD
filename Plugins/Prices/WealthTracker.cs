@@ -53,8 +53,8 @@ public sealed class WealthTracker(Func<DateTimeOffset> now)
         lock (retired) retired.Remove(item);
     }
 
-    public Run? CurrentRun => runs.Open is { } open && Last is { } last
-        ? CurrentOf(open, last)
+    public Run? CurrentRun => runs.Open is { } open && (Current ?? Last) is { } latest
+        ? CurrentOf(open, latest)
         : null;
 
     Run CurrentOf(Snapshot open, Snapshot last)

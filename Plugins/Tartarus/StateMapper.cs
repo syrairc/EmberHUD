@@ -37,7 +37,9 @@ public static class StateMapper
         [132] = ToolId.Shackles,
         [141] = ToolId.Tongs,
         [142] = ToolId.Maul,
+        [143] = ToolId.Trap,
         [144] = ToolId.Crown,
+        [145] = ToolId.Claws,
         [146] = ToolId.Guillotine,
         [147] = ToolId.IronBox,
         [148] = ToolId.Skewer,
@@ -74,6 +76,20 @@ public static class StateMapper
         [255] = EventKind.UsurpationIV,
     };
 
+    static StartCard CardOf(int[]? themes, List<string> assumed)
+    {
+        var card = StartCard.None;
+        foreach (var theme in themes ?? [])
+        {
+            StartCard? known = theme switch { 301 => StartCard.Tyranny, 302 => StartCard.Opulence, 303 => StartCard.IronLaw, 304 => StartCard.CageFight, _ => null };
+            if (known is { } found) card = found;
+            else assumed.Add($"Start card {theme} is not known to the simulator, so it is left out.");
+        }
+        return card;
+    }
+
+    internal static int IdOf(EventKind kind) => Events.FirstOrDefault(pair => pair.Value == kind).Key;
+
     internal static ToolId? ToolOf(int relicId) => Tools.TryGetValue(relicId, out var tool) ? tool : null;
 
     public static MapResult Map(TartarusState state, TrackedRun tracked, Rules rules)
@@ -82,8 +98,9 @@ public static class StateMapper
         var problem = Check(state);
         if (problem is not null || tracked is null) return new MapResult(null, [.. assumed], problem ?? "No tracked run.");
 
-        assumed.AddRange(["Start card and scratch marks are assumed to be none.", "Rat nests, prey and tusk marks are assumed none, and a marked cell's event is drawn from the 14 the game has.", "Tool uses left are assumed to be the defaults."]);
-        var run = new Run(rules with { Days = state.MaxDay, RingSize = state.Size, ReplaceAfterConsume = true }, new Rng(1)) { Day = state.Day, Position = state.Position, Chromatics = state.Chromatics };
+        var card = CardOf(state.Themes, assumed);
+        assumed.AddRange(["Scratch marks are assumed to be none.", "Rat nests and prey marks are assumed none, and a marked cell's event is drawn from the 14 the game has.", "Tool uses left are assumed to be the defaults."]);
+        var run = new Run(rules with { Days = state.MaxDay, RingSize = state.Size, ReplaceAfterConsume = true, Card = card }, new Rng(1)) { Day = state.Day, Position = state.Position, Chromatics = state.Chromatics };
         run.Replaced = tracked.SwapUsedToday;
         foreach (var id in (tracked.ToolsHeld ?? []).Union(state.Instruments).Order())
         {
@@ -103,21 +120,31 @@ public static class StateMapper
             rarityOnly |= !cell.Open && cell.Tier >= 0 && !beastKnown;
             speciesOnly |= !cell.Open && cell.Tier < 0 && beastKnown;
             run.Cells[cell.Index] = cell.Open
-                ? new Cell(true, (Beast)(cell.Beast - 1), cell.Tier, false)
+                ? new Cell(true, (Beast)(cell.Beast - 1), cell.Tier, false) { Markers = cell.Tusk ? Marker.Tusk : Marker.None }
                 : new Cell(false, beastKnown ? (Beast)(cell.Beast - 1) : Beast.Mammoth, beastKnown ? Math.Min(cell.Tier, Tiers.Ultimate) : -1, cell.Tier >= 0 && beastKnown, tracked.SeenCells?.Contains(cell.Index) == true, beastKnown ? 0 : Math.Clamp(cell.Tier, 0, Tiers.Ultimate));
         }
         if (speciesOnly) assumed.Add("A locked cell with only its species shown is treated as any species.");
         if (rarityOnly) assumed.Add("A locked cell with only its rarity shown is treated as that rarity or better.");
 
         run.Pool.AddRange([EventKind.SharedFortune, EventKind.Archenemy, EventKind.TransferOfConvicts]);
+        Usurp(run, tracked.Usurped - (state.Choice is { Kind: TartarusChoiceKind.Event } now && now.Options.Any(option => option.Param == tracked.Usurped) ? 1 : 0));
         var marked = state.Cells.Where(cell => cell.EventMarker && cell.Index != 0).ToArray();
         foreach (var cell in marked) run.Cells[cell.Index].Marked = true;
+        if (marked.Any(cell => cell.Index == tracked.UsurpCell) && Events.TryGetValue(tracked.UsurpNext, out var usurpation)) run.Cells[tracked.UsurpCell].Event = usurpation;
         if (marked.Length > 0) assumed.Add("Event markers: the event behind a marked cell is unknown, so a random one is assumed when it is reached.");
         if (tracked.ChainArmedAt >= 0 && state.Choice?.Kind != TartarusChoiceKind.Event) run.ChainArmed = true;
         var refused = ApplyChoice(state.Choice!, state, run, assumed, out var unsupported);
         if (refused is not null || unsupported is not null) return new MapResult(null, [.. assumed.Distinct()], refused, unsupported);
         var disagreement = Devour(state, run, assumed);
         return new MapResult(disagreement is null ? run : null, [.. assumed.Distinct()], disagreement);
+    }
+
+    // ponytail: the game adds Usurpation II-IV (weight 0) only when the level before resolves, so the pool follows the highest one seen
+    static void Usurp(Run run, int resolved)
+    {
+        if (resolved is < 252 or > 255) return;
+        run.Pool.RemoveAll(kind => kind is EventKind.UsurpationI or EventKind.UsurpationII or EventKind.UsurpationIII or EventKind.UsurpationIV);
+        if (resolved < 255) run.Pool.Add(Events[resolved + 1]);
     }
 
     static string? Check(TartarusState state)

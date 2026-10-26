@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Numerics;
@@ -50,6 +51,12 @@ public sealed class Main : Plugin<Settings>
     internal static string BossLine(CombatMeter meter, bool exact) =>
         meter.HasFight ? $"DPS {(exact ? Exact((long)meter.Dps) : Compact((long)meter.Dps))}" : "";
 
+    internal static string BossTtk(CombatMeter meter, double life) =>
+        meter.HasFight && meter.Dps > 0 && life > 0 ? $"TTK {Clock((int)Math.Ceiling(life / meter.Dps))}" : "";
+
+    internal static string BossDuration(CombatMeter meter) =>
+        meter.HasFight ? $"Fight {Clock(meter.FightSeconds)}" : "";
+
     internal static List<Row> CombatRows(CombatMeter meter, bool exact)
     {
         string Show(double value) => exact ? Exact((long)value) : Compact((long)value);
@@ -68,6 +75,7 @@ public sealed class Main : Plugin<Settings>
     internal readonly CombatMeter _meter = new();
     internal readonly CombatMeter _bossMeter = new();
     int _bossId;
+    double _bossLife;
     bool _countedOverkill;
     int _keptArea = int.MinValue;
     double? _pausedFrom;
@@ -108,9 +116,12 @@ public sealed class Main : Plugin<Settings>
         if (Game.State.BossOnBar() is not { } boss)
         {
             _bossId = 0;
+            _bossLife = 0;
             _bossMeter.Reset();
             return;
         }
+
+        _bossLife = boss.Life;
 
         if (boss.Id != _bossId)
         {
@@ -139,7 +150,11 @@ public sealed class Main : Plugin<Settings>
         if (BossReadout(state, combat, general.HideBehindPanels) && BossLine(_bossMeter, combat.Exact) is { Length: > 0 } line)
         {
             var bar = state.BossBar!.Rect;
-            Draw.Text(line, new Vector2((bar.Min.X + bar.Max.X) / 2, bar.Max.Y + combat.BossBarOffsetY), Settings.Look.Values, Align.Center);
+            var y = bar.Max.Y + combat.BossBarOffsetY;
+            var values = Settings.Look.Values;
+            Draw.Text(line, new Vector2((bar.Min.X + bar.Max.X) / 2, y), values, Align.Center);
+            Draw.Text(BossDuration(_bossMeter), new Vector2(bar.Min.X, y), values);
+            Draw.Text(BossTtk(_bossMeter, _bossLife), new Vector2(bar.Max.X, y), values, Align.Right);
         }
     }
 

@@ -4,6 +4,7 @@
     "Lock": true,
     "MoveKey": "Alt",
     "HideBehindPanels": true,
+    "HideBehindBag": true,
     "X": 3039,
     "Y": 603,
     "Width": 360

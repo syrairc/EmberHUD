@@ -91,7 +91,7 @@ public sealed partial class Run
             Phase.Patrol => [.. Doors.Select(door => new Move(MoveKind.Door, door))],
             Phase.Manage when Chaining >= 0 => [.. Meals(Chaining).Select(meal => new Move(MoveKind.Consume, meal)), new Move(MoveKind.StopChain)],
             Phase.Manage => [.. ManageMoves(), new Move(MoveKind.End)],
-            Phase.Office => [new Move(MoveKind.Instigate), new Move(MoveKind.Bestow), new Move(MoveKind.End)],
+            Phase.Office => [new Move(MoveKind.Instigate), new Move(MoveKind.Bestow)],
             Phase.Event => PendingEvent == EventKind.TreasureHunt ? [new Move(MoveKind.Confirm)] : [new Move(MoveKind.Confirm), new Move(MoveKind.Skip)],
             _ => [],
         };

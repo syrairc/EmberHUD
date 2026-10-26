@@ -80,14 +80,9 @@ public sealed partial class Run
 
     void Eat(int eater, int meal, bool later)
     {
-        var hunter = Cells[eater];
-        var gain = Cells[meal].Open ? 1 : 3;
-        if (Holds(ToolId.Maul) && hunter.Beast == Beast.Mammoth) gain = Math.Max(1, Cells[meal].Tier + 2 - hunter.Tier);
-        if (Holds(ToolId.Muzzle) && Inmates().Count <= 4) gain += 2;
+        var gain = MealGain(eater, meal);
         Lock(meal);
         Progress(ObjectiveKind.Consume, 1);
-        if (Holds(ToolId.Skewer) && hunter.Beast == Beast.Rat) gain++;
-        if (Holds(ToolId.Crown) && hunter.Beast == Beast.Lion) gain += 2;
         if (Holds(ToolId.Saw) && Roll(25)) gain++;
         if (Holds(ToolId.Whip) && Roll(35)) gain++;
         if (later && Holds(ToolId.Collar) && Roll(80)) gain++;
@@ -104,6 +99,25 @@ public sealed partial class Run
         if (Holds(ToolId.Cage) && Roll(40) && Locked(meal)) OpenDoor(meal, 0, true);
     }
 
+    internal int MealGain(int eater, int meal)
+    {
+        var hunter = Cells[eater];
+        var gain = Cells[meal].Open ? 1 : 3;
+        if (Holds(ToolId.Maul) && hunter.Beast == Beast.Mammoth) gain = Math.Max(1, Cells[meal].Tier + 2 - hunter.Tier);
+        if (Holds(ToolId.Muzzle) && Inmates().Count <= 4) gain += 2;
+        if (Holds(ToolId.Skewer) && hunter.Beast == Beast.Rat) gain++;
+        if (Holds(ToolId.Crown) && hunter.Beast == Beast.Lion) gain += 2;
+        return gain;
+    }
+
+    // the eater's tier after this meal before any chance procs (Saw, Whip, Collar), Chromatic only while under the cap
+    public int MealTier(int meal)
+    {
+        var eater = Chaining >= 0 ? Chaining : Position;
+        var tier = Cells[eater].Tier + MealGain(eater, meal);
+        return Math.Min(tier, Chromatics >= Rules.ChromaticCap ? Tiers.Ultimate : Tiers.Chromatic);
+    }
+
     void Casket(int eater)
     {
         var dark = LockedCells();
@@ -112,6 +126,59 @@ public sealed partial class Run
         var beasts = Enum.GetValues<Beast>().Where(beast => Eats(hunter, beast)).ToList();
         if (beasts.Count == 0) return;
         Fill(dark[Pick(dark.Count)], new Cell(true, beasts[Pick(beasts.Count)], hunter.Tier, false));
+    }
+
+    // ponytail: Monte Carlo over the real consume rules, the sim's own meal pick each step, 400 trials per first meal, the same seeds for every meal so equal targets read equal
+    public Dictionary<int, double[]> ChainOddsByMeal(int trials = 400)
+    {
+        var byMeal = new Dictionary<int, double[]>();
+        foreach (var first in Legal().Where(move => move.Kind == MoveKind.Consume))
+        {
+            var lengths = new int[MaxRing + 1];
+            for (var trial = 0; trial < trials; trial++)
+            {
+                var run = Fork(new Rng((ulong)trial * 0x9E3779B97F4A7C15UL + 1));
+                run.Apply(first);
+                var length = 1;
+                while (run.Chaining >= 0 && length < MaxRing && Policy.ChainMeal(run) is { Kind: MoveKind.Consume } meal)
+                {
+                    run.Apply(meal);
+                    length++;
+                }
+                lengths[length]++;
+            }
+            var reached = new double[Array.FindLastIndex(lengths, count => count > 0)];
+            for (var length = reached.Length; length >= 1; length--)
+                reached[length - 1] = (length < reached.Length ? reached[length] : 0) + (double)lengths[length] / trials;
+            byMeal[first.Cell] = reached;
+        }
+        return byMeal;
+    }
+
+    public static double[] BestChain(Dictionary<int, double[]> byMeal) => byMeal.Values.MaxBy(reached => reached.Sum()) ?? [];
+
+    public double[] ReplaceOdds()
+    {
+        var old = Cells[Position];
+        var odds = new double[Tiers.Chromatic];
+        if (!old.Open) return odds;
+        var weights = ReplaceTierWeights();
+        var total = weights.Sum();
+        if (total <= 0) return odds;
+        var scapegoat = Holds(ToolId.Scapegoat) && Inmates().Count(cell => cell != Position) >= 2;
+        var stake = Holds(ToolId.Stake) && old.Tier < Tiers.Legendary;
+        for (var drawn = 0; drawn < weights.Length; drawn++)
+        {
+            var tier = scapegoat && drawn <= old.Tier ? old.Tier + 1 : drawn;
+            var chance = weights[drawn] / total;
+            if (stake)
+            {
+                odds[Math.Min(Math.Max(tier, Tiers.Legendary), Tiers.Ultimate)] += 0.4 * chance;
+                chance *= 0.6;
+            }
+            odds[Math.Min(tier, Tiers.Ultimate)] += chance;
+        }
+        return odds;
     }
 
     double[] ReplaceTierWeights()

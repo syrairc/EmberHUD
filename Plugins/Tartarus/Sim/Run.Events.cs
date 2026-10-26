@@ -9,7 +9,7 @@ public sealed partial class Run
     static readonly Dictionary<EventKind, (int Count, int Gain, EventKind? Next)> Usurpations = new()
     {
         [EventKind.UsurpationI] = (1, 1, EventKind.UsurpationII),
-        [EventKind.UsurpationII] = (2, 1, EventKind.UsurpationIII),
+        [EventKind.UsurpationII] = (1, 2, EventKind.UsurpationIII),
         [EventKind.UsurpationIII] = (2, 2, EventKind.UsurpationIV),
         [EventKind.UsurpationIV] = (int.MaxValue, 2, null),
     };

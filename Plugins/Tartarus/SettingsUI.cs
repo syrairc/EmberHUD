@@ -10,10 +10,7 @@ static class SettingsUI
 {
     public static void DrawPanel(Settings s)
     {
-        Setting.Checkbox("Show panel", ref s.ShowPanel, "The advice card next to the screen's choice");
-        Setting.Checkbox("Show assumed", ref s.ShowAssumed, "Lists what the advice had to guess, such as tool uses left or events behind unseen cells");
-        Setting.Checkbox("Lock", ref s.Lock, "A locked panel ignores the mouse - hold the move key to drag it anyway");
-        Setting.Hotkey("Move key", ref s.MoveKey, "Hold to move the panel while locked");
+        Setting.Checkbox("Show advice", ref s.ShowPanel, "Predicted score, sim progress and strategy in the middle of the prison, only while the prison itself is on screen");
         Setting.Checkbox("Highlight cards", ref s.HighlightCards, "Glows the best card on the game's own decision cards and instrument pick instead of a row in the panel");
     }
 
@@ -23,6 +20,7 @@ static class SettingsUI
         Setting.Checkbox("Only show the best", ref s.OnlyBest, "Glows one option, the best, instead of every option within the margin of error of it");
         DrawMode(s);
         Setting.Checkbox("Log decisions", ref s.LogDecisions, "Logs what the plugin sees and advises to the Ember log (Info, Tartarus source), one line per change");
+        Setting.Checkbox("Record run data", ref s.LogRunData, "Writes every Tartarus run to Config\\Tartarus\\runs, one file per run, so you can share it for odds research - board, choices, tools and events only, nothing about you or your character");
     }
 
     static void DrawMode(Settings s)

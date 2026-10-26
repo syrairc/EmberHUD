@@ -16,11 +16,15 @@ public sealed class TrackedRun
     public bool SwapUsedToday { get; set; }
     public HashSet<int> SeenCells { get; set; } = [];
     public int ChainArmedAt { get; set; } = -1;
+    public int Usurped { get; set; }
+    public int UsurpCell { get; set; } = -1;
+    public int UsurpNext { get; set; }
+    public int[] Marked { get; set; } = [];
 }
 
 public sealed class RunTracker : IDisposable
 {
-    const int ChainReactionId = 242;
+    const int ChainReactionId = 242, UsurpationFirst = 252, UsurpationLast = 255;
 
     readonly string path;
     readonly Func<double> seconds;
@@ -88,7 +92,7 @@ public sealed class RunTracker : IDisposable
         [
             $"Joined on day {state.Day}, so the first {state.Day - 1} days were not seen.",
             "Tools picked earlier are taken from the ones held now.",
-            "Start card and scratch marks are assumed to be none.",
+            "Scratch marks are assumed to be none.",
             "The swap is assumed unused today unless it was seen.",
         ];
     }
@@ -101,6 +105,15 @@ public sealed class RunTracker : IDisposable
         run.SeenCells.UnionWith(state.Cells.Where(cell => cell.Open || cell.Tier >= 0).Select(cell => cell.Index).Where(index => index >= 0 && index < state.Size));
         if (run.ChainArmedAt >= 0 && state.Position != run.ChainArmedAt) run.ChainArmedAt = -1;
         if (state.Choice is { Kind: TartarusChoiceKind.Event, Options: not null } happening && happening.Options.Any(option => option.Param == ChainReactionId)) run.ChainArmedAt = state.Position;
+        if (state.Choice is { Kind: TartarusChoiceKind.Event, Options: not null } usurping && usurping.Options.Select(option => option.Param).Where(id => id is >= UsurpationFirst and <= UsurpationLast).DefaultIfEmpty().Max() is var level and > 0)
+            run.Usurped = Math.Max(run.Usurped, level);
+        var marked = state.Cells.Where(cell => cell.EventMarker).Select(cell => cell.Index).ToArray();
+        if (run.Usurped is > 0 and < UsurpationLast && run.UsurpNext <= run.Usurped && marked.Except(run.Marked ?? []).ToArray() is [var placed])
+        {
+            run.UsurpCell = placed;
+            run.UsurpNext = run.Usurped + 1;
+        }
+        run.Marked = marked;
         if (state.Choice is { Kind: TartarusChoiceKind.Operation, Complete: true, Options: not null } operation)
             run.SwapUsedToday = operation.Options.All(option => option.Kind != TartarusOptionKind.Replace);
     }

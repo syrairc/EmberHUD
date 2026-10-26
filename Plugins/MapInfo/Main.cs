@@ -46,6 +46,9 @@ public sealed class Main : Plugin<Settings>
         !settings.General.Show || state.Area is not { } map ||
         settings.General.HideBehindPanels && state.Ui.AnyFullScreen;
 
+    internal static bool BehindBag(GameUi ui, Vector2 origin, Vector2 size) =>
+        ui.Panels.Any(p => p.Kind == PanelKind.Inventory && origin.X < p.Max.X && p.Min.X < origin.X + size.X && origin.Y < p.Max.Y && p.Min.Y < origin.Y + size.Y);
+
     internal static TextStyle StyleOf(RowKind kind, LookTab look) => kind switch
     {
         RowKind.Title => look.Title,
@@ -161,6 +164,7 @@ public sealed class Main : Plugin<Settings>
         _panel.MoveHeld = general.MoveKey.Key != Key.None && Input.IsDown(general.MoveKey.Key);
         var origin = new Vector2(general.X, general.Y);
         var size = new Vector2(general.Width, _laidHeight);
+        if (general.HideBehindBag && BehindBag(state.Ui, origin, size)) return;
         var (hovered, edge, active) = _panel.Handle("mapinfo", ref origin, size, ref general.X, ref general.Y, ref general.Width, GeneralTab.MinWidth, GeneralTab.MaxWidth);
         if (hovered || active) Overlay.ClickBlocker("mapinfo", origin, size);
 
