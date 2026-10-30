@@ -18,7 +18,7 @@ public sealed class Main : Plugin<Settings>
     public override void Tick()
     {
         Settings.Normalize();
-        if (Settings.Reactions.Any(reaction => reaction.Enabled && reaction.Conditions.Any(condition => condition.Kind is ConditionKind.Buff or ConditionKind.SkillCooldown or ConditionKind.SkillCharges)))
+        if (Settings.Reactions.Any(reaction => reaction.Enabled && reaction.Conditions.Any(condition => condition.Kind is ConditionKind.Buff or ConditionKind.SkillCooldown or ConditionKind.SkillCharges or ConditionKind.CrowdControlled)))
             Game.WantCharacter();
         _engine.Step(Settings, Game.State, Environment.TickCount64, Send.Press);
     }

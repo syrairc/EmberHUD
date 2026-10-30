@@ -5,9 +5,9 @@ namespace NameplatesPlugin;
 
 public static class Resolver
 {
-    public static Bucket? BucketOf(in Entity entity)
+    public static Bucket? BucketOf(in Entity entity, Settings? settings = null)
     {
-        if (entity.Hidden) return null;
+        if (entity.Hidden || (settings != null && entity.Kind != EntityKind.Player && SourceFiltered(settings, entity.Info))) return null;
         switch (entity.Kind)
         {
             case EntityKind.Monster when entity.Friendly:
@@ -28,6 +28,11 @@ public static class Resolver
                 return null;
         }
     }
+
+    static bool SourceFiltered(Settings settings, FightInfo? info) => info is { } fight && (
+        (settings.HideSummoned && fight.SourceType is 1 or 2 or 212) ||
+        (settings.HideSpecialSpawns && fight.SourceType == 2000) ||
+        (settings.HideMinions && fight.Archetype == FightArchetype.Minion));
 
     public static Entity? BossOnBar(Entity[] entities, float percent) => GameState.BossOnBar(entities, percent);
 

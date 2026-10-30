@@ -12,9 +12,11 @@ public sealed class Main : Plugin<Settings>
     bool _active;
     Key _held;
 
+    internal static bool InGame(GameState state) =>
+        (state.Status.StartsWith("live") || state.Status == "fake game") && state.Paused == false && !state.Ui.AnyFullScreen && state.Player is not null;
+
     internal static bool Active(GameState state, Settings settings, bool toggled) =>
-        (state.Status.StartsWith("live") || state.Status == "fake game") && state.Paused == false && !state.Ui.AnyFullScreen && state.Player is not null &&
-        (toggled || settings.NearbyEnabled && EnemyNear(state, settings));
+        InGame(state) && (toggled || settings.MotionEnabled && settings.NearbyEnabled && EnemyNear(state, settings));
 
     static bool EnemyNear(GameState state, Settings settings) =>
         state.CountNear(settings.Radius, settings.MinRarity) > 0 && !(settings.TownNeedsDpsMeter && state.Area is { IsTown: true } && state.WoodStake is not { Running: true });
@@ -40,7 +42,7 @@ public sealed class Main : Plugin<Settings>
 
     public override void Render()
     {
-        if (Settings.ShowRadius && Settings.NearbyEnabled && Game.State.Player is { } player)
+        if (Settings.ShowRadius && Settings.MotionEnabled && Settings.NearbyEnabled && Game.State.Player is { } player)
             Ground.Circle(new Vector2(player.Position.X, player.Position.Y), Settings.Radius, Color.FromArgb(200, Settings.HighlightColor), 2, player.Position.Z);
         if (_active && Settings.ShowHighlight && SlotRect(Game.State, Settings.Slot) is { } rect)
             Hexagon.Glow(rect.Min, rect.Max, Settings.HighlightColor, 3, 10);

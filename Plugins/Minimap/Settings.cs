@@ -78,6 +78,7 @@ public sealed class IconsTab
     public bool FadeHidden = true;
 
     public bool FadeInvulnerable = true;
+    public bool UseFightInfo = true;
     public float ZoomScaleFactor = 0.5f;
     public float ZoomScaleMin = 0.5f;
     public float ZoomScaleMax = 2;
@@ -106,11 +107,16 @@ public sealed class IconsTab
 
     public IconStyle[] Fixed => [NormalMonsters, MagicMonsters, RareMonsters, Bosses, Minions, Npcs, OtherPlayers, MapObjects, Destructibles];
 
-    public static int Layer(Entity entity) => entity.Kind switch
+    internal static bool FriendlyMonster(in Entity entity, bool useFightInfo) =>
+        entity.Kind == EntityKind.Monster
+        && (entity.Friendly || useFightInfo && entity.Info is { } info
+            && (info.Archetype == FightArchetype.Minion || info.Camp is FightCamps.Player or FightCamps.Servant));
+
+    public static int Layer(Entity entity, bool useFightInfo) => entity.Kind switch
     {
         EntityKind.Destructible => 0,
         EntityKind.MapObject => 1,
-        EntityKind.Monster when entity.Friendly => 7,
+        EntityKind.Monster when FriendlyMonster(entity, useFightInfo) => 7,
         EntityKind.Monster => 2 + (int)entity.Rarity,
         EntityKind.Ally => 6,
         EntityKind.Npc => 7,
@@ -120,7 +126,7 @@ public sealed class IconsTab
 
     public IconStyle? FixedFor(Entity entity) => entity.Kind switch
     {
-        EntityKind.Monster when entity.Friendly => Npcs,
+        EntityKind.Monster when FriendlyMonster(entity, UseFightInfo) => Npcs,
         EntityKind.Monster => entity.Rarity switch
         {
             Rarity.Normal => NormalMonsters,
@@ -267,6 +273,7 @@ public sealed class Settings : PluginSettings
         }
         changed |= Setting.Checkbox("Fade hidden monsters", ref Icons.FadeHidden, "Draw buried or hidden monsters at half opacity");
         changed |= Setting.Checkbox("Fade invulnerable monsters", ref Icons.FadeInvulnerable, "Draw monsters that cannot be damaged (e.g. turrets) at half opacity");
+        changed |= Setting.Checkbox("Use fight info", ref Icons.UseFightInfo, "Friendly / enemy from the fight world; turn off if icons look wrong");
         using (Layout.Dim(General.UseGameMinimap))
         {
             changed |= Setting.Checkbox("Scale with zoom", ref Icons.ScaleWithZoom, "Icons grow and shrink with the map zoom, the default zoom keeps them at their own size. The game map drives zoom with Use game minimap");

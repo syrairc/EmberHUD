@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 using System.Text.RegularExpressions;
 using EmberHUD;
 
@@ -22,8 +23,36 @@ public static class Conditions
         ConditionKind.Buff => BuffMet(c, state),
         ConditionKind.SkillCooldown => FindSkill(state, c.SkillCfgId) is { } skill && skill.Ready == c.Ready,
         ConditionKind.SkillCharges => FindSkill(state, c.SkillCfgId) is { MaxCharges: > 0 } skill && skill.Charges >= c.Charges,
+        ConditionKind.GroundEffect or ConditionKind.BuffArea => FindArea(state, c.Kind) is not null,
         _ => false,
     };
+
+    public static bool IsFightKind(ConditionKind kind) => kind is ConditionKind.GroundEffect or ConditionKind.BuffArea;
+
+    public static double? Remaining(FightEntity fighter)
+    {
+        if (fighter.Timed is { } timed && Sane(timed)) return Math.Max(0, timed.Duration - timed.Elapsed);
+        return fighter.Lifetime is { } life && double.IsFinite(life) && life >= 0 ? life : null;
+    }
+
+    public static bool Sane(FightTimed timed) => double.IsFinite(timed.Duration) && timed.Duration > 0 && double.IsFinite(timed.Elapsed) && timed.Elapsed >= 0;
+
+    // the hostile area under the player that runs out soonest, one with no known time sorts last
+    public static FightEntity? FindArea(GameState state, ConditionKind kind)
+    {
+        if (!IsFightKind(kind) || state.Player is not { } player || state.Fighters is not { } fighters) return null;
+        var archetype = kind == ConditionKind.GroundEffect ? FightArchetype.GroundEffect : FightArchetype.BuffArea;
+        var at = new Vector2(player.Position.X, player.Position.Y);
+        FightEntity? best = null;
+        var bestLeft = double.PositiveInfinity;
+        foreach (var fighter in fighters)
+        {
+            if (fighter is null || fighter.Archetype != archetype || !fighter.IsHostile || !fighter.Covers(at)) continue;
+            var left = Remaining(fighter) ?? double.PositiveInfinity;
+            if (best is null || left < bestLeft) { best = fighter; bestLeft = left; }
+        }
+        return best;
+    }
 
     // untimed buffs read 1.0 / 1.0 forever, so Ending needs a match that is actually ticking down, gone counts as 0 s left
     static bool BuffMet(Condition condition, GameState state)

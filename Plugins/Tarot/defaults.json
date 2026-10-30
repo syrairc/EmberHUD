@@ -1,1 +1,1 @@
-{ "ShowPanel": true, "Lock": true, "MoveKey": "Alt", "PanelX": 40, "PanelY": 430, "AheadTiles": 24, "HighlightCard": true }
+{ "ShowPanel": true, "Lock": true, "MoveKey": "Alt", "PanelX": 40, "PanelY": 430, "AheadTiles": 24, "HighlightCard": true, "UseSolver": true, "Objective": "Rarity", "Rollouts": 150, "DeathLosesLoot": true, "ShowStats": true }

@@ -82,6 +82,7 @@
     "ScaleWithZoom": true,
     "FadeHidden": true,
     "FadeInvulnerable": true,
+    "UseFightInfo": true,
     "ZoomScaleFactor": 0.5,
     "ZoomScaleMin": 0.5,
     "ZoomScaleMax": 2,

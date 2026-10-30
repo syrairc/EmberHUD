@@ -14,6 +14,8 @@ public static class Groups
     public const string BandsDanger = "threats.bands.danger";
     public const string Lines = "threats.lines";
     public const string LinesDanger = "threats.lines.danger";
+    public const string BandsHoming = "threats.bands.homing";
+    public const string LinesHoming = "threats.lines.homing";
 
     public static Color Fill(Color colour, Settings settings)
     {
@@ -32,6 +34,8 @@ public static class Groups
         Ground.Group(TelegraphFillDanger, none, Fill(settings.DangerColour, settings), 0);
         Ground.Group(Bands, none, Band(settings.LineColour), 0, BandsDanger);
         Ground.Group(BandsDanger, none, Band(settings.DangerColour), 0);
+        Ground.Group(BandsHoming, none, Band(settings.HomingColour), 0, BandsDanger);
+        Ground.Group(LinesHoming, none, settings.HomingColour, 0, LinesDanger);
         Ground.Group(Lines, none, settings.LineColour, 0, LinesDanger);
         Ground.Group(LinesDanger, none, settings.DangerColour, 0);
     }

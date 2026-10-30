@@ -631,7 +631,7 @@ public sealed class Main : Plugin<Settings>
     void DrawTotals()
     {
         var state = Game.State;
-        if (state.Stash is { } shown && state.StashItems is { } shownItems) _stashTabs[shown.Tab] = shownItems;
+        if (OpenKind(state.Ui) == PanelKind.Stash && state.Stash is { } shown && state.StashItems is { } shownItems) _stashTabs[shown.Tab] = shownItems;
         var booth = BoothOpen(state.Ui);
         if (!Settings.ShowTotals || (!booth && OpenKind(state.Ui) is null)) return;
         Game.WantInventory();

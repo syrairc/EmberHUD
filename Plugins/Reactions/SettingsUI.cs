@@ -12,6 +12,7 @@ static class SettingsUI
 {
     const string BuffTip = "Matched against the buff name and id as a regex, e.g. shield|1234 - if it does not compile it matches the name or id exactly";
 
+
     static int selected;
     static PickerState<Buff>? buffPicker;
 
@@ -149,6 +150,24 @@ static class SettingsUI
                 changed |= Combo.Enum(ref condition.MinRarity, "rarity", 90);
                 ImGui.SameLine();
                 changed |= ImGui.Checkbox("Show range", ref condition.ShowRange);
+                if (ImGui.IsItemHovered()) ImGui.SetTooltip("Counts monsters only - minions, summons and other fight entities are skipped");
+                break;
+            case ConditionKind.HomingProjectile:
+                changed |= ImGui.SliderInt("##count", ref condition.Count, 1, 50, "at least %d");
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(170);
+                changed |= ImGui.SliderFloat("##radius", ref condition.Radius, 50, 2000, "within %.0f");
+                ImGui.SameLine();
+                changed |= ImGui.Checkbox("Only targeting me", ref condition.OnlyTargetingMe);
+                if (ImGui.IsItemHovered()) ImGui.SetTooltip("Hostile projectiles that have locked a target. Only targeting me also needs your own fighter to be found.");
+                break;
+            case ConditionKind.GroundEffect:
+                changed |= ImGui.Checkbox("Damage only", ref condition.DamageOnly);
+                if (ImGui.IsItemHovered()) ImGui.SetTooltip("Holds while you stand inside a ground effect, damage only skips harmless areas.");
+                break;
+            case ConditionKind.CrowdControlled:
+                changed |= Combo.Flags(ref condition.Control, "control", 260, "nothing selected");
+                if (ImGui.IsItemHovered()) ImGui.SetTooltip("Holds while one of the ticked crowd controls is on you, from your active buffs. Immune is the CC immunity state, Frozen is the frozen animation state.");
                 break;
         }
         if (condition.Kind is ConditionKind.SkillCooldown or ConditionKind.SkillCharges && SkillMissing(condition.SkillCfgId))

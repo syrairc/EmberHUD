@@ -29,6 +29,18 @@ public sealed class Main : Plugin<Settings>
     {
         Settings.Normalize();
         if (NeedsCharacter()) Game.WantCharacter();
+        if (NeedsFighters(Settings)) Game.WantFighters();
+    }
+
+    public static bool NeedsFighters(Settings settings)
+    {
+        foreach (var group in settings.Groups)
+        {
+            if (!group.Enabled) continue;
+            foreach (var aura in group.Auras)
+                if (aura.Enabled && aura.Conditions.Exists(condition => Conditions.IsFightKind(condition.Kind))) return true;
+        }
+        return false;
     }
 
     bool NeedsCharacter()

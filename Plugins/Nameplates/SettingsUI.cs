@@ -8,7 +8,7 @@ namespace NameplatesPlugin;
 
 static class SettingsUI
 {
-    const string Tokens = "{name} {hp} {hpmax} {hp%} {dist} {rarity} {type} {cast} {left}";
+    const string Tokens = "{name} {hp} {hpmax} {hp%} {dist} {rarity} {type} {cast} {left} {level}";
 
     internal static bool OpenAllBuckets;
 
@@ -44,6 +44,10 @@ static class SettingsUI
         Setting.Slider("Max distance", ref s.MaxDistance, 1, 10000, "In distance units, plates beyond this distance from the player are not drawn", log: true);
         Setting.Checkbox("Hide behind full-screen panels", ref s.HideBehindPanels);
         Setting.Checkbox("Anchor to the game's HP bar", ref s.AnchorToGameBar, "Monsters only - the plate sits on the game's own health bar, so the bucket bar width and height are ignored while this is on");
+        ImGui.SeparatorText("Filters");
+        Setting.Checkbox("Hide summoned", ref s.HideSummoned, $"Monsters summoned from the player side (source 1, 2, 212).");
+        Setting.Checkbox("Hide special spawns", ref s.HideSpecialSpawns, $"Monsters from special spawns (source 2000).");
+        Setting.Checkbox("Hide minions", ref s.HideMinions, $"Minions in every bucket, allies included.");
         ImGui.SeparatorText("Boss bar HP");
         Setting.Checkbox("Show boss HP on the boss bar", ref s.BossBarHp.Enabled, "Current / max HP of the boss on the game's boss HP bar at the top of the screen");
         Setting.Choice("Boss HP row", ref s.BossBarHpRow);

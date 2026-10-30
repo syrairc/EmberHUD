@@ -41,6 +41,13 @@ public sealed partial class Settings : PluginSettings
     public Color AreaColour = Color.FromArgb(200, 230, 120, 40);
     public float GroundAlertSeconds = 1.0f;
 
+    public bool UseFightData = true;
+    public bool HighlightHoming = true;
+    public Color HomingColour = Color.FromArgb(230, 190, 90, 255);
+    public bool HitAreas = true;
+    public bool HazardTimers = true;
+    public float HazardTimerSize = 60;
+
     public Color DangerColour = Color.FromArgb(255, 255, 40, 120);
     public bool MoveAlert;
     public string MoveAlertText = "MOVE";

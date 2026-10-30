@@ -81,11 +81,19 @@ public sealed class Main : Plugin<Settings>
     double? _pausedFrom;
     double _pausedTotal;
 
+    static CombatStats? ReadCombat(bool wanted)
+    {
+        if (wanted) return Game.State.Combat;
+        using var peek = Game.Peek();
+        return Game.State.Combat;
+    }
+
     public override void Tick()
     {
         if (Game.State.WoodStake is { Running: true })
             _keptArea = Game.State.AreaId;
-        if (CombatWanted(Game.State, Settings.Combat, Settings.General.HideBehindPanels)) Game.WantCombat();
+        var wanted = CombatWanted(Game.State, Settings.Combat, Settings.General.HideBehindPanels);
+        if (wanted) Game.WantCombat();
         if (_countedOverkill != Settings.Combat.CountOverkill)
         {
             _countedOverkill = Settings.Combat.CountOverkill;
@@ -93,7 +101,7 @@ public sealed class Main : Plugin<Settings>
             _bossMeter.Reset();
         }
 
-        if (Game.State.Combat is not { } combat) return;
+        if (ReadCombat(wanted) is not { } combat) return;
         if (Game.State.Paused == true)
         {
             _pausedFrom ??= combat.Seconds;

@@ -7,7 +7,7 @@ using EmberHUD.Ui;
 
 namespace EmberAuras;
 
-public enum ConditionKind { Buff, SkillCooldown, SkillCharges, Health, Shield, HealthAndShield }
+public enum ConditionKind { Buff, SkillCooldown, SkillCharges, Health, Shield, HealthAndShield, GroundEffect, BuffArea }
 
 public enum Direction { Below, Above }
 

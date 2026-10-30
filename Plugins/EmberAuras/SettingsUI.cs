@@ -11,6 +11,7 @@ namespace EmberAuras;
 static class SettingsUI
 {
     const string BuffTip = "Matched against the buff name and id as a regex, e.g. shield|1234 - if it does not compile it matches the name or id exactly";
+    const string FightTip = "Holds while you stand inside a hostile ground effect / buff area, the text is the time it has left.";
 
     static int selectedGroup;
     static int selectedAura;
@@ -224,6 +225,10 @@ static class SettingsUI
                     ImGui.SetNextItemWidth(170);
                     changed |= ImGui.SliderInt("##stacks", ref condition.MinStacks, 0, 50, condition.MinStacks == 0 ? "any stacks" : "at least %d stacks");
                 }
+                break;
+            case ConditionKind.GroundEffect or ConditionKind.BuffArea:
+                ImGui.TextDisabled("player inside a hostile area");
+                if (ImGui.IsItemHovered()) ImGui.SetTooltip(FightTip);
                 break;
             case ConditionKind.SkillCooldown:
                 changed |= SkillPicker(condition);

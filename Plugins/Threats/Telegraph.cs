@@ -62,10 +62,13 @@ public static class Telegraph
 
     static void Countdown(Cast cast, Settings settings, Camera camera)
     {
-        var text = $"{cast.SecondsLeft:0.0}";
-        var rotation = camera.Rotation.Y + 90;
-        if (Ground.Text(text, cast.Target, settings.CountdownSize, rotation, Color.White)) return;
-        var at = camera.ToScreen(new Vector3(cast.Target, Game.State.Player?.Position.Z ?? 0), ImGui.GetIO().DisplaySize);
-        if (at is { } screen) EmberHUD.Draw.Text(text, screen, Color.White, Align.Center | Align.Middle);
+        Label($"{cast.SecondsLeft:0.0}", cast.Target, settings.CountdownSize, camera);
+    }
+
+    internal static void Label(string text, Vector2 at, float size, Camera camera)
+    {
+        if (Ground.Text(text, at, size, camera.Rotation.Y + 90, Color.White)) return;
+        var screen = camera.ToScreen(new Vector3(at, Game.State.Player?.Position.Z ?? 0), ImGui.GetIO().DisplaySize);
+        if (screen is { } point) EmberHUD.Draw.Text(text, point, Color.White, Align.Center | Align.Middle);
     }
 }

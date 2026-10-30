@@ -16,7 +16,7 @@ public sealed class Main : Plugin<Settings>
     void DrawBossBarHp(GameState state)
     {
         if (!Settings.BossBarHp.Enabled || state.BossBar is not { } bar || Resolver.BossOnBar(state.Entities, bar.Percent) is not { } boss) return;
-        PlateRenderer.DrawBossBarHp(Settings.BossBarHp, Settings.BossBarHpRow, new PlateData(boss.Name, boss.Life, boss.MaxLife, 0, boss.Rarity.ToString(), boss.Kind.ToString()), bar.Rect);
+        PlateRenderer.DrawBossBarHp(Settings.BossBarHp, Settings.BossBarHpRow, new PlateData(boss.Name, boss.Life, boss.MaxLife, 0, boss.Rarity.ToString(), boss.Kind.ToString(), Level: boss.Info?.Level), bar.Rect);
     }
 
     public override void Render()
@@ -33,11 +33,11 @@ public sealed class Main : Plugin<Settings>
         {
             ref readonly var entity = ref entities[i];
             var distance = Settings.Displayed(player?.FlatDistance(entity.Position) ?? 0);
-            if (Resolver.BucketOf(entity) is not { } bucket || Resolver.ResolveBucket(Settings, bucket, entity.Name, entity.CfgId, entity.Life, entity.MaxLife, distance) is not { } style) continue;
+            if (Resolver.BucketOf(entity, Settings) is not { } bucket || Resolver.ResolveBucket(Settings, bucket, entity.Name, entity.CfgId, entity.Life, entity.MaxLife, distance) is not { } style) continue;
             if (Anchor.Rect(Settings, entity, style, camera.ToScreen(entity.Position, viewport)) is not { } rect) continue;
             var castBar = Settings.Buckets[(int)bucket].CastBar!;
             var cast = castBar.Enabled ? entity.Cast : null;
-            var data = new PlateData(entity.Name, entity.Life, entity.MaxLife, distance, entity.Rarity.ToString(), entity.Kind.ToString(), cast?.Name ?? "", cast?.SecondsLeft ?? 0);
+            var data = new PlateData(entity.Name, entity.Life, entity.MaxLife, distance, entity.Rarity.ToString(), entity.Kind.ToString(), cast?.Name ?? "", cast?.SecondsLeft ?? 0, entity.Info?.Level);
             if (PlateRenderer.DrawPlate(data, style, rect, viewport) && cast is { } active) PlateRenderer.DrawCast(castBar, data, active.Progress, rect);
         }
         if (player is null) return;

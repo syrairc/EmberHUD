@@ -19,13 +19,48 @@ public sealed class Main : Plugin<Settings>
     readonly Overlay _overlay = new();
     int _unusedWidth, _unusedHeight;
 
-    public override void Tick() => Game.WantTarot();
+    internal readonly SolverWorker Worker = new();
+    TarotState? _signed, _effective;
+    bool _signedOpen;
+    string _signature = "";
+
+    public override void Tick()
+    {
+        Game.WantTarot();
+        if (Settings.UseSolver && Game.State.Tarot is { Phase: TarotPhase.Board } raw)
+        {
+            var state = Effective(raw, out var signature);
+            Worker.Request(state, Settings.ToOptions(), signature);
+        }
+    }
+
+    public override void Dispose()
+    {
+        Worker.Dispose();
+        base.Dispose();
+    }
+
+    TarotState Effective(TarotState raw, out string signature)
+    {
+        var open = Parts("PopPanel/ScrollBox[").Length > 0;
+        if (!ReferenceEquals(raw, _signed) || open != _signedOpen)
+        {
+            _effective = StateMapper.Normalise(raw, open);
+            _signature = StateMapper.Signature(_effective);
+            _signed = raw;
+            _signedOpen = open;
+        }
+        signature = _signature;
+        return _effective!;
+    }
 
     public override void Render()
     {
-        if (!Settings.ShowPanel || Game.State.Tarot is not { } state) return;
+        if (!Settings.ShowPanel || Game.State.Tarot is not { } raw) return;
+        var state = Effective(raw, out var signature);
         var rowHeight = Draw.RowHeight(_style);
-        var rows = Rows(state);
+        var results = Settings.UseSolver ? Advice.Usable(state, signature, Worker.Latest) : null;
+        var rows = Rows(state, results);
         var width = 0f;
         foreach (var (left, right, _) in rows) width = MathF.Max(width, Draw.MeasureText(left, _style).X + Gap + Draw.MeasureText(right, _style).X);
         var side = rowHeight - TileGap;
@@ -43,7 +78,7 @@ public sealed class Main : Plugin<Settings>
         if (hovered || active) Overlay.ClickBlocker("tarot", origin, size);
         Draw.RectFilled(origin, origin + size, GameColors.LabelBackground, 4);
         if (_overlay.Movable) Overlay.DragHint(origin, origin + size, active, hovered, Overlay.ResizeEdge.None);
-        if (Settings.HighlightCard && !(state.Phase == TarotPhase.Board && ArrowChoice(state))) ArrowBestCards(state);
+        if (Settings.HighlightCard && !(state.Phase == TarotPhase.Board && ArrowChoice(state, results))) ArrowBestCards(state, results);
         var at = origin + new Vector2(Pad);
         foreach (var (left, right, colour) in rows)
         {
@@ -76,32 +111,32 @@ public sealed class Main : Plugin<Settings>
     static NamedRect[] Parts(string prefix) =>
         [.. (Game.State.Ui.Panels.FirstOrDefault(panel => panel.Name == "S9Taro_C").Parts ?? []).Where(part => part.Name.StartsWith(prefix)).OrderBy(part => part.Min.X)];
 
-    static bool ArrowChoice(TarotState state)
+    static bool ArrowChoice(TarotState state, ActionResult[]? results)
     {
         var cards = Parts("PopPanel/ScrollBox[");
         if (cards.Length == 0) return false;
-        var options = Board.Options(state.Playing);
-        if (options.Length != cards.Length || Board.BestMove(state, new TarotCard(0, state.Playing)) is not { } move) return true;
-        var card = cards[Array.IndexOf(options, move.Steps)];
+        if (Board.Options(state.Playing).Length != cards.Length) return true;
+        var (index, good) = Advice.Pick(state, results);
+        if (index < 0) return true;
+        var card = cards[index];
         var width = card.Max.X - card.Min.X;
         var top = (card.Min.Y + card.Max.Y) / 2 - width * ChoiceCardHalfHeight;
-        Draw.ArrowDown(new Vector2(card.Min.X + width / 2, top - ChoiceArrowGap), width * ChoiceArrowSize, move.Score > 0 ? GameColors.Positive : GameColors.Gold);
+        Draw.ArrowDown(new Vector2(card.Min.X + width / 2, top - ChoiceArrowGap), width * ChoiceArrowSize, good ? GameColors.Positive : GameColors.Gold);
         return true;
     }
 
-    static void ArrowBestCards(TarotState state)
+    static void ArrowBestCards(TarotState state, ActionResult[]? results)
     {
         if (state.Phase != TarotPhase.Board) return;
         var cards = Parts("HandCardPanel[");
         if (Board.ShownCards(state.Hand, cards.Length) is not { } shown) return;
-        foreach (var best in Board.BestCards(state))
+        foreach (var (best, good) in Advice.Arrows(state, results))
         {
             var slot = Array.IndexOf(shown, best);
             if (slot < 0) continue;
-            var score = Board.BestMove(state, state.Hand[best])!.Value.Score;
             var scale = (cards[slot].Max.X - cards[slot].Min.X) / SlotWidth;
             var tip = cards[slot].Min + new Vector2(CardCentre, -CardTop - ArrowGap) * scale;
-            Draw.ArrowDown(tip, ArrowSize * scale, score > 0 ? GameColors.Positive : GameColors.Gold);
+            Draw.ArrowDown(tip, ArrowSize * scale, good ? GameColors.Positive : GameColors.Gold);
         }
     }
 
@@ -120,7 +155,7 @@ public sealed class Main : Plugin<Settings>
         });
     }
 
-    System.Collections.Generic.List<(string Left, string Right, Color Colour)> Rows(TarotState state)
+    System.Collections.Generic.List<(string Left, string Right, Color Colour)> Rows(TarotState state, ActionResult[]? results)
     {
         var rows = new System.Collections.Generic.List<(string, string, Color)>();
         switch (state.Phase)
@@ -129,7 +164,14 @@ public sealed class Main : Plugin<Settings>
             case TarotPhase.Final: rows.Add(("Tarot", $"challenges left {state.ChallengesLeft}", GameColors.Text)); break;
             default:
                 rows.Add(("Tarot", $"HP {state.Hp}  tile {state.Position + 1}/{state.Tiles.Length}  round {state.Round}", GameColors.Text));
-                foreach (var card in state.Hand) rows.Add((Board.CardLabel(card.CfgId), Outcome(state, card), OutcomeColour(state, card)));
+                var (bestCards, endRunBest) = results is null ? ([], false) : Advice.Rank(state, results);
+                if (endRunBest) rows.Add(("End run now", "", GameColors.Gold));
+                for (var i = 0; i < state.Hand.Length; i++)
+                {
+                    var card = state.Hand[i];
+                    var stats = results is not null && Settings.ShowStats ? Advice.BestFor(results, i) : null;
+                    rows.Add((Board.CardLabel(card.CfgId), stats is { } best ? Advice.RowText(best) : Outcome(state, card), Advice.RowColour(stats is not null, bestCards.Contains(i), OutcomeColour(state, card))));
+                }
                 break;
         }
         return rows;

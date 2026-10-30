@@ -24,7 +24,13 @@ public sealed class Main : Plugin<Settings>
     int _warnedArea = -1;
     Vector2[] _screen = [];
     readonly List<Entity> _ordered = [];
-    static readonly Comparison<Entity> DrawOrder = (a, b) => (IconsTab.Layer(a), a.Id).CompareTo((IconsTab.Layer(b), b.Id));
+    Comparison<Entity>? _drawOrder;
+
+    Comparison<Entity> DrawOrder => _drawOrder ??= (a, b) =>
+    {
+        var useFightInfo = Settings.Icons.UseFightInfo;
+        return (IconsTab.Layer(a, useFightInfo), a.Id).CompareTo((IconsTab.Layer(b, useFightInfo), b.Id));
+    };
     readonly HashSet<int> _overridden = [];
     readonly HashSet<int> _iconEntities = [];
     readonly HashSet<(int, int)> _iconCells = [];

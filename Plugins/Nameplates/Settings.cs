@@ -74,6 +74,9 @@ public sealed class Settings : PluginSettings
     public float MaxDistance = 25;
     public bool HideBehindPanels = true;
     public bool AnchorToGameBar;
+    public bool HideSummoned;
+    public bool HideSpecialSpawns;
+    public bool HideMinions;
     public TextLine BossBarHp = new() { Template = "{hp} / {hpmax}" };
     public TextRow BossBarHpRow = TextRow.OnBar;
     public CastBarSettings? CastBar;

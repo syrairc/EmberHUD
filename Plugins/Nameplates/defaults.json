@@ -3,6 +3,9 @@
   "MaxDistance": 25,
   "HideBehindPanels": true,
   "AnchorToGameBar": true,
+  "HideSummoned": false,
+  "HideSpecialSpawns": false,
+  "HideMinions": false,
   "Buckets": [
     {
       "Show": true,

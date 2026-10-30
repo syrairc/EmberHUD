@@ -40,8 +40,17 @@ public static class AuraEval
         ConditionKind.Health => state.Player is { } p ? PoolValues(p.Life, p.MaxLife) : Empty,
         ConditionKind.Shield => state.Player is { } p ? PoolValues(p.Shield, p.MaxShield) : Empty,
         ConditionKind.HealthAndShield => state.Player is { } p ? PoolValues(p.Life + p.Shield, p.MaxLife + p.MaxShield) : Empty,
+        ConditionKind.GroundEffect or ConditionKind.BuffArea => AreaValues(c, state),
         _ => Empty,
     };
+
+    static AuraView AreaValues(Condition c, GameState state)
+    {
+        if (Conditions.FindArea(state, c.Kind) is not { } area) return Empty;
+        var left = Conditions.Remaining(area);
+        var fill = area.Timed is { } timed && Conditions.Sane(timed) ? (left ?? 0) / timed.Duration : 1;
+        return Empty with { Fill = Clamp(fill), Seconds = left };
+    }
 
     static AuraView BuffValues(Condition c, GameState state)
     {

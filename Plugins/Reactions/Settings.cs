@@ -4,7 +4,7 @@ using EmberHUD;
 
 namespace Reactions;
 
-public enum ConditionKind { Health, Shield, HealthAndShield, Buff, SkillCooldown, SkillCharges, NearbyEnemies }
+public enum ConditionKind { Health, Shield, HealthAndShield, Buff, SkillCooldown, SkillCharges, NearbyEnemies, HomingProjectile, GroundEffect, CrowdControlled }
 
 public sealed class Condition
 {
@@ -21,6 +21,11 @@ public sealed class Condition
     public bool ShowRange;
     public int Count = 1;
     public Rarity MinRarity;
+    public bool OnlyTargetingMe;
+    public bool DamageOnly;
+    public CrowdControl Control = DefaultControl;
+
+    public const CrowdControl DefaultControl = CrowdControl.Stun | CrowdControl.Freeze | CrowdControl.Root | CrowdControl.Silence | CrowdControl.Fear | CrowdControl.Paralysis | CrowdControl.TimeStop | CrowdControl.CantMove;
 }
 
 public sealed class Reaction
