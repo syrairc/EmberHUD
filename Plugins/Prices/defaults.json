@@ -71,6 +71,7 @@
   },
   "RefreshMinutes": 60,
   "Season": 0,
+  "TitrackKey": "",
   "Contribute": false,
   "UseTitrack": true,
   "UseEtor": true,

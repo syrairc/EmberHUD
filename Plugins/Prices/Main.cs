@@ -134,6 +134,7 @@ public sealed class Main : Plugin<Settings>
 
     void TickPrices()
     {
+        PriceSync.Key = Settings.TitrackKey.Trim();
         if (Settings.GroundEnabled) Game.WantGroundItems();
         Contribute();
         CollectLocal();
@@ -344,7 +345,7 @@ public sealed class Main : Plugin<Settings>
                         contribution.Poll(now);
                         if (now >= flushAt)
                         {
-                            contribution.Flush(() => Settings.Contribute && !stop.IsCancellationRequested, now);
+                            contribution.Flush(() => Settings.Contribute && Settings.HasTitrackKey && !stop.IsCancellationRequested, now);
                             flushAt = now.AddMinutes(1);
                         }
                     }

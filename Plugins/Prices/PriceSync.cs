@@ -17,7 +17,7 @@ public sealed record Synced(PriceFile? File, int? Season, string Source, string?
 public static class PriceSync
 {
     public const string Base = "https://qhjulyngunwiculnharg.supabase.co";
-    public const string Key = "sb_publishable_YgqYSMUarrM_IKvcNpJlBw_KwTpp7ho";
+    public static string Key { get; set; } = "";
     const int PageSize = 1000;
     internal const int MaxPages = 100;
     static readonly TimeSpan Recent = TimeSpan.FromDays(7);
@@ -103,6 +103,7 @@ public static class PriceSync
     {
         if (setting > 0) return (setting, "settings", null);
         if (log is { } fromLog) return (fromLog, "game log", null);
+        if (Key.Length == 0) return (NewestCachedSeason(directory), "cached", null);
         int? season;
         string? error = null;
         try
@@ -167,7 +168,7 @@ public static class PriceSync
 
     internal static async Task<string> Send(HttpClient http, HttpRequestMessage request)
     {
-        request.Headers.Add("apikey", Key);
+        if (Key.Length > 0) request.Headers.Add("apikey", Key);
         using var response = await http.SendAsync(request);
         response.EnsureSuccessStatusCode();
         return await response.Content.ReadAsStringAsync();

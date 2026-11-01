@@ -33,6 +33,7 @@ public sealed partial class Settings : PluginSettings
     public bool MinValueGearOnly;
     public int RefreshMinutes = 5;
     public int Season;
+    public string TitrackKey = "";
     public bool Contribute;
     public bool UseTitrack = true;
     public bool UseEtor = true;
@@ -103,7 +104,9 @@ public sealed partial class Settings : PluginSettings
 
     bool Uses(PriceSource source) => source switch { PriceSource.Titrack => UseTitrack, PriceSource.Etor => UseEtor, _ => UseLocal };
 
-    [JsonIgnore] public PriceSource[] Active => [.. Order().Where(Uses)];
+    [JsonIgnore] public bool HasTitrackKey => TitrackKey.Trim().Length > 0;
+
+    [JsonIgnore] public PriceSource[] Active => [.. Order().Where(source => Uses(source) && (source != PriceSource.Titrack || HasTitrackKey))];
 
     public sealed record Row(int BaseId, float Median, float? Low, float? High, DateTimeOffset? Updated, int? Submissions, int? Devices);
 
@@ -296,6 +299,13 @@ public sealed partial class Settings : PluginSettings
         var entered = ImGui.InputText("##season", ref _seasonText, 8, ImGuiInputTextFlags.EnterReturnsTrue | ImGuiInputTextFlags.AutoSelectAll | ImGuiInputTextFlags.CharsDecimal);
         _seasonEditing = ImGui.IsItemActive();
         if (entered) Season = int.TryParse(_seasonText, out var typed) ? Math.Max(0, typed) : 0;
+        ImGui.AlignTextToFramePadding();
+        ImGui.TextUnformatted("TITrack API key");
+        EmberHUD.Ui.Text.Tip("The public API key of TITrack's price server (the same one TITrack's own app uses), not shipped with this plugin. Paste it here to turn TITrack prices and Exchange sharing on");
+        ImGui.SameLine(160);
+        ImGui.SetNextItemWidth(280);
+        ImGui.InputText("##titrackkey", ref TitrackKey, 128);
+        if (!HasTitrackKey) ImGui.TextDisabled("TITrack prices and sharing stay off until you paste its API key");
         if (Status.Length > 0) ImGui.TextDisabled(Status);
         Setting.Checkbox("Share Exchange prices", ref Contribute, "Reads the game log (Settings > Other > Enable Log) and sends the prices of your Exchange searches to TITrack's price server, the same way TITrack does. Off = nothing is read or sent");
         if (Contribute && ContributeStatus.Length > 0) ImGui.TextDisabled(ContributeStatus);
