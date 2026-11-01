@@ -14,6 +14,6 @@ Limited user, standalone only - pick a local Windows account under `Run as` and 
 
 After a game update hit Extract again to get new icons if needed.
 
-Updates - there is an `Updater` tab in the overlay settings. It checks GitHub hourly by default (interval and on/off are in there), downloads the new version quietly and applies it when the overlay closes, or hit `Apply and Restart`. Your `Config` is never touched, plugins you edited are kept unless you tick `Overwrite modified plugins`.
+Updates - there is an `Updater` tab in the overlay settings. It is off by default - turn on `Check for updates` and it checks GitHub hourly (the interval is in there too), downloads the new version quietly and applies it when the overlay closes, or hit `Apply and Restart`. Your `Config` is never touched, plugins you edited are kept unless you tick `Overwrite modified plugins`.
 
 License - GPL-3.0, see `LICENSE`. Fork it, change it, share it, but keep the original credit and keep your fork open source under the same license. The overlay only reads game memory, it never writes to the game.
